@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="justin_tileset" tilewidth="32" tileheight="32">
+  <image source="justin_tileset.png" width="288" height="608"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2EFygjAUBuCs3XgCwXGBeIIexIP0AL18dSZviBRaHbXB9lt8E0gQTX4fGV2llFYAAAAAAAAAAAAAAAAAAAAAwKTjSO3P81+9F+RRx0f2PhL9MllOJpGLTO73dgOZ/E4e6yuVecjkvjX/zi15hLk8yj2+9ryX6tr1Xl+R3fl+u9wef8ik9ryX6tb1n7rHrsghjqMO5jKpPe+luuY7P7X2pe5kc3I46dNljcxlUnver65c/zavf6nL/ft0WS9zmdSez6sa18K5BpqcQZ++5nQY9c1lUnter2qcxzZn0U6MRV7bUZ//TZ6TR5OG2ujS5X6xy/1xXVkfPD6PphB1EBnscy5tcT5+ZvHYPGLfaIt17/JYnzNoctumoX7k8RxNcRxrHvvI+Lq2OO4nruHxeUQm0cbYIfeVr+2y2nP4S7ZpeC5N9ff5OM7VxHPFb4toYz8559OlYf/ocibNA9+baYeZ/j6PbRbwGQEAAAAAAAAAAAAAAAAAavkEQgDBZg==
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 1" width="100" height="100">
+  <object x="209" y="1723" width="14" height="3"/>
+  <object name="Blah" type="Blah" x="243" y="1743" width="65" height="43">
+   <properties>
+    <property name="AmazingProp" value="Sweet!"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
