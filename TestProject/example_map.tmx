@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="64" height="64" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="example_tileset" tilewidth="32" tileheight="32">
+  <image source="example_tileset.png" width="288" height="608"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="64" height="64">
+  <data encoding="base64" compression="zlib">
+   eJztmEEOgkAMRdmz8DaGBbfyFp7akGBCmnbaAbQV3+LFGGHS96cgZRyGYQToZBZk15Ph/U95SDfP8dfz0PY3eu60ouWR7RWp1fKdgljHeutl5xDp2SM1V/L1MmjVbp1/F2g9NSvHZ3tvHT1nqz+kSyuHiu7S1+tPbS+9vojkkoW3T169kd+rOVuemnPr2q7sdWYurbzkebdOsj0jNXg9It3f3x+CbNe9/tF15FqL83Olsv9ZyLV/wf+TaP0v/xOza/xmDZF7SIb/kVqse2P0nlmJnnp7j7HmguUzcybqmWvks2xvrtJ9HmrMhNFnf2sv5fzcmqO33pnOkSxac/HWp+VZcb/3ZKJ5Xv1d4B6fyu95zs4g8q7vSmjX897eucL1YHlF/w+uksEZ/QQAAAAAAAAAAAAAAAAAAAAA0MMLflDktw==
+  </data>
+ </layer>
+ <objectgroup name="Object Layer 1" width="64" height="64" visible="0">
+  <object name="Lava" type="Hazard" x="799" y="448" width="127" height="128">
+   <properties>
+    <property name="IsPainful" value="True"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
