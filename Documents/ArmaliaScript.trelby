@@ -39,8 +39,8 @@ RemoveNotes:False
 OutlineNotes:True
 ShowMargins:False
 ShowLineNumbers:False
-Cursor/Line:132
-Cursor/Column:2
+Cursor/Line:250
+Cursor/Column:27
 String/MoreDialogue:(MORE)
 String/ContinuedPageEnd:(CONTINUED)
 String/ContinuedPageStart:CONTINUED:
@@ -168,13 +168,16 @@ Locations:0
 #Begin-Spell-Checker-Dict 
 Words:0
 #End-Spell-Checker-Dict 
-#Title-String 0.000000,105.000000,24,cb,Helvetica,,UNTITLED SCREENPLAY
-#Title-String 0.000000,120.460000,12,c,Courier,,by\n\nMy Name Here
-#Title-String 15.000000,248.460000,12,,Courier,,123/456-7890\nno.such@thing.com
+#Title-String 0.000000,105.000000,24,cb,Helvetica,,Armalia Dialogue and Game Play Script
+#Title-String 0.000000,120.460000,12,c,Courier,,by\nJustin Anderson
+#Title-String 0.000000,124.690000,15,cb,Courier,,\n\n\nCSCI 313\nSection #1\nPersei Games
 #Header-String 1,0,r,,${PAGE}.
 #Header-Empty-Lines 1
 #Start-Script 
 .\Opening Cut Scene
+>.This will introduce the player to the game.  No game play
+>.wil be happening with this. The cutscenes will be made of
+..concept art (background) and text.
 ._ARMALIA
 >:My name is Armalia and here is my
 .:story...
@@ -190,12 +193,12 @@ Words:0
 .:It must end
 >.Now change the concept art.  This concept art could be
 ..something with bare mountains and/or some green foresty.  
-._Dialect
+._Dialogue
 >:With the new lucious green forest
 .:and high mountains, wild life came.
 >.Now change the concept art. This concept art should be some
 ..sort of primitive village.
-._DIALECT
+._Dialogue
 >:The world lacked intellegence.  So
 >:humans were made.  They were given
 >:the power of magic. With this
@@ -204,14 +207,14 @@ Words:0
 ..something like a modern (magical looking) city.
 ._ARMALIA
 .:Hmm... I think I may like this..
-._DIALECT
+._Dialogue
 >:Armalia wished to joined her newly
 >:created world. She gave herself a
 >:human form. With her human form she
 .:live amongst the humans.
 >.Now change the concept art. This concept art should be
 ..something with Armalia and Zora/Zane.
-._DIALECT
+._Dialogue
 >:As time went by, Armalia fell in
 >:love. It is not known who this love
 >:was, but what came of it was
@@ -229,7 +232,7 @@ Words:0
 >:*sighs* If only she didn't use so
 >:much of her magic power. She would
 .:still be here.
-._DIALECT
+._Dialogue
 >:In human form, Armalia was weak.
 >:This did not stop her from caring
 >:and loving her creation. She spent
@@ -250,7 +253,7 @@ Words:0
 >.Now change the concept art. Make it something like
 >.technologically and magically looking. Something that gives
 ..a feeling of prosperity with the use of magic.
-._DIALECT
+._Dialogue
 >:Zane dispising the people left to
 >:hide. He hid himself for years. No
 >:one knew where he was. Not even his
@@ -292,18 +295,356 @@ Words:0
 .:Boy, what is your name?
 ._????
 .:My name? Um. It is Geraldo.
-._DIALECT
+._Dialogue
 >:Zoran took the boy into his care.
 >:He taught him everything he knew in
 >:magic. This would lead to Zoran's
 .:greatest mistakes ever.
 >.Change the concept art. Make it something that gives the
 ..player impression of a magic-based war. 
-._DIALECT
+._Dialogue
 >:The magic learned from Zoran,
 >:Geraldo used to destroy the world
 >:Zoran loved. Geraldo wanted control
 >:the world. Forcing peace amongst
 .:its people.
 ._Geraldo
-.:Ha ha ha!! My revenge is upon me!
+.:Has ha ha!! My revenge is upon me!
+._Dialogue
+>:War continued for years. Zoran and
+>:his forces were on the losing side.
+.:All hope was lost until. . .
+._ZORAN
+.:BROTHER!!!
+._ZANE
+>:What is with those wounds and
+.:smoke? What is going on!
+._ZORAN
+.:Bother! I need your help! Please..!
+._ZANE
+.:HELP!?
+._Dialogue
+>:Zoran showed what remained of
+.:Armalia.
+>.Change the concept art now. Show something with fire and
+..rubble.
+._ZANE
+>:What has happened!? This his
+>:horrible! Mother would be
+.:weaping...
+._ZORAN
+>:It's all my fault! I shouldn't have
+>:done it! I shouldn't have done...
+.:IT!
+._Dialogue
+>:Zane had no choice. He had to do
+>:what needed to be done. He joined
+.:the efforts against Geraldo's army.
+>.Change the concept art now. Show the magic circle for
+..sealing.
+._DIALOGUE
+>:The brothers could not kill
+>:Geraldo. He became too powerful.
+.:There was only one option left.
+._ZORAN
+.:WHY ARE YOU DOING THIS?! WHY!?!
+._GERALDO
+>:You could never understand... You
+>:lived your life blindly. You, who
+.:do not pain, can not know truth.
+._ZORAN
+.:What are you talking about!?
+._GERALDO
+.:*humph*....
+._DIALOGUE
+>:Everything went silent. Zoran with
+>:tears in his eyes used his entire
+>:life source and sealed Geraldo
+>:away. This left Zane without
+>:anyone. He had now lost both his
+>:mother and brother to magic. Losing
+>:his brother was his the last straw
+.:for Zane.
+.\Pre First Dungeon Scene
+._DIALOGUE
+>:Years have passed. There is now a
+>:separation amongst Armalia. Those
+>:who use magic and those who detest
+.:it. 
+._DIALOGUE
+>:Simon is a young mage.  He is an
+>:orphan who doesn't know either of
+>:his parents. He was raised inside
+>:Uternal College of Magic. Uternal
+>:College of Magic is the last school
+>:of magic that exists. He was a
+>:genius at magic, and he surpassed
+>:everyone around him (even his
+>:professors). It is not known why he
+.:is...
+.\Game Play Begins
+>.Now we start the game. This is where the player is capable
+>.of controller the player and move around. The player is able
+>.to move around. The gameplay will begin in a Uternal College
+>.of Magic and a surounding village. Similar to Winterhod in
+>.Skyrim. The player will walk around talking to random
+>.villagers. Once the player enters a certain area/house/etc,
+>.a quick cut scene will begin. The player's dialogue will be
+..referred to Simon.
+._Mage Professor Shulk
+.:Awh Ha! It's my talented Simon.
+._Simon
+>:Yes, Professor Shulk! Is there
+.:anything I can help you with?
+._MAGE PROFESSOR SHULK
+>:Well there is. I need you to
+>:collect something for me! Only you
+.:can get it!
+._SIMON
+>:Another errand? *sigh* Fine, what
+.:is it I can get you?
+._MAGE PROFESSOR SHULK
+>:I need you to collect a staff for
+>:me! It is the legendary staff of
+.:Armalia.
+._SIMON
+>:Staff of Armalia? Isn't that just
+.:folklore?
+._MAGE PROFESSOR SHULK
+>:Thats what I thought, but my
+.:research says otherwise...
+._SIMON
+>:*sigh* Very well... Where may I
+.:find this staff?
+._MAGE PROFESSOR SHULK
+>:It is to the east. In the Nelly's
+.:Swamp.
+._SIMON
+.:Ugh! I hate the swamp! Very well...
+>.The player is able to move around now.  The player has to go
+>.east (of course).  This is where the player will find the
+>.first dungeon.  Once the player finishes the dungeon. The
+..following cut scene arises.
+.\Post First Dungeon Scene
+>.After defeating the first dungeon, the player will aquire
+>.the item "Staff of Armalia".  This will be the first piece
+>.towards beating the game. For this scene we will not be
+>.revealing anything big for the player. The player still
+>.thinks this is just a basic mission or what not.  We will
+..reveal stuff later. 
+._SIMON
+>:Arg... I'm wet and mucky, but I
+>:finally got it.  I guess I'll have
+.:to return it.
+>.The player now gets control over the game.  The player must
+>.return to the home Uterl. Once the player is there, the
+..player has to talk to the Mage Professor Shulk.
+._MAGE PROFESSOR SHULK
+>:Awh ha! They're you are!  I assume
+.:you were successful?
+._SIMON
+.:Of course! I'm Simon!
+._MAGE PROFESSOR SHULK
+.:As expected from my finest student.
+._SIMON
+>:This staff seems like its missing
+>:something. It seems like an orb
+.:could be placed at the tip.
+._MAGE PROFESSOR SHULK
+>:A clever observation! You are
+>:correct! Speaking of that, I have
+.:another favor to ask you!
+._SIMON
+.:...
+._MAGE PROFESSOR SHULK
+>:Don't give me that look! It'll be
+.:easy for you!
+._SIMON
+>:Let me guess, you want me to get
+.:the orb?
+._MAGE PROFESSOR SHULK
+>:Awh yes! The orb is located to the
+>:west! It is in the Gorgon's Temple
+.:hidden in Delia Forest.
+._SIMON
+>:Isn't that forest full of stong
+>:mosters!? You trying to get me
+.:killed?
+._MAGE PROFESSOR SHULK
+>:Nonsense! That is why only you can
+.:complete it! 
+._SIMON
+.:... *sighs*
+>.The player now is given control again. The player must go to
+>.the west to the dungeon. The player must complete it. Once
+..the player completes it, another cut scene happens.
+.\Post Second Dungeon Cutscene
+>.The player has completed the dungeon. The player has
+>.collected Armalia's Orb. This is the final item in
+>.completing Armalia's Staff. This cut scene will be light.
+..However, the next cut scene will be more "juicy".
+._SIMON
+>:Argh.... That took way too much
+>:time... I guess I'll have to return
+.:it to Shulk..
+>.The player now gains control. The player must return to the
+>.Uternal College of Magic. Once the player has completed that
+..task, the following scene happens.
+._MAGE PROFESSOR SHULK
+>:Awh ha! It is my Simon again! Did
+.:you bring the orb?
+._SIMON
+.:Yes.... *sigh*
+._MAGE PROFESSOR SHULK
+>:Great! We can now repair the staff
+.:of Armalia! Bring it here! Quickly!
+._SIMON
+.:Calm down... Here it is...
+._MAGE PROFESSOR SHULK
+>:Wonderful! Lets now place the orb
+.:into the staff! 
+._MAGE PROFESSOR SHULK
+.:...
+._SIMON
+>:What? Whats wrong? Nothing is
+.:happening.
+._MAGE PROFESSOR SHULK
+>:I didn't know what to expect, but
+>:certainly not this. It seems to be
+.:not working.
+._SIMON
+.:Here. Let Me take a look?
+._MAGE PROFESSOR SHULK
+>:NO! YOU MUST'VE TOUCH IT! Umm.. I
+>:mean it could be dangerous. I
+>:wouldn't want my star pupil to get
+.:harmed.
+._SIMON
+.:I wonder whats wrong exactly...
+._MAGE PROFESSOR SHULK
+>:I do too... Maybe it needs a jump
+.:start.
+._SIMON
+>:Jump Start? How in the world would
+.:we do that?
+._MAGE PROFESSOR SHULK
+.:Hmm..
+._MAGE PROFESSOR SHULK
+.:...
+._MAGE PROFESSOR SHULK
+>:Awh ha! Take it the the Fountain of
+.:Zoran!
+._SIMON
+.:Fountain of Zoran?
+._MAGE PROFESSOR SHULK
+.:You have never heard?!
+._SIMON
+>:I've heard about it. It is the
+>:location where the great mage Zoran
+.:sealed the lord Geraldo.
+._MAGE PROFESSOR SHULK
+>:Awh.. Yes! Legend says the fountain
+>:lucious with magical power! I bet
+.:it could revive the staff!
+._SIMON
+.:*shrugs*
+._MAGE PROFESSOR SHULK
+>:What's wrong Simon, why you
+.:shrugging?
+._SIMON
+>:Let me guess. You want me to bring
+.:the staff and revive it?
+._MAGE PROFESSOR SHULK
+>:Why the down face? It'll be fun! I
+>:promise! The fountain is located to
+>:the north! It is at the bottom of
+.:brother valley.
+>.The player now gains control. The player has to go north and
+>.go to another dungeon.  This is the last dungen and leads to
+>.the boss battle. Once the player has beat the dungeon and
+..revives the staff of Armalia.
+.\Post Third Dungeon Scene
+..We see Professor Shulk enter the scene. He walks up to Simon
+._MAGE PROFESSOR SHULK
+>:OH MY! You did it!  It's glowing!
+.:It is complete!
+._SIMON
+.:Yes.. Yes I have.
+._MAGE PROFESSOR SHULK
+>:GIVE IT TO ME NOW! QUICKLY!! Um.. I
+>:mean please hand it over to me.
+.:Thankkyou!
+._SIMON
+>:... You seem a little eager. Why do
+>:you want this anyways? What purpose
+.:will it serve you?
+._MAGE PROFESSOR SHULK
+.((Shulk grabs the staff)
+.:GIVE IT TO ME NOW!
+._SIMON
+>:Hey! Ouch.  You didn't have to grab
+.:it so roughly.
+._MAGE PROFESSOR SHULK
+>:FINALLY!! MY HARD WORK HAS BEEN
+>:REWARDED! MY MASTER WILL BE
+>:PLEASED! I MUST BRING THIS TO LORD
+.:ZANE QUICKLY! HE AWAITS!
+..Professor Shulk disapears.
+._SIMON
+.:What the.... What just thappened!?
+>.The player is now transported outside the dungeon. The
+>.suroundings look dark and creepy. The player sees Professor
+..Shulk and he is standing by some guy.
+._ZANE
+>:Shulk.. You have done me well. The
+.:staff looks almost completed.
+._MAGE PROFESSOR SHULK
+>:Almost? What do you mean!? I have
+>:revived it in your brother's
+.:fountain.
+._ZANE
+>:Only partially, it requires one
+.:more thing...
+._MAGE PROFESSOR SHULK
+.:What is that my lord?
+._ZANE
+>:A human sacrfice. For this staff to
+>:exist in this world, it must
+.:replace another's existence.
+._MAGE PROFESSOR SHULK
+>:My lord! Please don't! I beg of
+.:you!  NOO!!
+>.Zane uses  the staff on Professor Shulk. The staff absorbed
+>.his body and soul. It now glows even brighter. The player
+..must fight the Zane. Player enters the scene.
+._ZANE
+.:Zoran?! Is that you? My brother?
+._SIMON
+>:Zoran? What are you talking about?
+>:I'm Simon of Uternal College of
+.:Mage!
+._ZANE
+>:I see. You are not my brother. Then
+>:you'll be my first victum. I now
+>:have my mothers staff! THE SOURCE
+.:OF ALL MAGIC!!
+>.Zane and the player battle. This is the final battle. Once
+..the player has beat the final boss battle.
+.\End of game scene
+._ZANE
+>:How could you beat me!? Why are you
+>:so strong!? Why do you look like my
+>:brother!? HOW CAN THIS BE
+.:HAPPENING!
+._SIMON
+.:You brought this upon yourself!
+._ZANE
+>:I was going to eradicate the source
+>:of magic! Elimated the thing that
+>:took my mother and brother's life!
+>:The same thing that is ending my
+.:life as we speak! NOOO!
+._SIMON
+.:*sighs* I'm going home.
+>.Zane disapears! Simon has beat him. He has saved the land of
+..Armalia for now. End credits roll.
