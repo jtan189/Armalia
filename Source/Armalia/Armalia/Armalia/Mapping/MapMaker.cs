@@ -59,6 +59,7 @@ namespace Armalia.Mapping
                            objects = new int[width, height];
                            InitArray(tiles);
                            InitArray(objects);
+  
                           //  Console.WriteLine("Width: " + width + " | height: " + height);
                         }
                     break;
@@ -93,6 +94,9 @@ namespace Armalia.Mapping
                      case "object":
                         int xpos = Convert.ToInt32(reader.GetAttribute("x") ) / tileWidth;
                         int ypos = Convert.ToInt32(reader.GetAttribute("y") ) / tileHeight;
+                       // xpos--;
+                        ypos--;
+                        Console.WriteLine("Object - xpos: " + xpos + "\r\nObject - ypos: " + ypos);
                         objects[xpos, ypos] = Convert.ToInt32(reader.GetAttribute("gid") );
                      break;
                 }
@@ -140,15 +144,17 @@ namespace Armalia.Mapping
 
             }
         }
-        flatten();
+        
     }
 
 
     public void DrawMap(SpriteBatch sb)
     {
+        flatten();
         int spX = (int)image.Width / tileWidth;
         int spY = (int)image.Height / tileHeight;
-
+     //   printArr(tiles, "tiles.txt");
+     //   printArr(objects, "objects.txt");
         Vector2 curPos = new Vector2(0, 0);
         for (int x = 0; x < tiles.GetLength(0); x++)
         {
@@ -193,9 +199,9 @@ namespace Armalia.Mapping
 
     private void InitArray(int[,] arr)
     {
-        for (int x = 0; x < objects.GetLength(0); x++)
+        for (int x = 0; x < arr.GetLength(0); x++)
         {
-            for (int y = 0; y < objects.GetLength(1); y++)
+            for (int y = 0; y < arr.GetLength(1); y++)
             {
                 arr[x, y] = -1;
             }
@@ -203,8 +209,32 @@ namespace Armalia.Mapping
     }
     private void flatten()
     {
-
+        for (int x = 0; x < tiles.GetLength(0); x++)
+        {
+            for (int y = 0; y < tiles.GetLength(1); y++)
+            {
+                if (objects[x, y] > -1)
+                {
+                    tiles[x, y] = objects[x, y];
+                }
+            }
+        }
     }
+
+    private void printArr(int[,] arr, string fileN)
+    {
+       // StreamWriter file = new System.IO.StreamWriter(@"C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Resources\" + fileN);
+        for (int i = 0; i < arr.GetLength(0); i++)
+        {
+            for (int j = 0; j < arr.GetLength(1); j++)
+            {
+                Console.Write(arr[i, j] + ", ");
+            }
+            Console.Write("\r\n");
+        }
+    }
+
+
 //END OF CLASS
     }
 }
