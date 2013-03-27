@@ -96,7 +96,7 @@ namespace Armalia.Mapping
                         int ypos = Convert.ToInt32(reader.GetAttribute("y") ) / tileHeight;
                        // xpos--;
                         ypos--;
-                        Console.WriteLine("Object - xpos: " + xpos + "\r\nObject - ypos: " + ypos);
+                     //   Console.WriteLine("Object - xpos: " + xpos + "\r\nObject - ypos: " + ypos);
                         objects[xpos, ypos] = Convert.ToInt32(reader.GetAttribute("gid") );
                      break;
                 }
@@ -150,7 +150,7 @@ namespace Armalia.Mapping
 
     public void DrawMap(SpriteBatch sb)
     {
-        flatten();
+      //  flatten();
         int spX = (int)image.Width / tileWidth;
         int spY = (int)image.Height / tileHeight;
      //   printArr(tiles, "tiles.txt");
@@ -166,7 +166,7 @@ namespace Armalia.Mapping
                     Rectangle r = new Rectangle((int)(gid % spX) * tileHeight, (int)(gid / spX) * tileWidth, tileHeight, tileWidth);
                   sb.Draw(image, curPos,
                             r,
-                            Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.1f);
+                            Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.3f);
                 
                 curPos.Y += tileWidth;
             }
@@ -174,26 +174,30 @@ namespace Armalia.Mapping
             curPos.Y = 0;
             // Console.Write("\r\n");
         }
-        /*
+        
         curPos = new Vector2(0, 0);
-        for (int x = 0; x < tiles.GetLength(0); x++)
+        for (int x = 0; x < objects.GetLength(0); x++)
         {
-            for (int y = 0; y < tiles.GetLength(1); y++)
+            for (int y = 0; y < objects.GetLength(1); y++)
             {
 
-                int gid = tiles[x, y] - firstgid;
+                int gid = objects[x, y] - firstgid;
                 //  Console.Write(gid + ", ");
-                 Rectangle r = new Rectangle((int)(gid % spX) * tileHeight, (int)(gid / spX) * tileWidth, tileHeight, tileWidth);
+                if(objects[x,y] > -1)
+                {
+                Rectangle r = new Rectangle((int)(gid % spX) * tileHeight, (int)(gid / spX) * tileWidth, tileHeight, tileWidth);
                       sb.Draw(image, curPos,
                               r,
-                          Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.3f);
+                          Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.2f);
+                }
                 curPos.Y += tileWidth;
+
             }
             curPos.X += tileHeight;
             curPos.Y = 0;
             // Console.Write("\r\n");
         }
-        */
+        
 
     }
 

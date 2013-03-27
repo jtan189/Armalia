@@ -20,7 +20,8 @@ namespace Armalia
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         MapMaker mm;
-
+        Texture2D box;
+        Vector2 borderPos = Vector2.Zero;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -53,6 +54,7 @@ namespace Armalia
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mm.buildMap();
+            box = Content.Load<Texture2D>(@"SpriteImages\border");
             // TODO: use this.Content to load your game content here
         }
 
@@ -76,6 +78,11 @@ namespace Armalia
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            MouseState ms = Mouse.GetState();
+            borderPos.X = (int)Math.Floor((float)(ms.X / 16));
+            borderPos.Y = (int)Math.Floor((float)(ms.Y / 16));
+            borderPos.X = (borderPos.X * 16) + (16 );
+            borderPos.Y = (borderPos.Y * 16) + (16 );
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -92,6 +99,14 @@ namespace Armalia
            // spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.SaveState);
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             mm.DrawMap(spriteBatch);
+            spriteBatch.Draw(box,
+                borderPos,
+                 new Rectangle(0, 0, 16, 16), 
+                 Color.White, 
+                 0.0f, 
+                 Vector2.Zero, 
+                 1.0f, 
+                 SpriteEffects.None, 0.1f);
             // TODO: Add your drawing code here
             spriteBatch.End();
             base.Draw(gameTime);
