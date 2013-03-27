@@ -30,7 +30,7 @@ namespace Armalia.Mapping
         int firstgid = 0;
         public MapMaker(String xmlFile, ContentManager cm)
         {
-            this.reader = XmlReader.Create(xmlFile);
+            this.reader = XmlReader.Create(cm.RootDirectory + "\\" + xmlFile);
             content = cm;
             // TODO: Construct any child components here
         }

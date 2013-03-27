@@ -1,8 +1,0 @@
-C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\Armalia\bin\x86\Debug\Armalia.exe
-C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\Armalia\bin\x86\Debug\Armalia.pdb
-C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\Armalia\obj\x86\Debug\Armalia.csprojResolveAssemblyReference.cache
-C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\Armalia\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
-C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\Armalia\obj\x86\Debug\Armalia.exe
-C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\Armalia\obj\x86\Debug\Armalia.pdb
-C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\Armalia\bin\x86\Debug\Content\SpriteImages\village1.xnb
-C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\Armalia\bin\x86\Debug\Content\SpriteImages\border.xnb

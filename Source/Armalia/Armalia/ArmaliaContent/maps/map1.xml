@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="16" tileheight="16">
- <tileset firstgid="1" source="C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Resources\TileSets\Village1.tsx"/>
+ <tileset firstgid="1" source="Content\TileSets\Village1.tsx"/>
  <layer name="bg" width="50" height="50">
   <data>
    <tile gid="3155"/>
