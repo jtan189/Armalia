@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Armalia.Mapping;
 
 namespace Armalia
 {
@@ -18,10 +19,13 @@ namespace Armalia
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        MapMaker mm;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 800;
             Content.RootDirectory = "Content";
         }
 
@@ -34,8 +38,10 @@ namespace Armalia
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            mm = new MapMaker(@"C:\Users\Justin\Documents\School\Csci313\Armalia\armalia\Source\Armalia\Armalia\ArmaliaContent\maps\map1.xml", Content);
+           
             base.Initialize();
+
         }
 
         /// <summary>
@@ -46,7 +52,7 @@ namespace Armalia
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            mm.buildMap();
             // TODO: use this.Content to load your game content here
         }
 
@@ -82,9 +88,12 @@ namespace Armalia
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+          //  spriteBatch.Begin();
+           // spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.SaveState);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            mm.DrawMap(spriteBatch);
             // TODO: Add your drawing code here
-
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
