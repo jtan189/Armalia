@@ -95,7 +95,7 @@ namespace Armalia
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-          //  spriteBatch.Begin();
+           // spriteBatch.Begin();
            // spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.SaveState);
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             mm.DrawMap(spriteBatch);
