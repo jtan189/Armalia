@@ -39,6 +39,7 @@ Ankh.NoLoad
 *.pidb
 *.userprefs
 *.csproj.Release.cachefile
+*.csproj.Debug.cachefile
 
 # Project files
 [Bb]uild/
