@@ -35,10 +35,10 @@ obj/
 [Dd]ebug*/
 [Rr]elease*/
 Ankh.NoLoad
-
 # MonoDevelop
 *.pidb
 *.userprefs
+*.csproj.Release.cachefile
 
 # Project files
 [Bb]uild/

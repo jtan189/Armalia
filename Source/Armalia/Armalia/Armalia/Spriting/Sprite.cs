@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Armalia.Spriting
 {
-    class Sprite
+    abstract class Sprite
     {
         Texture2D spriteImage;
         private Boolean isSolid;

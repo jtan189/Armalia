@@ -15,14 +15,14 @@ namespace Armalia
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class ArmaliaGame : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         MapMaker mm;
         Texture2D box;
         Vector2 borderPos = Vector2.Zero;
-        public Game1()
+        public ArmaliaGame()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = 800;
@@ -95,8 +95,6 @@ namespace Armalia
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-           // spriteBatch.Begin();
-           // spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.BackToFront, SaveStateMode.SaveState);
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             mm.DrawMap(spriteBatch);
             spriteBatch.Draw(box,
@@ -111,5 +109,13 @@ namespace Armalia
             spriteBatch.End();
             base.Draw(gameTime);
         }
+    }
+
+    enum GameState
+    {
+        Exploration,
+        Battle,
+        CutScene,
+        GameOver
     }
 }
