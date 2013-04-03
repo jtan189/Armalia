@@ -22,7 +22,7 @@ namespace Armalia
         MapMaker mm;
         Texture2D box;
         Vector2 borderPos = Vector2.Zero;
-        Map[] layers;
+        Level level;
         public ArmaliaGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -40,7 +40,7 @@ namespace Armalia
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            mm = new MapMaker(@"maps\map1.xml", Content);
+            mm = new MapMaker(@"maps\map.tmx", Content);
            
             base.Initialize();
 
@@ -54,7 +54,7 @@ namespace Armalia
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            layers= mm.buildMap();
+            level= mm.buildLevel();
             box = Content.Load<Texture2D>(@"SpriteImages\border");
             // TODO: use this.Content to load your game content here
         }
@@ -80,12 +80,29 @@ namespace Armalia
                 this.Exit();
 
             MouseState ms = Mouse.GetState();
-            borderPos.X = (int)Math.Floor((float)(ms.X / 16));
-            borderPos.Y = (int)Math.Floor((float)(ms.Y / 16));
-            borderPos.X = (borderPos.X * 16) + (16 );
-            borderPos.Y = (borderPos.Y * 16) + (16 );
+            borderPos.X = (int)Math.Floor((float)(ms.X / 32));
+            borderPos.Y = (int)Math.Floor((float)(ms.Y / 32));
+            borderPos.X = (borderPos.X * 32) + (32 );
+            borderPos.Y = (borderPos.Y * 32) + (32 );
             // TODO: Add your update logic here
+            KeyboardState key = Keyboard.GetState();
+            if (key.IsKeyDown(Keys.Down))
+            {
+                level.MoveMap(0, 1);
+            }
+            if (key.IsKeyDown(Keys.Right))
+            {
+                level.MoveMap(1, 0);
+            }
+            if (key.IsKeyDown(Keys.Left))
+            {
+                level.MoveMap(-1, 0);
+            }
+            if (key.IsKeyDown(Keys.Up))
+            {
+                level.MoveMap(0, -1);
 
+            }
             base.Update(gameTime);
         }
 
@@ -97,13 +114,10 @@ namespace Armalia
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            for (int x = 0; x < layers.GetLength(0); x++)
-            {
-                layers[x].Draw(spriteBatch, x+2);
-            }
+            level.Draw(spriteBatch);
             spriteBatch.Draw(box,
                 borderPos,
-                 new Rectangle(0, 0, 16, 16), 
+                 new Rectangle(0, 0, 32, 32), 
                  Color.White, 
                  0.0f, 
                  Vector2.Zero, 

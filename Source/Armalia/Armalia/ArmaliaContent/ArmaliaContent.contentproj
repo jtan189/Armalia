@@ -47,6 +47,10 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <None Include="maps\map.tmx">
+      <Name>map</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TileSets\Village1.tsx">
       <Name>Village1</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

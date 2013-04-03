@@ -21,8 +21,8 @@ namespace Armalia.Mapping
     public class MapMaker 
     {
         private XmlReader reader;
-        private const int tileHeight = 16;
-        private const int tileWidth = 16;
+        private const int tileHeight = 32;
+        private const int tileWidth = 32;
         private Dictionary<int, bool> solidTiles = new Dictionary<int, bool>();
         private Texture2D image;
         private ContentManager content;
@@ -36,7 +36,7 @@ namespace Armalia.Mapping
             // TODO: Construct any child components here
         }
 
-      public Map[] buildMap()
+      public Level buildLevel()
         {
             int width = 0;
             int height = 0;
@@ -115,7 +115,7 @@ namespace Armalia.Mapping
             ret[0] = new Layer(width, height, image, objects);
             ret[1] = new Layer(width, height, image, tiles);
            
-            return ret;
+            return new Level(ret, 25, 25);
         }
 
 
