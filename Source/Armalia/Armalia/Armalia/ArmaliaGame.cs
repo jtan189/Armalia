@@ -43,7 +43,7 @@ namespace Armalia
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            mm = new MapMaker(@"maps\map.tmx", Content);
+            mm = new MapMaker(@"Maps\Village1\Village1.tmx", Content);
            
             base.Initialize();
 

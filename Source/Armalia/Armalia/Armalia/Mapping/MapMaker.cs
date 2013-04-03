@@ -69,7 +69,7 @@ namespace Armalia.Mapping
                            string src =  Path.GetFileNameWithoutExtension(reader.GetAttribute("source"));
                           //  tileSet = XmlReader.Create(src);
                            Console.WriteLine("ERROR " + src);
-                           tileSet =  XmlReader.Create(content.RootDirectory + "\\TileSets\\" + src + ".tsx");
+                           tileSet =  XmlReader.Create(content.RootDirectory + "\\Maps\\" + src + "\\" + src + ".tsx");
                             buildTileProperties(tileSet);
                         }
                     break;
@@ -129,7 +129,7 @@ namespace Armalia.Mapping
                 case "image":
                     string imageFile = Path.GetFileNameWithoutExtension( reader.GetAttribute("source") );
                  
-                    image = content.Load<Texture2D>(@"SpriteImages\" + imageFile);
+                    image = content.Load<Texture2D>(@"Maps\" + imageFile + "\\" + imageFile);
                     Console.WriteLine("img width: " + image.Width);
                 break;
                 case "tile":
