@@ -118,6 +118,7 @@
     <Compile Include="Characters\NonPlayableCharacter.cs" />
     <Compile Include="Characters\Templar.cs" />
     <Compile Include="GameLevel.cs" />
+    <Compile Include="Mapping\Layer.cs" />
     <Compile Include="Mapping\Map.cs" />
     <Compile Include="Mapping\MapMaker.cs" />
     <Compile Include="Player.cs" />

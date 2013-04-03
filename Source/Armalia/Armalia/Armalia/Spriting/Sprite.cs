@@ -9,13 +9,19 @@ namespace Armalia.Spriting
 {
     abstract class Sprite
     {
-        Texture2D spriteImage;
-        private Boolean isSolid;
-        private double collisionOffset;
+        public Vector2 mapPosition;
+        protected bool isSolid;
 
-        public Sprite()
+        public Sprite(Vector2 pos, bool s)
         {
-
+            this.mapPosition = pos;
+            this.isSolid = s;
+        }
+        public Sprite() { }
+         public Vector2 MapPosition
+         {
+             get { return this.mapPosition; }
+       
         }
     }
 }

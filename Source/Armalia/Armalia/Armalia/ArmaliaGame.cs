@@ -22,6 +22,7 @@ namespace Armalia
         MapMaker mm;
         Texture2D box;
         Vector2 borderPos = Vector2.Zero;
+        Map[] layers;
         public ArmaliaGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -53,7 +54,7 @@ namespace Armalia
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            mm.buildMap();
+            layers= mm.buildMap();
             box = Content.Load<Texture2D>(@"SpriteImages\border");
             // TODO: use this.Content to load your game content here
         }
@@ -96,7 +97,10 @@ namespace Armalia
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            mm.DrawMap(spriteBatch);
+            for (int x = 0; x < layers.GetLength(0); x++)
+            {
+                layers[x].Draw(spriteBatch, x+2);
+            }
             spriteBatch.Draw(box,
                 borderPos,
                  new Rectangle(0, 0, 16, 16), 

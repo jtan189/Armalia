@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Text;
 using System.Xml;
 using System.IO;
+using Armalia.Spriting;
 
 namespace Armalia.Mapping
 {
@@ -25,8 +26,8 @@ namespace Armalia.Mapping
         private Dictionary<int, bool> solidTiles = new Dictionary<int, bool>();
         private Texture2D image;
         private ContentManager content;
-        int[,] tiles = new int[0, 0];
-        int[,] objects = new int[0, 0];
+        ObjectSprite[,] tiles = new ObjectSprite[0, 0];
+        ObjectSprite[,] objects = new ObjectSprite[0, 0];
         int firstgid = 0;
         public MapMaker(String xmlFile, ContentManager cm)
         {
@@ -35,7 +36,7 @@ namespace Armalia.Mapping
             // TODO: Construct any child components here
         }
 
-        public void buildMap()
+      public Map[] buildMap()
         {
             int width = 0;
             int height = 0;
@@ -55,12 +56,9 @@ namespace Armalia.Mapping
                         {
                             width = Convert.ToInt32(reader.GetAttribute("width"));
                             height = Convert.ToInt32(reader.GetAttribute("height"));
-                           tiles = new int[width, height];
-                           objects = new int[width, height];
-                           InitArray(tiles);
-                           InitArray(objects);
-  
-                          //  Console.WriteLine("Width: " + width + " | height: " + height);
+                            tiles = new ObjectSprite[width, height];
+                            objects = new ObjectSprite[width, height];
+                            
                         }
                     break;
 
@@ -70,8 +68,6 @@ namespace Armalia.Mapping
                             firstgid = Convert.ToInt32(reader.GetAttribute("firstgid"));
                             tileSet = XmlReader.Create(reader.GetAttribute("source"));
                             buildTileProperties(tileSet);
-                            //Console.WriteLine("TileSet: " + tileSet.Read());
-                            //Console.WriteLine("firstgid: " + firstgid);
                         }
                     break;
                     case "layer":
@@ -87,20 +83,36 @@ namespace Armalia.Mapping
                             x = 0;
                             y++;
                         }
-                        tiles[x,y] = Convert.ToInt32(reader.GetAttribute("gid") );
+                        // new Rectangle((int)(gid % spX) * tileHeight, (int)(gid / spX) * tileWidth, tileHeight, tileWidth);
+                        int gid = Convert.ToInt32(reader.GetAttribute("gid") );
+                        int spX = (int)image.Width / tileWidth;
+                        int spY = (int)image.Height / tileHeight;
+                        int xpos = ((gid - 1) % spX) * tileHeight;
+                        int ypos = ((gid - 1) / spY) * tileWidth;
+                        bool isSolid = false;
+                        tiles[x, y] = new ObjectSprite(new Vector2(xpos, ypos), isSolid);
                         x++;
                     break;
 
                      case "object":
-                        int xpos = Convert.ToInt32(reader.GetAttribute("x") ) / tileWidth;
-                        int ypos = Convert.ToInt32(reader.GetAttribute("y") ) / tileHeight;
-                       // xpos--;
-                        ypos--;
-                     //   Console.WriteLine("Object - xpos: " + xpos + "\r\nObject - ypos: " + ypos);
-                        objects[xpos, ypos] = Convert.ToInt32(reader.GetAttribute("gid") );
+                       int xindex = Convert.ToInt32(reader.GetAttribute("x") ) / tileWidth;
+                       int yindex = Convert.ToInt32(reader.GetAttribute("y") ) / tileHeight;
+                        gid =  Convert.ToInt32(reader.GetAttribute("gid") );
+                        spX = (int)image.Width / tileWidth;
+                        spY = (int)image.Height / tileHeight;
+                        xpos = ((gid - 1) % spX) * tileHeight;
+                        ypos = ((gid - 1) / spY) * tileWidth;
+                        isSolid = true;
+                        yindex--;
+                        objects[xindex, yindex] = new ObjectSprite(new Vector2(xpos, ypos), isSolid);
                      break;
                 }
             }
+            Map[] ret = new Map[2];
+            ret[0] = new Layer(width, height, image, objects);
+            ret[1] = new Layer(width, height, image, tiles);
+           
+            return ret;
         }
 
 
@@ -148,58 +160,6 @@ namespace Armalia.Mapping
     }
 
 
-    public void DrawMap(SpriteBatch sb)
-    {
-      //  flatten();
-        int spX = (int)image.Width / tileWidth;
-        int spY = (int)image.Height / tileHeight;
-     //   printArr(tiles, "tiles.txt");
-     //   printArr(objects, "objects.txt");
-        Vector2 curPos = new Vector2(0, 0);
-        for (int x = 0; x < tiles.GetLength(0); x++)
-        {
-            for (int y = 0; y <tiles.GetLength(1); y++)
-            {
-               
-                int gid = tiles[x, y] - firstgid;
-                //  Console.Write(gid + ",   
-                    Rectangle r = new Rectangle((int)(gid % spX) * tileHeight, (int)(gid / spX) * tileWidth, tileHeight, tileWidth);
-                  sb.Draw(image, curPos,
-                            r,
-                            Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.3f);
-                
-                curPos.Y += tileWidth;
-            }
-            curPos.X += tileHeight;
-            curPos.Y = 0;
-            // Console.Write("\r\n");
-        }
-        
-        curPos = new Vector2(0, 0);
-        for (int x = 0; x < objects.GetLength(0); x++)
-        {
-            for (int y = 0; y < objects.GetLength(1); y++)
-            {
-
-                int gid = objects[x, y] - firstgid;
-                //  Console.Write(gid + ", ");
-                if(objects[x,y] > -1)
-                {
-                Rectangle r = new Rectangle((int)(gid % spX) * tileHeight, (int)(gid / spX) * tileWidth, tileHeight, tileWidth);
-                      sb.Draw(image, curPos,
-                              r,
-                          Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.2f);
-                }
-                curPos.Y += tileWidth;
-
-            }
-            curPos.X += tileHeight;
-            curPos.Y = 0;
-            // Console.Write("\r\n");
-        }
-        
-
-    }
 
     private void InitArray(int[,] arr)
     {
@@ -208,19 +168,6 @@ namespace Armalia.Mapping
             for (int y = 0; y < arr.GetLength(1); y++)
             {
                 arr[x, y] = -1;
-            }
-        }
-    }
-    private void flatten()
-    {
-        for (int x = 0; x < tiles.GetLength(0); x++)
-        {
-            for (int y = 0; y < tiles.GetLength(1); y++)
-            {
-                if (objects[x, y] > -1)
-                {
-                    tiles[x, y] = objects[x, y];
-                }
             }
         }
     }
