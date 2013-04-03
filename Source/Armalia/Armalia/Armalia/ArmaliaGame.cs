@@ -23,12 +23,15 @@ namespace Armalia
         Texture2D box;
         Vector2 borderPos = Vector2.Zero;
         Level level;
+        Texture2D splash;
+        GameState gs;
         public ArmaliaGame()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 800;
             Content.RootDirectory = "Content";
+            gs = GameState.Splash;
         }
 
         /// <summary>
@@ -56,6 +59,7 @@ namespace Armalia
             spriteBatch = new SpriteBatch(GraphicsDevice);
             level= mm.buildLevel();
             box = Content.Load<Texture2D>(@"SpriteImages\border");
+            splash = Content.Load<Texture2D>(@"SpriteImages\splash");
             // TODO: use this.Content to load your game content here
         }
 
@@ -78,30 +82,40 @@ namespace Armalia
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
             MouseState ms = Mouse.GetState();
-            borderPos.X = (int)Math.Floor((float)(ms.X / 32));
-            borderPos.Y = (int)Math.Floor((float)(ms.Y / 32));
-            borderPos.X = (borderPos.X * 32) + (32 );
-            borderPos.Y = (borderPos.Y * 32) + (32 );
-            // TODO: Add your update logic here
-            KeyboardState key = Keyboard.GetState();
-            if (key.IsKeyDown(Keys.Down))
+            if (this.gs == GameState.Splash)
             {
-                level.MoveMap(0, 1);
+                if (ms.LeftButton == ButtonState.Pressed)
+                {
+                    this.gs = GameState.Exploration;
+                }
             }
-            if (key.IsKeyDown(Keys.Right))
+            else if (this.gs == GameState.Exploration)
             {
-                level.MoveMap(1, 0);
-            }
-            if (key.IsKeyDown(Keys.Left))
-            {
-                level.MoveMap(-1, 0);
-            }
-            if (key.IsKeyDown(Keys.Up))
-            {
-                level.MoveMap(0, -1);
+               
+                borderPos.X = (int)Math.Floor((float)(ms.X / 32));
+                borderPos.Y = (int)Math.Floor((float)(ms.Y / 32));
+                borderPos.X = (borderPos.X * 32) + (32);
+                borderPos.Y = (borderPos.Y * 32) + (32);
+                // TODO: Add your update logic here
+                KeyboardState key = Keyboard.GetState();
+                if (key.IsKeyDown(Keys.Down) || key.IsKeyDown(Keys.S))
+                {
+                    level.MoveMap(0, 1);
+                }
+                if (key.IsKeyDown(Keys.Right) || key.IsKeyDown(Keys.D))
+                {
+                    level.MoveMap(1, 0);
+                }
+                if (key.IsKeyDown(Keys.Left) || key.IsKeyDown(Keys.A))
+                {
+                    level.MoveMap(-1, 0);
+                }
+                if (key.IsKeyDown(Keys.Up) || key.IsKeyDown(Keys.W))
+                {
+                    level.MoveMap(0, -1);
 
+                }
             }
             base.Update(gameTime);
         }
@@ -113,19 +127,28 @@ namespace Armalia
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            level.Draw(spriteBatch);
-            spriteBatch.Draw(box,
-                borderPos,
-                 new Rectangle(0, 0, 32, 32), 
-                 Color.White, 
-                 0.0f, 
-                 Vector2.Zero, 
-                 1.0f, 
-                 SpriteEffects.None, 0.1f);
-            // TODO: Add your drawing code here
-            spriteBatch.End();
-            base.Draw(gameTime);
+            if (this.gs == GameState.Exploration)
+            {
+                spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+                level.Draw(spriteBatch);
+                spriteBatch.Draw(box,
+                    borderPos,
+                     new Rectangle(0, 0, 32, 32),
+                     Color.White,
+                     0.0f,
+                     Vector2.Zero,
+                     1.0f,
+                     SpriteEffects.None, 0.1f);
+                // TODO: Add your drawing code here
+                spriteBatch.End();
+                base.Draw(gameTime);
+            }
+            else if (this.gs == GameState.Splash)
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(splash, new Rectangle(0,0, splash.Width, splash.Height), Color.White);
+                spriteBatch.End();
+            }
         }
     }
 
@@ -134,6 +157,8 @@ namespace Armalia
         Exploration,
         Battle,
         CutScene,
-        GameOver
+        GameOver,
+        Splash
+
     }
 }
