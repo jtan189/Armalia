@@ -66,7 +66,10 @@ namespace Armalia.Mapping
                         if (reader.IsStartElement())
                         {
                             firstgid = Convert.ToInt32(reader.GetAttribute("firstgid"));
-                            tileSet = XmlReader.Create(reader.GetAttribute("source"));
+                           string src =  Path.GetFileNameWithoutExtension(reader.GetAttribute("source"));
+                          //  tileSet = XmlReader.Create(src);
+                           Console.WriteLine("ERROR " + src);
+                           tileSet =  XmlReader.Create(content.RootDirectory + "\\TileSets\\" + src + ".tsx");
                             buildTileProperties(tileSet);
                         }
                     break;
