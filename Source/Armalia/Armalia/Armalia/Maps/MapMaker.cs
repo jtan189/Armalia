@@ -11,9 +11,9 @@ using Microsoft.Xna.Framework.Media;
 using System.Text;
 using System.Xml;
 using System.IO;
-using Armalia.Spriting;
+using Armalia.Sprites;
 
-namespace Armalia.Mapping
+namespace Armalia.Maps
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
@@ -36,10 +36,11 @@ namespace Armalia.Mapping
             // TODO: Construct any child components here
         }
 
-      public Level buildLevel()
+      public GameLevel buildLevel()
         {
             int width = 0;
             int height = 0;
+            
            
             int x = 0;
             int y = 0;
@@ -114,8 +115,9 @@ namespace Armalia.Mapping
             Map[] ret = new Map[2];
             ret[0] = new Layer(width, height, image, objects);
             ret[1] = new Layer(width, height, image, tiles);
-           
-            return new Level(ret, 25, 25);
+
+            Rectangle mapBounds = image.Bounds;
+            return new GameLevel(ret, 25, 25, mapBounds);
         }
 
 

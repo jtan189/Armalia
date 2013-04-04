@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Armalia.Spriting;
+using Armalia.Sprites;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Armalia.Mapping
+namespace Armalia.Maps
 {
     public abstract class Map
     {

@@ -8,7 +8,9 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Armalia.Mapping;
+using Armalia.Maps;
+using Armalia.Characters;
+using Armalia.Sprites;
 
 namespace Armalia
 {
@@ -19,19 +21,26 @@ namespace Armalia
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        MapMaker mm;
         Texture2D box;
         Vector2 borderPos = Vector2.Zero;
-        Level level;
         Texture2D splash;
-        GameState gs;
+
+        MapMaker mapMaker;
+
+        GameLevel level;
+        GameState state;
+        Player player;
+
         public ArmaliaGame()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 800;
             Content.RootDirectory = "Content";
-            gs = GameState.Splash;
+
+            state = GameState.Splash;
+            mapMaker = new MapMaker(@"Maps\Village1\Village1.tmx", Content);
+            
         }
 
         /// <summary>
@@ -43,10 +52,7 @@ namespace Armalia
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            mm = new MapMaker(@"Maps\Village1\Village1.tmx", Content);
-           
             base.Initialize();
-
         }
 
         /// <summary>
@@ -57,10 +63,35 @@ namespace Armalia
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            level= mm.buildLevel();
+
+            level= mapMaker.buildLevel();
             box = Content.Load<Texture2D>(@"SpriteImages\border");
             splash = Content.Load<Texture2D>(@"SpriteImages\splash");
-            // TODO: use this.Content to load your game content here
+            
+            // create player
+            int playerHP = 100;
+            int playerMP = 100;
+            int playerXP = 0;
+            int playerStrength = 10;
+            int playerDefense = 10;
+
+            Texture2D playerTexture = Content.Load<Texture2D>(@"Characters\vx_chara01_b-1-1");
+            Point playerTextureFrameSize = new Point(32, 48);
+            int playerCollisionOffset = 0;
+            Point playerInitialFrame = new Point(1, 0);
+            Point playerSheetSize = new Point(3, 4);
+            Vector2 playerSpeed = new Vector2(3, 3);
+            Vector2 initialPlayerPos = new Vector2(80, 40);
+
+            AnimatedSprite playerSprite = new AnimatedSprite(
+                playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
+
+            MainCharacter playerCharacter = new MainCharacter(playerSprite, initialPlayerPos, playerHP, playerMP,
+                playerXP, playerStrength, playerDefense, playerSpeed);
+
+            player = new Player(playerCharacter);
+
+            base.LoadContent();
         }
 
         /// <summary>
@@ -79,43 +110,46 @@ namespace Armalia
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
+            // exit game if player presses back
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            MouseState ms = Mouse.GetState();
-            if (this.gs == GameState.Splash)
+
+            MouseState mouseState = Mouse.GetState();
+            if (this.state == GameState.Splash)
             {
-                if (ms.LeftButton == ButtonState.Pressed)
+                if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    this.gs = GameState.Exploration;
+                    this.state = GameState.Exploration;
                 }
             }
-            else if (this.gs == GameState.Exploration)
+            else if (this.state == GameState.Exploration)
             {
-               
-                borderPos.X = (int)Math.Floor((float)(ms.X / 32));
-                borderPos.Y = (int)Math.Floor((float)(ms.Y / 32));
+                // draw cursor border
+                borderPos.X = (int)Math.Floor((float)(mouseState.X / 32));
+                borderPos.Y = (int)Math.Floor((float)(mouseState.Y / 32));
                 borderPos.X = (borderPos.X * 32) + (32);
                 borderPos.Y = (borderPos.Y * 32) + (32);
-                // TODO: Add your update logic here
+
+                // move camera view - TODO: reimplement this within Player class
                 KeyboardState key = Keyboard.GetState();
-                if (key.IsKeyDown(Keys.Down) || key.IsKeyDown(Keys.S))
+                if (key.IsKeyDown(Keys.Down))
                 {
                     level.MoveMap(0, 1);
                 }
-                if (key.IsKeyDown(Keys.Right) || key.IsKeyDown(Keys.D))
+                if (key.IsKeyDown(Keys.Right))
                 {
                     level.MoveMap(1, 0);
                 }
-                if (key.IsKeyDown(Keys.Left) || key.IsKeyDown(Keys.A))
+                if (key.IsKeyDown(Keys.Left))
                 {
                     level.MoveMap(-1, 0);
                 }
-                if (key.IsKeyDown(Keys.Up) || key.IsKeyDown(Keys.W))
+                if (key.IsKeyDown(Keys.Up))
                 {
                     level.MoveMap(0, -1);
 
                 }
+                player.Update(gameTime, level.MapBounds);
             }
             base.Update(gameTime);
         }
@@ -127,10 +161,17 @@ namespace Armalia
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            if (this.gs == GameState.Exploration)
+            if (this.state == GameState.Exploration)
             {
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+
+                // draw level
                 level.Draw(spriteBatch);
+
+                // draw player
+                player.Draw(spriteBatch);
+
+                // draw cursor box
                 spriteBatch.Draw(box,
                     borderPos,
                      new Rectangle(0, 0, 32, 32),
@@ -138,12 +179,12 @@ namespace Armalia
                      0.0f,
                      Vector2.Zero,
                      1.0f,
-                     SpriteEffects.None, 0.1f);
-                // TODO: Add your drawing code here
+                     SpriteEffects.None, 0f);
+
                 spriteBatch.End();
                 base.Draw(gameTime);
             }
-            else if (this.gs == GameState.Splash)
+            else if (this.state == GameState.Splash)
             {
                 spriteBatch.Begin();
                 spriteBatch.Draw(splash, new Rectangle(0,0, splash.Width, splash.Height), Color.White);

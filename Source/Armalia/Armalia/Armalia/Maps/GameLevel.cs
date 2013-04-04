@@ -3,23 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
-namespace Armalia.Mapping
+// TODO: Have Map represent all of map stuff. Level contains Map. Map contain Layers (if want), rather just object with layerValue.
+namespace Armalia.Maps
 {
-  public  class Level
+    public class GameLevel
     {
         private Map[] maps;
         private int width;
         private int height;
         private int xOffset;
         private int yOffset;
-        public Level(Map[] m, int h, int w)
+        private Rectangle mapBounds;
+        public GameLevel(Map[] m, int h, int w, Rectangle mapBounds)
         {
             this.maps = m;
             this.width = w;
             this.height = h;
             this.xOffset = 0;
             this.yOffset = 0;
+            this.mapBounds = mapBounds;
+        }
+
+        public Rectangle MapBounds
+        {
+            get { return mapBounds; }
         }
 
         public void Draw(SpriteBatch sb)
@@ -28,13 +37,12 @@ namespace Armalia.Mapping
             {
                 Map m = this.maps[x];
                 m.Draw(sb, x, this.xOffset, this.yOffset, this.height, this.width);
-
             }
         }
 
         public void MoveMap(int x, int y)
         {
-            
+
             this.xOffset += x;
             this.yOffset += y;
         }

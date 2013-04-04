@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Armalia
+namespace Armalia.Sprites
 {
-    class GameLevel
+    class SpriteManager
     {
     }
 }

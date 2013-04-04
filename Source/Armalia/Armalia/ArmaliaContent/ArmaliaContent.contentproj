@@ -74,6 +74,48 @@
   <ItemGroup>
     <Folder Include="TileSets\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Characters\vx_chara01_b-0-0.png">
+      <Name>vx_chara01_b-0-0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Characters\vx_chara01_b-0-1.png">
+      <Name>vx_chara01_b-0-1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Characters\vx_chara01_b-1-0.png">
+      <Name>vx_chara01_b-1-0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Characters\vx_chara01_b-1-1.png">
+      <Name>vx_chara01_b-1-1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Characters\vx_chara01_b-2-0.png">
+      <Name>vx_chara01_b-2-0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Characters\vx_chara01_b-2-1.png">
+      <Name>vx_chara01_b-2-1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Characters\vx_chara01_b-3-0.png">
+      <Name>vx_chara01_b-3-0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Characters\vx_chara01_b-3-1.png">
+      <Name>vx_chara01_b-3-1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
