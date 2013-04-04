@@ -32,6 +32,19 @@ namespace Armalia.Maps
             get { return mapBounds; }
         }
 
+        // use this:
+        //
+        //public void Draw (
+        // Texture2D texture,
+        // Rectangle destinationRectangle,
+        // Nullable<Rectangle> sourceRectangle,
+        // Color color,
+        // float rotation,
+        // Vector2 origin,
+        // SpriteEffects effects,
+        // float layerDepth
+        //)
+
         public void Draw(SpriteBatch sb)
         {
             for (int x = 0; x < this.maps.GetLength(0); x++)

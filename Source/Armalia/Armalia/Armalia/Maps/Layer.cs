@@ -20,7 +20,7 @@ namespace Armalia.Maps
 
         }
 
-        public override void Draw(SpriteBatch sb, int zindex, int firstX, int firstY, int mapHeight, int mapWidth)
+        public override void Draw(SpriteBatch spriteBatch, int zindex, int firstX, int firstY, int mapHeight, int mapWidth)
         {
             int spX = (int)this.sourceImage.Width / tileWidth;
             int spY = (int)this.sourceImage.Height / tileHeight;
@@ -52,7 +52,7 @@ namespace Armalia.Maps
                                                         (int)os.MapPosition.Y,
                                                         tileHeight,
                                                         tileWidth);
-                        sb.Draw(this.sourceImage, curPos,
+                        spriteBatch.Draw(this.sourceImage, curPos,
                                   r,
                                   Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, (0.1f * (zindex + 7)));
                     }

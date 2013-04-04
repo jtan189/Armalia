@@ -12,8 +12,7 @@ namespace Armalia
 {
     class Player
     {
-        private Rectangle cameraView;
-        // private List<Tiles or something> uncoveredArea
+
         private MainCharacter character;
 
         public Player(MainCharacter character)
