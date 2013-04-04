@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="Village1" tilewidth="32" tileheight="32">
- <image source="Village1/Village1.png" width="2048" height="2048"/>
+ <image source="Village1.png" width="2048" height="2048"/>
  <tile id="1436">
   <properties>
    <property name="issolid" value="1"/>
