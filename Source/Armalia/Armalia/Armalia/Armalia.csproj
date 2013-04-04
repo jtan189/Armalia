@@ -119,6 +119,9 @@
     <Compile Include="Characters\NonPlayableCharacter.cs" />
     <Compile Include="Characters\Templar.cs" />
     <Compile Include="GameScreens\GameplayScreen.cs" />
+    <Compile Include="GameScreens\Screen.cs" />
+    <Compile Include="GameScreens\ScreenManager.cs" />
+    <Compile Include="GameScreens\SplashScreen.cs" />
     <Compile Include="Maps\Layer.cs" />
     <Compile Include="Maps\GameLevel.cs" />
     <Compile Include="Maps\Map.cs" />

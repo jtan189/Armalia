@@ -16,6 +16,7 @@ namespace Armalia.Maps
         private int xOffset;
         private int yOffset;
         private Rectangle mapBounds;
+
         public GameLevel(Map[] m, int h, int w, Rectangle mapBounds)
         {
             this.maps = m;
