@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework;
 
 namespace Armalia.Maps
 {
+    /// <summary>
+    /// This contains the an array of sprites and their locations
+    /// </summary>
     class Layer : Map
     {
         private ObjectSprite[,] objectMap;

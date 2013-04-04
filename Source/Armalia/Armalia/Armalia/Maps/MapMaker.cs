@@ -36,7 +36,7 @@ namespace Armalia.Maps
             // TODO: Construct any child components here
         }
 
-      public GameLevel buildLevel()
+      public static GameLevel buildLevel()
         {
             int width = 0;
             int height = 0;

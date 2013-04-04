@@ -11,6 +11,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Armalia.GameScreens
 {
+    ///<summary>
+    ///This class will be used to control what the player sees. This includes the current game level and the section of the game level's map.
+    ///</summary>
     class GameplayScreen : Screen
     {
         public static Point CAMERA_SIZE = new Point(25, 25);
