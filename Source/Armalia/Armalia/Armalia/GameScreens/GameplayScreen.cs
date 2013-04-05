@@ -93,25 +93,6 @@ namespace Armalia.GameScreens
                 borderPos.X = (borderPos.X * 32) + (32);
                 borderPos.Y = (borderPos.Y * 32) + (32);
 
-                //// move camera view - TODO: reimplement this within Player class
-                //KeyboardState key = Keyboard.GetState();
-                //if (key.IsKeyDown(Keys.Down))
-                //{
-                //    level.MoveMap(0, 1);
-                //}
-                //if (key.IsKeyDown(Keys.Right))
-                //{
-                //    level.MoveMap(1, 0);
-                //}
-                //if (key.IsKeyDown(Keys.Left))
-                //{
-                //    level.MoveMap(-1, 0);
-                //}
-                //if (key.IsKeyDown(Keys.Up))
-                //{
-                //    level.MoveMap(0, -1);
-
-                //}
                 player.Update(gameTime, new Point(1600,1600));
             }
         }

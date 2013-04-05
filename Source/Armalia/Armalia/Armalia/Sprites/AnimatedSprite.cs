@@ -13,7 +13,7 @@ namespace Armalia.Sprites
     /// </summary>
     class AnimatedSprite : Sprite
     {
-        private const int DEFAULT_MS_PER_FRAME = 150;
+        private const int DEFAULT_MS_PER_FRAME = 100;
 
         // stuff needed to draw the sprite
         protected Point currentFrame;
@@ -81,7 +81,7 @@ namespace Armalia.Sprites
             if (current <= prev)
             {
 
-                return (current <= min) ? ++current : --current;
+                return (current == min) ? ++current : --current;
             }
             else
             {

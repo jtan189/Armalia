@@ -22,46 +22,51 @@ namespace Armalia.Characters
 
         public void LevelUp() { }
 
-        public Rectangle CameraView { get { return cameraView; } }
+        public Rectangle CameraView
+        {
+            get { return cameraView; }
+            private set { cameraView = value; }
+        }
 
         public override void Move(MoveDirection direction, Point mapSize)
         {
             base.Move(direction, mapSize);
 
-            // center horizontally if not near edge
-            if (position.X > (cameraView.Width / 2) - (sprite.FrameSize.X / 2) &&
-                position.X < mapSize.X - (cameraView.Width / 2) - (sprite.FrameSize.X / 2))
-            {   
-                switch (direction)
-                {
-                    case MoveDirection.Left:
-                        cameraView.X -= (int) speed.X;
-                        //// quick fix
-                        //base.Move(MoveDirection.Right, mapSize);
-                        break;
-                    case MoveDirection.Right:
-                        //base.Move(MoveDirection.Left, mapSize);
-                        cameraView.X += (int)speed.X;
-                        break;
-                }
+            // center x coord of camera
+            if (position.X + (sprite.FrameSize.X / 2) <= (cameraView.Width / 2))
+            {
+                // center camera to left edge
+                cameraView.X = 0;
+            }
+            else if (position.X + (sprite.FrameSize.X / 2) >= mapSize.X - (cameraView.Width / 2))
+            {
+                // center camera to right edge
+                cameraView.X = mapSize.X - cameraView.Width;
+
+            }
+            else
+            {
+                // center camera x coord to player position
+                cameraView.X = (int)position.X - (cameraView.Width / 2) + (sprite.FrameSize.X / 2);
             }
 
-            // center vertically if not near edge
-            if (position.Y > (cameraView.Height / 2) - (sprite.FrameSize.Y / 2) &&
-                position.Y < mapSize.Y - (cameraView.Height / 2) - (sprite.FrameSize.Y / 2))
+            // center y cood of camera
+            if (position.Y + (sprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
             {
-                switch (direction)
-                {
-                    case MoveDirection.Up:
-                        cameraView.Y -= (int)speed.Y;
-                        //base.Move(MoveDirection.Down, mapSize);
-                        break;
-                    case MoveDirection.Down:
-                        cameraView.Y += (int)speed.Y;
-                        //base.Move(MoveDirection.Up, mapSize);
-                        break;
-                }
+                // center camera to top edge
+                cameraView.Y = 0;
             }
+            else if (position.Y + (sprite.FrameSize.Y / 2) >= mapSize.Y - (cameraView.Height / 2))
+            {
+                // center camera to bottom edge
+                cameraView.Y = mapSize.Y - cameraView.Height;
+            }
+            else
+            {
+                // center camera y coord to player position
+                cameraView.Y = (int)position.Y - (cameraView.Height / 2) + (sprite.FrameSize.Y / 2);
+            }
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
