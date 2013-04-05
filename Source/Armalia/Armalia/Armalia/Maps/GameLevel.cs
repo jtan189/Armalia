@@ -8,6 +8,9 @@ using Microsoft.Xna.Framework;
 // TODO: Have Map represent all of map stuff. Level contains Map. Map contain Layers (if want), rather just object with layerValue.
 namespace Armalia.Maps
 {
+    ///<summary>
+    ///This will be our town, dungeon, inside a house, etc. 
+    ///</summary>
     public class GameLevel
     {
         private Map[] maps;

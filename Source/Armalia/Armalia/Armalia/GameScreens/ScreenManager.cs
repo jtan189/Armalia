@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Armalia.GameScreens
 {
+     /// <summary>
+     /// This class will draw our stuff to the screen.
+     /// </summary>
     class ScreenManager : DrawableGameComponent
     {
 
