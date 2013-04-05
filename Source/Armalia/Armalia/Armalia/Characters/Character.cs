@@ -88,7 +88,7 @@ namespace Armalia.Characters
             sprite.Update(gameTime, moveDirection);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             sprite.Draw(spriteBatch, position, DEFAULT_LAYER_DEPTH);
         }

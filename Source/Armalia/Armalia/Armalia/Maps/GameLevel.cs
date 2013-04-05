@@ -19,8 +19,13 @@ namespace Armalia.Maps
         private int xOffset;
         private int yOffset;
         private Point mapSize;
+        private Texture2D mapImage;
 
-        public GameLevel(Map[] m, int h, int w, Point mapSize)
+
+        public GameLevel(Texture2D mapImage) {
+            MapImage = mapImage;
+        }
+        public GameLevel(Map[] m, int h, int w, Texture2D mapImage, Point mapSize)
         {
             this.maps = m;
             this.width = w;
@@ -28,12 +33,15 @@ namespace Armalia.Maps
             this.xOffset = 0;
             this.yOffset = 0;
             this.mapSize = mapSize;
+            MapImage = mapImage;
         }
 
         public Point MapSize
         {
             get { return mapSize; }
         }
+
+        public Texture2D MapImage { get { return mapImage; } set { mapImage = value; } }
 
         // use this:
         //
@@ -48,21 +56,24 @@ namespace Armalia.Maps
         // float layerDepth
         //)
 
-        public void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch spriteBatch, Rectangle cameraView)
         {
-            for (int x = 0; x < this.maps.GetLength(0); x++)
-            {
-                Map m = this.maps[x];
-                m.Draw(sb, x, this.xOffset, this.yOffset, this.height, this.width);
-            }
+            //for (int x = 0; x < this.maps.GetLength(0); x++)
+            //{
+            //    Map m = this.maps[x];
+            //    m.Draw(sb, x, this.xOffset, this.yOffset, this.height, this.width);
+            //}
+
+            spriteBatch.Draw(MapImage,
+            new Rectangle(0, 0, 800, 800), cameraView, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
         }
 
-        public void MoveCamera(Point offset)
-        {
+        //public void MoveCamera(Point offset)
+        //{
 
-            this.xOffset += offset.X;
-            this.yOffset += offset.Y;
-        }
+        //    this.xOffset += offset.X;
+        //    this.yOffset += offset.Y;
+        //}
 
         //public void MoveMap(int x, int y)
         //{

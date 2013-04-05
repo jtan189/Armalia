@@ -5,62 +5,72 @@ using System.Text;
 using Armalia.Sprites;
 using Microsoft.Xna.Framework;
 using Armalia.Maps;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Armalia.Characters
 {
     class MainCharacter : CombatableCharacter
     {
-        private Point cameraSize;
-        private GameLevel level;
+        private Rectangle cameraView;
 
         public MainCharacter(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
-            int expLevel, int strength, int defense, Vector2 speed, Point cameraSize, GameLevel level)
+            int expLevel, int strength, int defense, Vector2 speed, Rectangle cameraView)
             : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
         {
-            this.cameraSize = cameraSize;
-            this.level = level;
+            this.cameraView = cameraView;
         }
 
         public void LevelUp() { }
+
+        public Rectangle CameraView { get { return cameraView; } }
 
         public override void Move(MoveDirection direction, Point mapSize)
         {
             base.Move(direction, mapSize);
 
-            Point cameraOffset = new Point();
-
             // center horizontally if not near edge
-            if (position.X > (cameraSize.X / 2) - (sprite.FrameSize.X / 2) &&
-                position.X < mapSize.X - (cameraSize.X / 2) - (sprite.FrameSize.X / 2))
+            if (position.X > (cameraView.Width / 2) - (sprite.FrameSize.X / 2) &&
+                position.X < mapSize.X - (cameraView.Width / 2) - (sprite.FrameSize.X / 2))
             {   
                 switch (direction)
                 {
                     case MoveDirection.Left:
-                        cameraOffset.X -= (int) speed.X;
+                        cameraView.X -= (int) speed.X;
+                        //// quick fix
+                        //base.Move(MoveDirection.Right, mapSize);
                         break;
                     case MoveDirection.Right:
-                        cameraOffset.X += (int)speed.X;
+                        //base.Move(MoveDirection.Left, mapSize);
+                        cameraView.X += (int)speed.X;
                         break;
                 }
             }
 
             // center vertically if not near edge
-            if (position.Y > (cameraSize.Y / 2) - (sprite.FrameSize.Y / 2) &&
-                position.Y < mapSize.Y - (cameraSize.Y / 2) - (sprite.FrameSize.Y / 2))
+            if (position.Y > (cameraView.Height / 2) - (sprite.FrameSize.Y / 2) &&
+                position.Y < mapSize.Y - (cameraView.Height / 2) - (sprite.FrameSize.Y / 2))
             {
                 switch (direction)
                 {
                     case MoveDirection.Up:
-                        cameraOffset.Y -= (int)speed.Y;
+                        cameraView.Y -= (int)speed.Y;
+                        //base.Move(MoveDirection.Down, mapSize);
                         break;
                     case MoveDirection.Down:
-                        cameraOffset.Y += (int)speed.Y;
+                        cameraView.Y += (int)speed.Y;
+                        //base.Move(MoveDirection.Up, mapSize);
                         break;
                 }
             }
+        }
 
-            // NOT WORKING - problem mapping drawing 32x32 tiles to continuous movement
-            //level.MoveCamera(cameraOffset);
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            int xOffset = (int)position.X - CameraView.X;
+            int yOffset = (int)position.Y - CameraView.Y;
+            Vector2 drawPosition = new Vector2(xOffset, yOffset);
+            // normalize position relative to camera view
+            sprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
         }
 
         enum StatusEffect

@@ -24,7 +24,7 @@ namespace Armalia.GameScreens
         private MapMaker mapMaker;
         private ScreenManager manager;
 
-        
+
         // private List<Tiles or something> uncoveredArea
 
         Texture2D splash;
@@ -35,14 +35,14 @@ namespace Armalia.GameScreens
         {
             this.game = game;
             this.manager = manager;
-            mapMaker = new MapMaker(@"Maps\Village1\Village1.tmx", game.Content);
-            cameraSize = new Point(25 * MapMaker.TILE_WIDTH, 25 * MapMaker.TILE_HEIGHT);
-            
+            //mapMaker = new MapMaker(@"Maps\Village1\Village1.tmx", game.Content);
+            //cameraSize = new Point(25 * MapMaker.TILE_WIDTH, 25 * MapMaker.TILE_HEIGHT);
+
         }
 
         public void Load()
         {
-            level = mapMaker.buildLevel();
+            level = new GameLevel(game.Content.Load<Texture2D>(@"Maps\Village1\Village1"));
             box = game.Content.Load<Texture2D>(@"SpriteImages\border");
             splash = game.Content.Load<Texture2D>(@"SpriteImages\splash");
 
@@ -53,19 +53,20 @@ namespace Armalia.GameScreens
             int playerStrength = 10;
             int playerDefense = 10;
 
+            Rectangle cameraView = new Rectangle(0, 0, 800, 800);
             Texture2D playerTexture = game.Content.Load<Texture2D>(@"Characters\vx_chara01_b-1-1");
             Point playerTextureFrameSize = new Point(32, 48);
             int playerCollisionOffset = 0;
             Point playerInitialFrame = new Point(1, 0);
             Point playerSheetSize = new Point(3, 4);
-            Vector2 playerSpeed = new Vector2(2, 2);
-            Vector2 initialPlayerPos = new Vector2(80, 40);
+            Vector2 playerSpeed = new Vector2(2, 2); // 2,2
+            Vector2 initialPlayerPos = new Vector2(80, 50); // 270, 60 for straight rip
 
             AnimatedSprite playerSprite = new AnimatedSprite(
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
 
             MainCharacter playerCharacter = new MainCharacter(playerSprite, initialPlayerPos, playerHP, playerMP,
-                playerXP, playerStrength, playerDefense, playerSpeed, cameraSize, level);
+                playerXP, playerStrength, playerDefense, playerSpeed, cameraView);
 
             player = new Player(playerCharacter);
         }
@@ -111,7 +112,7 @@ namespace Armalia.GameScreens
                 //    level.MoveMap(0, -1);
 
                 //}
-                player.Update(gameTime, level.MapSize);
+                player.Update(gameTime, new Point(1600,1600));
             }
         }
 
@@ -123,7 +124,7 @@ namespace Armalia.GameScreens
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
                 // draw level
-                level.Draw(spriteBatch);
+                level.Draw(spriteBatch, player.CameraView);
 
                 // draw player
                 player.Draw(spriteBatch);

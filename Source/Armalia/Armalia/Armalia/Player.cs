@@ -39,6 +39,8 @@ namespace Armalia
             }
         }
 
+        public Rectangle CameraView { get { return character.CameraView; } }
+
         public void Update(GameTime gameTime, Point mapSize)
         {
             character.Update(gameTime, KeyInputDirection, mapSize);
