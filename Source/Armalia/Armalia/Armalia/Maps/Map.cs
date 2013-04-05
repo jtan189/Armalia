@@ -36,7 +36,7 @@ namespace Armalia.Maps
             this.sourceImage = img;
         }
 
-        public abstract void Draw(SpriteBatch spriteBatch, Nullable<Rectangle> cameraRectangle);
+        //public abstract void Draw(SpriteBatch spriteBatch, Nullable<Rectangle> cameraRectangle);
 
         public abstract void Draw(SpriteBatch sb, int zindex, int firstX, int firstY, int mapHeight, int mapWidth);
 

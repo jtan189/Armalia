@@ -18,21 +18,21 @@ namespace Armalia.Maps
         private int height;
         private int xOffset;
         private int yOffset;
-        private Rectangle mapBounds;
+        private Point mapSize;
 
-        public GameLevel(Map[] m, int h, int w, Rectangle mapBounds)
+        public GameLevel(Map[] m, int h, int w, Point mapSize)
         {
             this.maps = m;
             this.width = w;
             this.height = h;
             this.xOffset = 0;
             this.yOffset = 0;
-            this.mapBounds = mapBounds;
+            this.mapSize = mapSize;
         }
 
-        public Rectangle MapBounds
+        public Point MapSize
         {
-            get { return mapBounds; }
+            get { return mapSize; }
         }
 
         // use this:
@@ -57,12 +57,19 @@ namespace Armalia.Maps
             }
         }
 
-        public void MoveMap(int x, int y)
+        public void MoveCamera(Point offset)
         {
 
-            this.xOffset += x;
-            this.yOffset += y;
+            this.xOffset += offset.X;
+            this.yOffset += offset.Y;
         }
+
+        //public void MoveMap(int x, int y)
+        //{
+
+        //    this.xOffset += x;
+        //    this.yOffset += y;
+        //}
 
     }
 }

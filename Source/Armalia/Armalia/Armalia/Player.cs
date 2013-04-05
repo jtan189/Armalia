@@ -39,9 +39,9 @@ namespace Armalia
             }
         }
 
-        public void Update(GameTime gameTime, Rectangle mapBounds)
+        public void Update(GameTime gameTime, Point mapSize)
         {
-            character.Update(gameTime, KeyInputDirection, mapBounds);
+            character.Update(gameTime, KeyInputDirection, mapSize);
         }
 
         public void Draw(SpriteBatch spriteBatch)

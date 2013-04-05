@@ -21,14 +21,15 @@ namespace Armalia.Maps
     public class MapMaker 
     {
         private XmlReader reader;
-        private const int tileHeight = 32;
-        private const int tileWidth = 32;
+        public const int TILE_HEIGHT = 32;
+        public const int TILE_WIDTH = 32;
         private Dictionary<int, bool> solidTiles = new Dictionary<int, bool>();
         private Texture2D image;
         private ContentManager content;
         ObjectSprite[,] tiles = new ObjectSprite[0, 0];
         ObjectSprite[,] objects = new ObjectSprite[0, 0];
         int firstgid = 0;
+
         public MapMaker(String xmlFile, ContentManager cm)
         {
             this.reader = XmlReader.Create(cm.RootDirectory + "\\" + xmlFile);
@@ -89,23 +90,23 @@ namespace Armalia.Maps
                         }
                         // new Rectangle((int)(gid % spX) * tileHeight, (int)(gid / spX) * tileWidth, tileHeight, tileWidth);
                         int gid = Convert.ToInt32(reader.GetAttribute("gid") );
-                        int spX = (int)image.Width / tileWidth;
-                        int spY = (int)image.Height / tileHeight;
-                        int xpos = ((gid - 1) % spX) * tileHeight;
-                        int ypos = ((gid - 1) / spY) * tileWidth;
+                        int spX = (int)image.Width / TILE_WIDTH;
+                        int spY = (int)image.Height / TILE_HEIGHT;
+                        int xpos = ((gid - 1) % spX) * TILE_HEIGHT;
+                        int ypos = ((gid - 1) / spY) * TILE_WIDTH;
                         bool isSolid = false;
                         tiles[x, y] = new ObjectSprite(new Vector2(xpos, ypos), isSolid);
                         x++;
                     break;
 
                      case "object":
-                       int xindex = Convert.ToInt32(reader.GetAttribute("x") ) / tileWidth;
-                       int yindex = Convert.ToInt32(reader.GetAttribute("y") ) / tileHeight;
+                       int xindex = Convert.ToInt32(reader.GetAttribute("x") ) / TILE_WIDTH;
+                       int yindex = Convert.ToInt32(reader.GetAttribute("y") ) / TILE_HEIGHT;
                         gid =  Convert.ToInt32(reader.GetAttribute("gid") );
-                        spX = (int)image.Width / tileWidth;
-                        spY = (int)image.Height / tileHeight;
-                        xpos = ((gid - 1) % spX) * tileHeight;
-                        ypos = ((gid - 1) / spY) * tileWidth;
+                        spX = (int)image.Width / TILE_WIDTH;
+                        spY = (int)image.Height / TILE_HEIGHT;
+                        xpos = ((gid - 1) % spX) * TILE_HEIGHT;
+                        ypos = ((gid - 1) / spY) * TILE_WIDTH;
                         isSolid = true;
                         yindex--;
                         objects[xindex, yindex] = new ObjectSprite(new Vector2(xpos, ypos), isSolid);
@@ -116,8 +117,7 @@ namespace Armalia.Maps
             ret[0] = new Layer(width, height, image, objects);
             ret[1] = new Layer(width, height, image, tiles);
 
-            Rectangle mapBounds = image.Bounds;
-            return new GameLevel(ret, 25, 25, mapBounds);
+            return new GameLevel(ret, 25, 25, new Point(image.Width, image.Height));
         }
 
 

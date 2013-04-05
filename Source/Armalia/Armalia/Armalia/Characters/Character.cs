@@ -12,7 +12,7 @@ namespace Armalia.Characters
     {
         public const float DEFAULT_LAYER_DEPTH = 0.1F;
 
-        private AnimatedSprite sprite;
+        protected AnimatedSprite sprite;
         private int numCoins;
 
         // movement data
@@ -30,7 +30,7 @@ namespace Armalia.Characters
         }
 
         // validate here - make sure not out of bounds or collision
-        public void Move(MoveDirection direction, Rectangle mapBounds)
+        public virtual void Move(MoveDirection direction, Point mapSize)
         {
             if (direction != MoveDirection.None)
             {
@@ -56,8 +56,8 @@ namespace Armalia.Characters
                 // check if movement would take character out of bounds
                 bool outOfBounds = false;
                 if ((movedPosition.X < 0) || (movedPosition.Y < 0) ||
-                    (movedPosition.X > mapBounds.Width - sprite.FrameSize.X) ||
-                    (movedPosition.Y > mapBounds.Height - sprite.FrameSize.Y))
+                    (movedPosition.X > mapSize.X- sprite.FrameSize.X) ||
+                    (movedPosition.Y > mapSize.Y - sprite.FrameSize.Y))
                 {
                     outOfBounds = true;
                 }
@@ -81,10 +81,10 @@ namespace Armalia.Characters
             None = -1
         }
 
-        public virtual void Update(GameTime gameTime, MoveDirection moveDirection, Rectangle mapBounds)
+        public virtual void Update(GameTime gameTime, MoveDirection moveDirection, Point mapSize)
         {
 
-            Move(moveDirection, mapBounds);
+            Move(moveDirection, mapSize);
             sprite.Update(gameTime, moveDirection);
         }
 

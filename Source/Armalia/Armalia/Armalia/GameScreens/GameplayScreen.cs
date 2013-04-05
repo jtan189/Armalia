@@ -16,7 +16,7 @@ namespace Armalia.GameScreens
     ///</summary>
     class GameplayScreen : Screen
     {
-        public static Point CAMERA_SIZE = new Point(25, 25);
+        private Point cameraSize;
 
         private Player player;
         private GameLevel level;
@@ -24,7 +24,7 @@ namespace Armalia.GameScreens
         private MapMaker mapMaker;
         private ScreenManager manager;
 
-        private Rectangle playerCamera;
+        
         // private List<Tiles or something> uncoveredArea
 
         Texture2D splash;
@@ -36,7 +36,8 @@ namespace Armalia.GameScreens
             this.game = game;
             this.manager = manager;
             mapMaker = new MapMaker(@"Maps\Village1\Village1.tmx", game.Content);
-            playerCamera = new Rectangle(0, 0, CAMERA_SIZE.X, CAMERA_SIZE.Y);
+            cameraSize = new Point(25 * MapMaker.TILE_WIDTH, 25 * MapMaker.TILE_HEIGHT);
+            
         }
 
         public void Load()
@@ -64,7 +65,7 @@ namespace Armalia.GameScreens
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
 
             MainCharacter playerCharacter = new MainCharacter(playerSprite, initialPlayerPos, playerHP, playerMP,
-                playerXP, playerStrength, playerDefense, playerSpeed);
+                playerXP, playerStrength, playerDefense, playerSpeed, cameraSize, level);
 
             player = new Player(playerCharacter);
         }
@@ -91,26 +92,26 @@ namespace Armalia.GameScreens
                 borderPos.X = (borderPos.X * 32) + (32);
                 borderPos.Y = (borderPos.Y * 32) + (32);
 
-                // move camera view - TODO: reimplement this within Player class
-                KeyboardState key = Keyboard.GetState();
-                if (key.IsKeyDown(Keys.Down))
-                {
-                    level.MoveMap(0, 1);
-                }
-                if (key.IsKeyDown(Keys.Right))
-                {
-                    level.MoveMap(1, 0);
-                }
-                if (key.IsKeyDown(Keys.Left))
-                {
-                    level.MoveMap(-1, 0);
-                }
-                if (key.IsKeyDown(Keys.Up))
-                {
-                    level.MoveMap(0, -1);
+                //// move camera view - TODO: reimplement this within Player class
+                //KeyboardState key = Keyboard.GetState();
+                //if (key.IsKeyDown(Keys.Down))
+                //{
+                //    level.MoveMap(0, 1);
+                //}
+                //if (key.IsKeyDown(Keys.Right))
+                //{
+                //    level.MoveMap(1, 0);
+                //}
+                //if (key.IsKeyDown(Keys.Left))
+                //{
+                //    level.MoveMap(-1, 0);
+                //}
+                //if (key.IsKeyDown(Keys.Up))
+                //{
+                //    level.MoveMap(0, -1);
 
-                }
-                player.Update(gameTime, level.MapBounds);
+                //}
+                player.Update(gameTime, level.MapSize);
             }
         }
 

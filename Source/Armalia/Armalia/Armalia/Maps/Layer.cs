@@ -23,18 +23,18 @@ namespace Armalia.Maps
 
         }
 
-        public override void Draw(SpriteBatch spriteBatch, int zindex, int firstX, int firstY, int mapHeight, int mapWidth)
+        public override void Draw(SpriteBatch spriteBatch, int zIndex, int firstX, int firstY, int height, int width)
         {
             int spX = (int)this.sourceImage.Width / tileWidth;
             int spY = (int)this.sourceImage.Height / tileHeight;
             Vector2 curPos = Vector2.Zero;
-            if ((firstX + mapWidth) > this.objectMap.GetLength(0))
+            if ((firstX + width) > this.objectMap.GetLength(0))
             {
-                firstX = this.objectMap.GetLength(0) - mapWidth;
+                firstX = this.objectMap.GetLength(0) - width;
             }
-            if ((firstY + mapHeight) > this.objectMap.GetLength(1))
+            if ((firstY + height) > this.objectMap.GetLength(1))
             {
-                firstY = this.objectMap.GetLength(1) - mapHeight;
+                firstY = this.objectMap.GetLength(1) - height;
             }
             if (firstY < 0)
             {
@@ -44,9 +44,9 @@ namespace Armalia.Maps
             {
                 firstX = 0;
             }
-            for (int x = (0 + firstX); x < (firstX + mapWidth); x++)
+            for (int x = (0 + firstX); x < (firstX + width); x++)
             {
-                for (int y = (0 + firstY); y < (firstY + mapHeight); y++)
+                for (int y = (0 + firstY); y < (firstY + height); y++)
                 {
                     ObjectSprite os = objectMap[x, y];
                     if (os != null)
@@ -57,7 +57,7 @@ namespace Armalia.Maps
                                                         tileWidth);
                         spriteBatch.Draw(this.sourceImage, curPos,
                                   r,
-                                  Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, (0.1f * (zindex + 7)));
+                                  Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, (0.1f * (zIndex + 7)));
                     }
                     curPos.Y += tileWidth;
                 }
