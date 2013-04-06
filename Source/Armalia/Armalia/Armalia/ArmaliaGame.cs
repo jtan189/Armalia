@@ -16,7 +16,7 @@ using Armalia.GameScreens;
 namespace Armalia
 {
     /// <summary>
-    /// This is the main type for your game
+    /// This is the main type for your game.
     /// </summary>
     public class ArmaliaGame : Microsoft.Xna.Framework.Game
     {
