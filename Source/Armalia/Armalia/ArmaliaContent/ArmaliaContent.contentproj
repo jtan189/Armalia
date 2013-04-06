@@ -51,6 +51,11 @@
       <Name>Village1</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="SpriteFonts\MainCharacterStats.spritefont">
+      <Name>MainCharacterStats</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Maps\Village1\Village1.png">
@@ -67,7 +72,13 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Sidebar\sidebar_bg.png">
+      <Name>sidebar_bg</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\vx_chara01_b-0-0.png">
       <Name>vx_chara01_b-0-0</Name>

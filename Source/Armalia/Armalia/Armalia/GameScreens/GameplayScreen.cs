@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Armalia.Sprites;
 using Armalia.Characters;
+using Armalia.Sidebar;
 using Microsoft.Xna.Framework.Input;
 
 namespace Armalia.GameScreens
@@ -16,17 +17,15 @@ namespace Armalia.GameScreens
     ///</summary>
     class GameplayScreen : Screen
     {
-        public static readonly Point DEFAULT_MAP_WINDOW_SIZE = new Point(1280, 720); // (prev: 800, 800)
-        public static readonly Point DEFAULT_CAMERA_WINDOW_SIZE = new Point(1280, 720); // 853 ~ (2/3)*1280; (prev: 800, 800 )
-        // define DEFAULT_HUD_WINDOW_SIZE
-
-        private Point cameraSize;
+        public static readonly Point DEFAULT_MAP_WINDOW_SIZE = new Point(1000, 720); // (prev: 800, 800)
+        public static readonly Point DEFAULT_CAMERA_WINDOW_SIZE = new Point(1000, 720); // 853 ~ (2/3)*1280; (prev: 800, 800 )
 
         private Player player;
         private GameLevel level;
         private ArmaliaGame game;
         private MapMaker mapMaker;
         private ScreenManager manager;
+        private PlayerSidebar sidebar;
 
         private Texture2D splash;
         private Texture2D box;
@@ -81,6 +80,13 @@ namespace Armalia.GameScreens
                 playerXP, playerStrength, playerDefense, playerSpeed, cameraView);
 
             player = new Player(playerCharacter);
+
+            // load on-screen menu
+            // use RolePlayingGameWindows HUD as example
+            Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
+                game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
+            sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter);
+            sidebar.Load();
         }
 
         public void Update(GameTime gameTime)
@@ -112,6 +118,9 @@ namespace Armalia.GameScreens
             if (manager.CurrentState == GameState.Exploration)
             {
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+
+                // draw sidebar
+                sidebar.Draw(gameTime, spriteBatch);
 
                 // draw level
                 level.Draw(spriteBatch, mapWindow, player.CameraView);

@@ -21,6 +21,8 @@ namespace Armalia
             this.character = character;
         }
 
+        public MainCharacter PlayerCharacter { get { return character; } }
+
         public Character.MoveDirection KeyInputDirection
         {
             get

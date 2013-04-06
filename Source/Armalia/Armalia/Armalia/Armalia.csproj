@@ -129,6 +129,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ArmaliaGame.cs" />
+    <Compile Include="Sidebar\PlayerSidebar.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />
     <Compile Include="Sprites\ObjectSprite.cs" />
     <Compile Include="Sprites\Sprite.cs" />
