@@ -40,7 +40,7 @@ namespace Armalia.Sprites
             msPerFrame = DEFAULT_MS_PER_FRAME;
         }
 
-        public void Update(GameTime gameTime, Character.MoveDirection moveDirection)
+        public void Update(GameTime gameTime, Character.MoveDirection moveDirection, bool hasCollided)
         {
             // update frame if time to do so, based on framerate
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
@@ -53,7 +53,7 @@ namespace Armalia.Sprites
                 Point tempCurrentFrame = currentFrame;
                 // change to next frame based on previous frame and movement direction
                 int currentDirection = currentFrame.Y;
-                if (currentDirection == (int)moveDirection)
+                if (currentDirection == (int)moveDirection && !hasCollided)
                 {
                     currentFrame.X = GetOscillatedValue(currentFrame.X, prevFrame.X, 0, sheetSize.X - 1);
                 }

@@ -16,6 +16,10 @@ namespace Armalia.GameScreens
     ///</summary>
     class GameplayScreen : Screen
     {
+        public static readonly Point DEFAULT_MAP_WINDOW_SIZE = new Point(800, 800);
+        public static readonly Point DEFAULT_CAMERA_WINDOW_SIZE = new Point(800, 800);
+        // define DEFAULT_HUD_WINDOW_SIZE
+
         private Point cameraSize;
 
         private Player player;
@@ -24,27 +28,35 @@ namespace Armalia.GameScreens
         private MapMaker mapMaker;
         private ScreenManager manager;
 
-
+        private Texture2D splash;
+        private Texture2D box;
+        private Vector2 borderPos = Vector2.Zero;
+        
+        // screen components
+        private Rectangle mapWindow;
+        // private Rectangle hudWindow
         // private List<Tiles or something> uncoveredArea
-
-        Texture2D splash;
-        Texture2D box;
-        Vector2 borderPos = Vector2.Zero;
 
         public GameplayScreen(ArmaliaGame game, ScreenManager manager)
         {
             this.game = game;
             this.manager = manager;
-            //mapMaker = new MapMaker(@"Maps\Village1\Village1.tmx", game.Content);
-            //cameraSize = new Point(25 * MapMaker.TILE_WIDTH, 25 * MapMaker.TILE_HEIGHT);
-
+            mapWindow = new Rectangle(0, 0, DEFAULT_MAP_WINDOW_SIZE.X, DEFAULT_MAP_WINDOW_SIZE.Y);
+            mapMaker = new MapMaker(game);
         }
 
         public void Load()
         {
-            level = new GameLevel(game.Content.Load<Texture2D>(@"Maps\Village1\Village1"));
+            // TODO: parse all this stuff based on XML config files in DataManager
+
+            // load stuff for cursor thing
             box = game.Content.Load<Texture2D>(@"SpriteImages\border");
             splash = game.Content.Load<Texture2D>(@"SpriteImages\splash");
+
+            // create level
+            String villageMapFilename = @"Maps\Village1\Village1";
+            Map villageMap = mapMaker.BuildLevel(villageMapFilename);
+            level = new GameLevel(villageMap);
 
             // create player
             int playerHP = 100;
@@ -53,14 +65,14 @@ namespace Armalia.GameScreens
             int playerStrength = 10;
             int playerDefense = 10;
 
-            Rectangle cameraView = new Rectangle(0, 0, 800, 800);
+            Rectangle cameraView = new Rectangle(0, 0, DEFAULT_CAMERA_WINDOW_SIZE.X, DEFAULT_CAMERA_WINDOW_SIZE.Y);
             Texture2D playerTexture = game.Content.Load<Texture2D>(@"Characters\vx_chara01_b-1-1");
             Point playerTextureFrameSize = new Point(32, 48);
             int playerCollisionOffset = 0;
             Point playerInitialFrame = new Point(1, 0);
             Point playerSheetSize = new Point(3, 4);
-            Vector2 playerSpeed = new Vector2(2, 2); // 2,2
-            Vector2 initialPlayerPos = new Vector2(80, 50); // 270, 60 for straight rip
+            Vector2 playerSpeed = new Vector2(2, 2);
+            Vector2 initialPlayerPos = new Vector2(80, 50);
 
             AnimatedSprite playerSprite = new AnimatedSprite(
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
@@ -73,10 +85,7 @@ namespace Armalia.GameScreens
 
         public void Update(GameTime gameTime)
         {
-            // exit game if player presses back
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                game.Exit();
-
+            // TODO: move handling of state to ScreenManager
             MouseState mouseState = Mouse.GetState();
             if (manager.CurrentState == GameState.Splash)
             {
@@ -93,7 +102,7 @@ namespace Armalia.GameScreens
                 borderPos.X = (borderPos.X * 32) + (32);
                 borderPos.Y = (borderPos.Y * 32) + (32);
 
-                player.Update(gameTime, new Point(1600,1600));
+                player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
             }
         }
 
@@ -105,7 +114,7 @@ namespace Armalia.GameScreens
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
                 // draw level
-                level.Draw(spriteBatch, player.CameraView);
+                level.Draw(spriteBatch, mapWindow, player.CameraView);
 
                 // draw player
                 player.Draw(spriteBatch);

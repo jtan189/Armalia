@@ -5,6 +5,7 @@ using System.Text;
 using Armalia.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Armalia.Maps;
 
 namespace Armalia.Characters
 {
@@ -30,8 +31,10 @@ namespace Armalia.Characters
         }
 
         // validate here - make sure not out of bounds or collision
-        public virtual void Move(MoveDirection direction, Point mapSize)
+        public virtual bool Move(MoveDirection direction, Map currentMap, out bool hasCollided)
         {
+            bool hasMoved = false;
+            hasCollided = false;
             if (direction != MoveDirection.None)
             {
                 Vector2 movedPosition = position;
@@ -56,19 +59,27 @@ namespace Armalia.Characters
                 // check if movement would take character out of bounds
                 bool outOfBounds = false;
                 if ((movedPosition.X < 0) || (movedPosition.Y < 0) ||
-                    (movedPosition.X > mapSize.X- sprite.FrameSize.X) ||
-                    (movedPosition.Y > mapSize.Y - sprite.FrameSize.Y))
+                    (movedPosition.X > currentMap.Size.X - sprite.FrameSize.X) ||
+                    (movedPosition.Y > currentMap.Size.Y - sprite.FrameSize.Y))
                 {
                     outOfBounds = true;
                 }
 
-                if (!outOfBounds)
+                // TODO: use better collision offsets
+                // check if movement would result in boundary collision
+                Rectangle movedRectangle = new Rectangle((int)movedPosition.X, (int)movedPosition.Y, sprite.FrameSize.X, sprite.FrameSize.Y);
+                bool isCollision = currentMap.CollidesWithBoundary(movedRectangle);
+                hasCollided = isCollision; // needed to avoid abruptly stopping animation when collision occurs
+
+                if (!(outOfBounds || isCollision))
                 {
                     position = movedPosition;
-                    // Console.WriteLine("Moved to {0}, {1}", position.X, position.Y);
+                    hasMoved = true;
                 }
 
             }
+
+            return hasMoved;
 
         }
 
@@ -81,11 +92,12 @@ namespace Armalia.Characters
             None = -1
         }
 
-        public virtual void Update(GameTime gameTime, MoveDirection moveDirection, Point mapSize)
+        public virtual void Update(GameTime gameTime, MoveDirection moveDirection, Map currentMap)
         {
+            bool hasCollided;
+            bool hasMoved = Move(moveDirection, currentMap, out hasCollided);
 
-            Move(moveDirection, mapSize);
-            sprite.Update(gameTime, moveDirection);
+            sprite.Update(gameTime, moveDirection, hasCollided);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

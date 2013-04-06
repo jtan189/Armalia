@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Armalia.Characters;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Armalia.Maps;
 
 namespace Armalia
 {
@@ -41,9 +42,9 @@ namespace Armalia
 
         public Rectangle CameraView { get { return character.CameraView; } }
 
-        public void Update(GameTime gameTime, Point mapSize)
+        public void Update(GameTime gameTime, Map currentMap)
         {
-            character.Update(gameTime, KeyInputDirection, mapSize);
+            character.Update(gameTime, KeyInputDirection, currentMap);
         }
 
         public void Draw(SpriteBatch spriteBatch)

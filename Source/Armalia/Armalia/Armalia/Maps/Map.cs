@@ -8,37 +8,35 @@ using Microsoft.Xna.Framework;
 
 namespace Armalia.Maps
 {
-    public abstract class Map
+    public class Map
     {
-        protected int width;
-        protected int height;
+        public const float MAY_LAYER_VALUE = 1f;
 
-        protected Texture2D sourceImage;
-        protected Rectangle mapWindow;
+        private Texture2D mapImage;
+        private List<Rectangle> boundaries;
 
-        // use this:
-        //
-        //public void Draw (
-        // Texture2D texture,
-        // Rectangle destinationRectangle,
-        // Nullable<Rectangle> sourceRectangle,
-        // Color color,
-        // float rotation,
-        // Vector2 origin,
-        // SpriteEffects effects,
-        // float layerDepth
-        //)
-
-        public Map(int w, int h, Texture2D img)
+        public Map(Texture2D mapImage, List<Rectangle> boundaries)
         {
-            this.width = w;
-            this.height = h;
-            this.sourceImage = img;
+            this.mapImage = mapImage;
+            this.boundaries = boundaries;
         }
 
-        //public abstract void Draw(SpriteBatch spriteBatch, Nullable<Rectangle> cameraRectangle);
+        public Point Size { get { return new Point(mapImage.Width, mapImage.Height); } }
 
-        //public abstract void Draw(SpriteBatch sb, int zindex, int firstX, int firstY, int mapHeight, int mapWidth);
+        public void Draw(SpriteBatch spriteBatch, Rectangle mapWindow, Rectangle cameraView)
+        {
+            spriteBatch.Draw(mapImage, mapWindow, cameraView, Color.White, 0f, Vector2.Zero, SpriteEffects.None, MAY_LAYER_VALUE);
+        }
+
+        public bool CollidesWithBoundary(Rectangle characterRect)
+        {
+            foreach (Rectangle boundary in boundaries) {
+                if (boundary.Intersects(characterRect)) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
     }
 }

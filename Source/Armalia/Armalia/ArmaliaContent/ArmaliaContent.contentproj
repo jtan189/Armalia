@@ -51,10 +51,6 @@
       <Name>Village1</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Maps\Village1\Village1.tsx">
-      <Name>Village1</Name>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Maps\Village1\Village1.png">
@@ -71,9 +67,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TileSets\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="Characters\vx_chara01_b-0-0.png">
       <Name>vx_chara01_b-0-0</Name>

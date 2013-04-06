@@ -122,7 +122,6 @@
     <Compile Include="GameScreens\Screen.cs" />
     <Compile Include="GameScreens\ScreenManager.cs" />
     <Compile Include="GameScreens\SplashScreen.cs" />
-    <Compile Include="Maps\Layer.cs" />
     <Compile Include="Maps\GameLevel.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapMaker.cs" />

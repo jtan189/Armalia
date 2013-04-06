@@ -28,45 +28,48 @@ namespace Armalia.Characters
             private set { cameraView = value; }
         }
 
-        public override void Move(MoveDirection direction, Point mapSize)
+        public override bool Move(MoveDirection direction, Map currentMap, out bool hasCollided)
         {
-            base.Move(direction, mapSize);
+            bool hasMoved = base.Move(direction, currentMap, out hasCollided);
+            if (hasMoved)
+            {
 
-            // center x coord of camera
-            if (position.X + (sprite.FrameSize.X / 2) <= (cameraView.Width / 2))
-            {
-                // center camera to left edge
-                cameraView.X = 0;
-            }
-            else if (position.X + (sprite.FrameSize.X / 2) >= mapSize.X - (cameraView.Width / 2))
-            {
-                // center camera to right edge
-                cameraView.X = mapSize.X - cameraView.Width;
+                // center x coord of camera
+                if (position.X + (sprite.FrameSize.X / 2) <= (cameraView.Width / 2))
+                {
+                    // center camera to left edge
+                    cameraView.X = 0;
+                }
+                else if (position.X + (sprite.FrameSize.X / 2) >= currentMap.Size.X - (cameraView.Width / 2))
+                {
+                    // center camera to right edge
+                    cameraView.X = currentMap.Size.X - cameraView.Width;
 
-            }
-            else
-            {
-                // center camera x coord to player position
-                cameraView.X = (int)position.X - (cameraView.Width / 2) + (sprite.FrameSize.X / 2);
-            }
+                }
+                else
+                {
+                    // center camera x coord to player position
+                    cameraView.X = (int)position.X - (cameraView.Width / 2) + (sprite.FrameSize.X / 2);
+                }
 
-            // center y cood of camera
-            if (position.Y + (sprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
-            {
-                // center camera to top edge
-                cameraView.Y = 0;
+                // center y cood of camera
+                if (position.Y + (sprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
+                {
+                    // center camera to top edge
+                    cameraView.Y = 0;
+                }
+                else if (position.Y + (sprite.FrameSize.Y / 2) >= currentMap.Size.Y - (cameraView.Height / 2))
+                {
+                    // center camera to bottom edge
+                    cameraView.Y = currentMap.Size.Y - cameraView.Height;
+                }
+                else
+                {
+                    // center camera y coord to player position
+                    cameraView.Y = (int)position.Y - (cameraView.Height / 2) + (sprite.FrameSize.Y / 2);
+                }
             }
-            else if (position.Y + (sprite.FrameSize.Y / 2) >= mapSize.Y - (cameraView.Height / 2))
-            {
-                // center camera to bottom edge
-                cameraView.Y = mapSize.Y - cameraView.Height;
-            }
-            else
-            {
-                // center camera y coord to player position
-                cameraView.Y = (int)position.Y - (cameraView.Height / 2) + (sprite.FrameSize.Y / 2);
-            }
-
+            return hasMoved;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
