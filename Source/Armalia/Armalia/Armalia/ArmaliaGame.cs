@@ -28,8 +28,8 @@ namespace Armalia
         {
             graphics = new GraphicsDeviceManager(this);
             //graphics.IsFullScreen = true;
-            graphics.PreferredBackBufferWidth = 1280; // 800
-            graphics.PreferredBackBufferHeight = 720; // 800
+            graphics.PreferredBackBufferWidth = 1280; // was 800
+            graphics.PreferredBackBufferHeight = 720; // was 800
             Content.RootDirectory = "Content";
             
         }
