@@ -16,8 +16,8 @@ namespace Armalia.GameScreens
     ///</summary>
     class GameplayScreen : Screen
     {
-        public static readonly Point DEFAULT_MAP_WINDOW_SIZE = new Point(800, 800);
-        public static readonly Point DEFAULT_CAMERA_WINDOW_SIZE = new Point(800, 800);
+        public static readonly Point DEFAULT_MAP_WINDOW_SIZE = new Point(1280, 720); // (prev: 800, 800)
+        public static readonly Point DEFAULT_CAMERA_WINDOW_SIZE = new Point(1280, 720); // 853 ~ (2/3)*1280; (prev: 800, 800 )
         // define DEFAULT_HUD_WINDOW_SIZE
 
         private Point cameraSize;
