@@ -25,10 +25,17 @@ namespace Armalia.Maps
     public class MapMaker 
     {
         private ArmaliaGame game;
+        private Game gm;
 
         public MapMaker(ArmaliaGame game)
         {
             this.game = game;
+        }
+
+        public MapMaker(Game gm)
+        {
+            // TODO: Complete member initialization
+            this.gm = gm;
         }
 
         public Map BuildLevel(String mapFilename)

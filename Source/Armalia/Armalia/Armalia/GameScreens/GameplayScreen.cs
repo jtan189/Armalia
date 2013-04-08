@@ -9,6 +9,7 @@ using Armalia.Sprites;
 using Armalia.Characters;
 using Armalia.Sidebar;
 using Microsoft.Xna.Framework.Input;
+using Armalia.Exceptions;
 
 namespace Armalia.GameScreens
 {
@@ -26,7 +27,7 @@ namespace Armalia.GameScreens
         private MapMaker mapMaker;
         private ScreenManager manager;
         private PlayerSidebar sidebar;
-
+        private MapHandler mapHandler;
         private Texture2D splash;
         private Texture2D box;
         private Vector2 borderPos = Vector2.Zero;
@@ -42,6 +43,7 @@ namespace Armalia.GameScreens
             this.manager = manager;
             mapWindow = new Rectangle(0, 0, DEFAULT_MAP_WINDOW_SIZE.X, DEFAULT_MAP_WINDOW_SIZE.Y);
             mapMaker = new MapMaker(game);
+            mapHandler = new MapHandler(game);
         }
 
         public void Load()
@@ -52,11 +54,14 @@ namespace Armalia.GameScreens
             box = game.Content.Load<Texture2D>(@"SpriteImages\border");
             splash = game.Content.Load<Texture2D>(@"SpriteImages\splash");
 
-            // create level
-            String villageMapFilename = @"Maps\Village1\Village1";
-            Map villageMap = mapMaker.BuildLevel(villageMapFilename);
-            level = new GameLevel(villageMap);
-
+            try
+            {
+                level = mapHandler.getMap("village1");
+            }
+            catch (MapDoesNotExistException e)
+            {
+                this.game.Exit();
+            }
             // create player
             int playerHP = 100;
             int playerMP = 100;
