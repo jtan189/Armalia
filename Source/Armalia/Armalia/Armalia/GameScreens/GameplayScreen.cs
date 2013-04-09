@@ -10,6 +10,7 @@ using Armalia.Characters;
 using Armalia.Sidebar;
 using Microsoft.Xna.Framework.Input;
 using Armalia.Exceptions;
+using Microsoft.Xna.Framework.Media;
 
 namespace Armalia.GameScreens
 {
@@ -56,6 +57,8 @@ namespace Armalia.GameScreens
             mapHandler = new MapHandler(game);
         }
 
+        public Rectangle CameraView { get { return player.CameraView; } }
+
         public void Load()
         {
             // TODO: parse all this stuff based on XML config files in DataManager
@@ -72,6 +75,37 @@ namespace Armalia.GameScreens
             {
                 this.game.Exit();
             }
+            // create an enemy knight
+            int knightHP = 100;
+            int knightMP = 100;
+            int knightXP = 0;
+            int knightStrength = 10;
+            int knightDefense = 10;
+
+            Texture2D knightTexture = game.Content.Load<Texture2D>(@"Characters\charchip01-2-1");
+            Point knightTextureFrameSize = new Point(32, 32);
+            int knightCollisionOffset = 0;
+            Point knightInitialFrame = new Point(1, 0);
+            Point knightSheetSize = new Point(3, 4);
+            Vector2 knightSpeed = new Vector2(1, 1);
+            Vector2 initialKnightPos = new Vector2(500, 325);
+
+            AnimatedSprite knightSprite = new AnimatedSprite(
+                knightTexture, knightTextureFrameSize, knightCollisionOffset, knightInitialFrame, knightSheetSize);
+
+            List<Point> knightTargets = new List<Point>() { new Point(200, 325), new Point(800, 325) };
+
+            // create level
+            List<EnemyCharacter> villageEnemies = new List<EnemyCharacter>();
+            EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, knightHP, knightMP, knightXP, 
+                knightStrength, knightDefense, knightSpeed, this, knightTargets);
+            villageEnemies.Add(knightEnemy);
+            String villageMapFilename = @"Maps\Village1\Village1";
+            Map villageMap = mapMaker.BuildLevel(villageMapFilename);
+            // song from: http://www.tannerhelland.com/21/song-home/
+            Song villageBgMusic = game.Content.Load<Song>(@"Music\Home");
+            level = new GameLevel(villageMap, villageBgMusic, villageEnemies);
+
             // create player
             int playerHP = 100;
             int playerMP = 100;
@@ -102,6 +136,11 @@ namespace Armalia.GameScreens
                 game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
             sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter);
             sidebar.Load();
+
+            // start background music
+            MediaPlayer.IsRepeating = true;
+            level.PlayBgMusic();
+            
         }
 
         public void Update(GameTime gameTime)
@@ -123,6 +162,7 @@ namespace Armalia.GameScreens
                 borderPos.X = (borderPos.X * 32) + (32);
                 borderPos.Y = (borderPos.Y * 32) + (32);
 
+                level.Update(gameTime);
                 player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
             }
         }
