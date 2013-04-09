@@ -11,23 +11,48 @@ namespace Armalia.Characters
 {
     class MainCharacter : CombatableCharacter
     {
+        /// <summary>
+        /// This is a subjection of the map. This is what dictates what the player/character
+        /// can see.
+        /// </summary>
         private Rectangle cameraView;
-
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <param name="sprite">The animated sprite object for the main chracter.</param>
+        /// <param name="position">The initial position of the character.</param>
+        /// <param name="hitPoints">The number of hitpoints (life) the character has</param>
+        /// <param name="manaPoints">The number of mana points the character has</param>
+        /// <param name="expLevel">The number of EXP to level up</param>
+        /// <param name="strength">The strength attribute</param>
+        /// <param name="defense">The defense attribute</param>
+        /// <param name="speed">The movement speed of the character</param>
+        /// <param name="cameraView">The subsection of the map to the player can see.</param>
         public MainCharacter(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
             int expLevel, int strength, int defense, Vector2 speed, Rectangle cameraView)
             : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
         {
             this.cameraView = cameraView;
         }
-
+        /// <summary>
+        /// This is implemented for level up
+        /// </summary>
         public void LevelUp() { }
-
+        /// <summary>
+        /// The view of the map the characte rhas
+        /// </summary>
         public Rectangle CameraView
         {
             get { return cameraView; }
             private set { cameraView = value; }
         }
-
+        /// <summary>
+        /// This uses input of the player to move the character
+        /// </summary>
+        /// <param name="direction">The direction to move the character</param>
+        /// <param name="currentMap">The current map the character is on</param>
+        /// <param name="hasCollided">Has it collided with another object</param>
+        /// <returns>This returns true if the character has moved (i.e no collisson)</returns>
         public override bool Move(MoveDirection direction, Map currentMap, out bool hasCollided)
         {
             bool hasMoved = base.Move(direction, currentMap, out hasCollided);
@@ -71,7 +96,10 @@ namespace Armalia.Characters
             }
             return hasMoved;
         }
-
+        /// <summary>
+        /// This draws the character
+        /// </summary>
+        /// <param name="spriteBatch">The spritebatch to use to draw</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             int xOffset = (int)position.X - CameraView.X;
@@ -80,7 +108,9 @@ namespace Armalia.Characters
             // normalize position relative to camera view
             sprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
         }
-
+        /// <summary>
+        /// The enumeration used for drawing
+        /// </summary>
         enum StatusEffect
         {
             Cursed

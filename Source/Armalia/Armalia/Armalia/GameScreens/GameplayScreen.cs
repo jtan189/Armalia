@@ -18,7 +18,13 @@ namespace Armalia.GameScreens
     ///</summary>
     class GameplayScreen : Screen
     {
+        /// <summary>
+        /// Default map window size (section of the screen for map)
+        /// </summary>
         public static readonly Point DEFAULT_MAP_WINDOW_SIZE = new Point(1000, 720); // (prev: 800, 800)
+        /// <summary>
+        /// The default viewable map for the player
+        /// </summary>
         public static readonly Point DEFAULT_CAMERA_WINDOW_SIZE = new Point(1000, 720); // 853 ~ (2/3)*1280; (prev: 800, 800 )
 
         private Player player;
@@ -36,7 +42,11 @@ namespace Armalia.GameScreens
         private Rectangle mapWindow;
         // private Rectangle hudWindow
         // private List<Tiles or something> uncoveredArea
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="manager"></param>
         public GameplayScreen(ArmaliaGame game, ScreenManager manager)
         {
             this.game = game;

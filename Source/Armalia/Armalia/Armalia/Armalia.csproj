@@ -39,7 +39,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\x86\Debug</OutputPath>
+    <OutputPath>bin\x86\Debug\Content\</OutputPath>
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,6 +47,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>false</XnaCompressContent>
+    <DocumentationFile>bin\x86\Debug\Armalia.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -118,12 +119,14 @@
     <Compile Include="Characters\MainCharacter.cs" />
     <Compile Include="Characters\NonPlayableCharacter.cs" />
     <Compile Include="Characters\Templar.cs" />
+    <Compile Include="Exceptions\MapDoesNotExistException.cs" />
     <Compile Include="GameScreens\GameplayScreen.cs" />
     <Compile Include="GameScreens\Screen.cs" />
     <Compile Include="GameScreens\ScreenManager.cs" />
     <Compile Include="GameScreens\SplashScreen.cs" />
     <Compile Include="Maps\GameLevel.cs" />
     <Compile Include="Maps\Map.cs" />
+    <Compile Include="Maps\MapHandler.cs" />
     <Compile Include="Maps\MapMaker.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -17,27 +17,39 @@ using System.Text.RegularExpressions;
 
 namespace Armalia.Maps
 {
-    // TODO: determine if is this class necessary
 
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
     public class MapMaker 
     {
-        private ArmaliaGame game;
-        private Game gm;
-
+       
+        /// <summary>
+        /// The Game object
+        /// </summary>
+        private Game game;
+        /// <summary>
+        /// Constructor 1
+        /// </summary>
+        /// <param name="game"> ArmaliaGame Object</param>
         public MapMaker(ArmaliaGame game)
         {
             this.game = game;
         }
-
+        /// <summary>
+        /// Constructor 2
+        /// </summary>
+        /// <param name="gm">The GAme object</param>
         public MapMaker(Game gm)
         {
             // TODO: Complete member initialization
-            this.gm = gm;
+            this.game = gm;
         }
-
+        /// <summary>
+        /// This will build a map object form XML filecode
+        /// </summary>
+        /// <param name="mapFilename">The TMX file of the map to be made</param>
+        /// <returns></returns>
         public Map BuildLevel(String mapFilename)
         {
             // load texture
@@ -51,7 +63,14 @@ namespace Armalia.Maps
             return new Map(mapTexture, boundaries);
         }
 
-        // sources: http://stackoverflow.com/questions/2439636/xna-best-way-to-load-and-read-a-xml-file
+        
+        
+        /// <summary>
+        /// This will load the boundaries from the TMX file
+        /// sources: http://stackoverflow.com/questions/2439636/xna-best-way-to-load-and-read-a-xml-file
+        /// </summary>
+        /// <param name="mapFilename">The TMX file name</param>
+        /// <returns></returns>
         public List<Rectangle> GetBoundaries(String mapFilename)
         {
             var mapXML = XElement.Load(game.Content.RootDirectory + "\\" + mapFilename + ".tmx");
