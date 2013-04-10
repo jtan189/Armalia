@@ -35,7 +35,7 @@ namespace Armalia.GameScreens
         private ScreenManager manager;
         private PlayerSidebar sidebar;
         private MapHandler mapHandler;
-        private Texture2D splash;
+
         private Texture2D box;
         private Vector2 borderPos = Vector2.Zero;
         
@@ -65,13 +65,12 @@ namespace Armalia.GameScreens
 
             // load stuff for cursor thing
             box = game.Content.Load<Texture2D>(@"SpriteImages\border");
-            splash = game.Content.Load<Texture2D>(@"SpriteImages\splash");
 
             try
             {
                 level = mapHandler.getMap("village1");
             }
-            catch (MapDoesNotExistException e)
+            catch (MapDoesNotExistException)
             {
                 this.game.Exit();
             }
@@ -98,7 +97,6 @@ namespace Armalia.GameScreens
             // create level
             List<EnemyCharacter> villageEnemies = new List<EnemyCharacter>();
             
-
             // create player
             int playerHP = 100;
             int playerMP = 100;
@@ -129,7 +127,6 @@ namespace Armalia.GameScreens
 
             level.addEnemies(villageEnemies);
 
-           // level.addEnemies(villageEnemies);
             // load on-screen menu
             // use RolePlayingGameWindows HUD as example
             Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
@@ -147,14 +144,7 @@ namespace Armalia.GameScreens
         {
             // TODO: move handling of state to ScreenManager
             MouseState mouseState = Mouse.GetState();
-            if (manager.CurrentState == GameState.Splash)
-            {
-                if (mouseState.LeftButton == ButtonState.Pressed)
-                {
-                    manager.CurrentState = GameState.Exploration;
-                }
-            }
-            else if (manager.CurrentState == GameState.Exploration)
+            if (manager.CurrentState == GameState.Exploration)
             {
                 // draw cursor border
                 borderPos.X = (int)Math.Floor((float)(mouseState.X / 32));
@@ -195,12 +185,7 @@ namespace Armalia.GameScreens
 
                 spriteBatch.End();
             }
-            else if (manager.CurrentState == GameState.Splash)
-            {
-                spriteBatch.Begin();
-                spriteBatch.Draw(splash, new Rectangle(0, 0, splash.Width, splash.Height), Color.White);
-                spriteBatch.End();
-            }
+
         }
     }
 }

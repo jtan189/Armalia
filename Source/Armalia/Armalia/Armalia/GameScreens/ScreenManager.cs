@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Armalia.GameScreens
 {
@@ -13,27 +14,40 @@ namespace Armalia.GameScreens
     class ScreenManager : DrawableGameComponent
     {
 
-        private Screen currentScreen;
-        public GameState CurrentState { get; set; }
+        //private Screen currentScreen;
         private SpriteBatch spriteBatch;
+        private Stack<GameState> stateStack;
 
         private GameplayScreen gameplayScreen;
+        private SplashScreen splashScreen;
 
-        public ScreenManager(ArmaliaGame game) : this(game, new SplashScreen(), GameState.Splash) { }
+        public GameState CurrentState
+        {
+            get
+            {
+                return stateStack.Peek();
+            }
 
-        public ScreenManager(ArmaliaGame game, Screen currentScreen, GameState state)
+            set
+            {
+                stateStack.Push(value);
+            }
+        }
+
+        public ScreenManager(ArmaliaGame game)
             : base(game)
         {
-            this.currentScreen = currentScreen;
-            CurrentState = state;
+            this.splashScreen = new SplashScreen(game, this);
+            //this.currentScreen = splashScreen;
+            stateStack = new Stack<GameState>();
+            CurrentState = GameState.Splash; // push onto stack
             spriteBatch = game.SpriteBatch;
-
             gameplayScreen = new GameplayScreen(game, this);
         }
 
         protected override void LoadContent()
         {
-
+            splashScreen.Load();
             gameplayScreen.Load();
 
             base.LoadContent();
@@ -41,14 +55,46 @@ namespace Armalia.GameScreens
 
         public override void Update(GameTime gameTime)
         {
-            gameplayScreen.Update(gameTime);
+            switch (stateStack.Peek())
+            {
+                case GameState.Splash:
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                    {
+                        CurrentState = GameState.Exploration;
+                    }
+                    break;
+                case GameState.Exploration:
+                    gameplayScreen.Update(gameTime);
+                    break;
+            }
+
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            gameplayScreen.Draw(gameTime, spriteBatch);
+            switch (stateStack.Peek())
+            {
+                case GameState.Splash:
+                    DrawSplashScreen(spriteBatch);
+                    break;
+                case GameState.Exploration:
+                    DrawExplorationScreen(gameTime, spriteBatch);
+                    break;
+            }
+
             base.Draw(gameTime);
+        }
+
+        public void DrawSplashScreen(SpriteBatch spriteBatch)
+        {
+            splashScreen.Draw(spriteBatch);
+        }
+
+        public void DrawExplorationScreen(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            gameplayScreen.Draw(gameTime, spriteBatch);
         }
     }
 }
