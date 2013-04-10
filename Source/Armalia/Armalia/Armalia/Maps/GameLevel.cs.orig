@@ -19,14 +19,18 @@ namespace Armalia.Maps
         /// The map object of the level
         /// </summary>
         private Map map;
+<<<<<<< HEAD
         /// <summary>
         /// Default constructor
         /// </summary>
         /// <param name="levelMap">The map object to instantiate the level with.</param>
+        public GameLevel(Map levelMap) {
+=======
         private Song bgMusic;
         private List<EnemyCharacter> enemies;
 
         public GameLevel(Map levelMap, Song bgMusic, List<EnemyCharacter> enemies) {
+>>>>>>> origin/hud
             this.map = levelMap;
             this.bgMusic = bgMusic;
             this.enemies = enemies;
@@ -35,16 +39,15 @@ namespace Armalia.Maps
         /// This just returns the map object.
         /// </summary>
         public Map LevelMap { get { return map; } }
-        public void addEnemies(List<EnemyCharacter> enemies)
-        {
-            this.enemies = enemies;
-        }
+
+<<<<<<< HEAD
         /// <summary>
         /// This draws the gam level
         /// </summary>
         /// <param name="spriteBatch">The sprite batch object used for the game</param>
         /// <param name="mapWindow">The section of the screen to draw the map onto</param>
         /// <param name="cameraView">The viewable map of the player</param>
+=======
         public void PlayBgMusic()
         {
             MediaPlayer.Play(bgMusic);
@@ -59,6 +62,7 @@ namespace Armalia.Maps
             }
         }
 
+>>>>>>> origin/hud
         public void Draw(SpriteBatch spriteBatch, Rectangle mapWindow, Rectangle cameraView)
         {
             // draw map

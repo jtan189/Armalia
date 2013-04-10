@@ -19,15 +19,16 @@ namespace Armalia.Characters
         private EnemyState currentState;
         private GameplayScreen gameplayScreen;
         // private SomeShape fieldOfVision;
-
+        private Character player;
         public EnemyCharacter(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
-            int expLevel, int strength, int defense, Vector2 speed, GameplayScreen gameplayScreen, List<Point> patrolTargets)
+            int expLevel, int strength, int defense, Vector2 speed, GameplayScreen gameplayScreen, List<Point> patrolTargets, Character p)
             : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
         {
             this.gameplayScreen = gameplayScreen;
             this.patrolTargets = patrolTargets;
             currentState = EnemyState.Patrol;
             currentTarget = patrolTargets[0];
+            this.player = p;
         }
 
         // TODO: incorporate path finding algorithm or something
@@ -54,13 +55,21 @@ namespace Armalia.Characters
                 Move(gameTime, currentMap, out hasCollided);
             }
         }
-
+        public bool isNearPLayer()
+        {
+            if (Vector2.Distance(this.position, this.player.position) <= (32*5))
+            {
+                return true;
+            }
+            return false;
+        }
         public bool Move(GameTime gameTime, Map currentMap, out bool hasCollided)
         {
             Rectangle cameraView = gameplayScreen.CameraView;
             bool hasMoved = false;
             MoveDirection moveDir = MoveDirection.None;
             hasCollided = false;
+          
 
             if (IsNearPatrolTarget())
             {
@@ -69,15 +78,40 @@ namespace Armalia.Characters
             }
             else
             {
-                
-                if (position.X < currentTarget.X)
+                if (isNearPLayer() && !(this.player.getRectangle().Intersects( this.getRectangle() ) ) )
                 {
-                    moveDir = MoveDirection.Right;
+                    if (this.position.X > this.player.position.X)
+                    {
+                        moveDir = MoveDirection.Left;
+                    }
+                    else if (this.position.X < this.player.position.X)
+                    {
+                        moveDir = MoveDirection.Right;
+                    }
+                    else
+                    {
+                        if (this.position.Y > this.player.position.Y)
+                        {
+                            moveDir = MoveDirection.Up;
+                        }
+                        else
+                        {
+                            moveDir = MoveDirection.Down;
+                        }
+                    }
                 }
+                
                 else
                 {
-                    moveDir = MoveDirection.Left;
+                    if (position.X < currentTarget.X)
+                    {
+                        moveDir = MoveDirection.Right;
+                    }
+                    else
+                    {
+                        moveDir = MoveDirection.Left;
                         
+                    }
                 }
                 hasMoved = base.Move(moveDir, currentMap, out hasCollided);
             }

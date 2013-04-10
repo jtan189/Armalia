@@ -80,10 +80,16 @@ namespace Armalia.Maps
             List<Rectangle> boundaries = new List<Rectangle>();
             foreach (var boundary in boundaryElements)
             {
-                int xCoord = Convert.ToInt32(boundary.Attribute("x").Value);
-                int yCoord = Convert.ToInt32(boundary.Attribute("y").Value);
-                int width = Convert.ToInt32(boundary.Attribute("width").Value);
-                int height = Convert.ToInt32(boundary.Attribute("height").Value);
+                int xCoord = 0;
+                int yCoord = 0;
+                int width = 0;
+                int height = 0;
+                xCoord = Convert.ToInt32(boundary.Attribute("x").Value);
+                yCoord = Convert.ToInt32(boundary.Attribute("y").Value);
+                if(boundary.Attribute("width") != null)
+                     width = Convert.ToInt32(boundary.Attribute("width").Value);
+                if (boundary.Attribute("height") != null)
+                  height = Convert.ToInt32(boundary.Attribute("height").Value);
                 Rectangle boundaryRect = new Rectangle(xCoord, yCoord,
                    width, height);
                 boundaries.Add(boundaryRect);

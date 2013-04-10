@@ -30,7 +30,7 @@ namespace Armalia.Characters
         /// <summary>
         /// This is the location of the character on the map
         /// </summary>
-        protected Vector2 position;
+        public Vector2 position;
         /// <summary>
         /// The speed that the character moves
         /// </summary>
@@ -148,6 +148,11 @@ namespace Armalia.Characters
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             sprite.Draw(spriteBatch, position, DEFAULT_LAYER_DEPTH);
+        }
+
+        public Rectangle getRectangle()
+        {
+            return new Rectangle((int)position.X, (int)position.Y, sprite.FrameSize.X, sprite.FrameSize.Y);
         }
     }
 }

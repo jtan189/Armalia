@@ -19,7 +19,8 @@
     <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\Source\Armalia\Armalia\Armalia\bin\x86\Debug\Armalia.exe" xmlns="" />
-<DocumentationSource sourceFile="..\Source\Armalia\Armalia\Armalia\bin\x86\Debug\Armalia.xml" xmlns="" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\Source\Armalia\Armalia\Armalia\bin\x86\Debug\Armalia.xml" xmlns="" />
+    </DocumentationSources>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <HelpTitle>Armalia Documentation</HelpTitle>
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Internals, Privates, Protected, ProtectedInternalAsProtected, SealedProtected, PrivateFields, InheritedFrameworkPrivateMembers, InheritedFrameworkInternalMembers</VisibleItems>

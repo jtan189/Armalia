@@ -9,8 +9,11 @@ using Armalia.Sprites;
 using Armalia.Characters;
 using Armalia.Sidebar;
 using Microsoft.Xna.Framework.Input;
+<<<<<<< HEAD
 using Armalia.Exceptions;
+=======
 using Microsoft.Xna.Framework.Media;
+>>>>>>> origin/hud
 
 namespace Armalia.GameScreens
 {
@@ -44,10 +47,10 @@ namespace Armalia.GameScreens
         // private Rectangle hudWindow
         // private List<Tiles or something> uncoveredArea
         /// <summary>
-        /// This creates an object for dealing with the gameplay screen (the left portion)
+        /// 
         /// </summary>
-        /// <param name="game">The game object of the game</param>
-        /// <param name="manager">The screen manager for the game</param>
+        /// <param name="game"></param>
+        /// <param name="manager"></param>
         public GameplayScreen(ArmaliaGame game, ScreenManager manager)
         {
             this.game = game;
@@ -67,6 +70,7 @@ namespace Armalia.GameScreens
             box = game.Content.Load<Texture2D>(@"SpriteImages\border");
             splash = game.Content.Load<Texture2D>(@"SpriteImages\splash");
 
+<<<<<<< HEAD
             try
             {
                 level = mapHandler.getMap("village1");
@@ -75,6 +79,7 @@ namespace Armalia.GameScreens
             {
                 this.game.Exit();
             }
+=======
             // create an enemy knight
             int knightHP = 100;
             int knightMP = 100;
@@ -97,8 +102,16 @@ namespace Armalia.GameScreens
 
             // create level
             List<EnemyCharacter> villageEnemies = new List<EnemyCharacter>();
-            
+            EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, knightHP, knightMP, knightXP, 
+                knightStrength, knightDefense, knightSpeed, this, knightTargets);
+            villageEnemies.Add(knightEnemy);
+            String villageMapFilename = @"Maps\Village1\Village1";
+            Map villageMap = mapMaker.BuildLevel(villageMapFilename);
+            // song from: http://www.tannerhelland.com/21/song-home/
+            Song villageBgMusic = game.Content.Load<Song>(@"Music\Home");
+            level = new GameLevel(villageMap, villageBgMusic, villageEnemies);
 
+>>>>>>> origin/hud
             // create player
             int playerHP = 100;
             int playerMP = 100;
@@ -123,13 +136,6 @@ namespace Armalia.GameScreens
 
             player = new Player(playerCharacter);
 
-            EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, knightHP, knightMP, knightXP,
-                knightStrength, knightDefense, knightSpeed, this, knightTargets, playerCharacter);
-            villageEnemies.Add(knightEnemy);
-
-            level.addEnemies(villageEnemies);
-
-           // level.addEnemies(villageEnemies);
             // load on-screen menu
             // use RolePlayingGameWindows HUD as example
             Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,

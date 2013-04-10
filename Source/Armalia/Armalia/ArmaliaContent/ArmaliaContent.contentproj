@@ -47,6 +47,10 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <None Include="Maps\Village1\Village0.tmx">
+      <Name>Village0</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Maps\Village1\Village1.tmx">
       <Name>Village1</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -166,6 +170,13 @@
     </Compile>
     <Compile Include="Characters\charchip01-3-1.png">
       <Name>charchip01-3-1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Maps\Village1\Village0.png">
+      <Name>Village0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
