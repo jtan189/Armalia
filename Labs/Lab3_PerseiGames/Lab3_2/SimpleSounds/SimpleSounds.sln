@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSounds", "SimpleSounds\SimpleSounds\SimpleSounds.csproj", "{6D9FECD9-28C7-42B5-AB6F-71A9BE2A1C16}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "SimpleSoundsContent", "SimpleSounds\SimpleSoundsContent\SimpleSoundsContent.contentproj", "{6D1D911B-66F4-4CC1-8440-BD02A9A13842}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D9FECD9-28C7-42B5-AB6F-71A9BE2A1C16}.Debug|x86.ActiveCfg = Debug|x86
+		{6D9FECD9-28C7-42B5-AB6F-71A9BE2A1C16}.Debug|x86.Build.0 = Debug|x86
+		{6D9FECD9-28C7-42B5-AB6F-71A9BE2A1C16}.Release|x86.ActiveCfg = Release|x86
+		{6D9FECD9-28C7-42B5-AB6F-71A9BE2A1C16}.Release|x86.Build.0 = Release|x86
+		{6D1D911B-66F4-4CC1-8440-BD02A9A13842}.Debug|x86.ActiveCfg = Debug|x86
+		{6D1D911B-66F4-4CC1-8440-BD02A9A13842}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
