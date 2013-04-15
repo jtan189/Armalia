@@ -5,19 +5,23 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Armalia.Exceptions;
 using Microsoft.Xna.Framework.Media;
+using Armalia.Characters;
+using Armalia.GameScreens;
 
 namespace Armalia.Maps
 {
    
     
-    class MapHandler
+ public   class MapHandler
     {
         private Dictionary<string, string> mapFiles;
         private Dictionary<string, GameLevel> gameLevels;
         private Game game;
         private MapMaker mapMaker;
+        private MainCharacter playerChar;
         private Dictionary<string, string> songFiles;
-        public MapHandler(Game gm)
+        private GameplayScreen gs;
+        public MapHandler(Game gm, MainCharacter pc, GameplayScreen gs)
         {
             mapFiles = new Dictionary<string, string>();
             gameLevels = new Dictionary<string, GameLevel>();
@@ -25,7 +29,9 @@ namespace Armalia.Maps
             mapFiles.Add("village1",  @"Maps\Village1\Village0");
             songFiles.Add("village1", @"Music\Home");
             //Song villageBgMusic = game.Content.Load<Song>(@"Music\Home");
+            this.gs = gs;
             this.game = gm;
+            this.playerChar = pc;
             this.mapMaker = new MapMaker(gm);
             this.loadMaps();
             //Map villageMap = mapMaker.BuildLevel(villageMapFilename);
@@ -42,8 +48,10 @@ namespace Armalia.Maps
                 {
                    song = this.game.Content.Load<Song>(songFiles[map.Key]);
                 }
-               
-                GameLevel gl = new GameLevel(this.mapMaker.BuildLevel(map.Value), song, null);
+                List <EnemyCharacter> enemies = this.mapMaker.GetEnemies(map.Value, this.playerChar, this.gs);
+                Console.WriteLine("Enemy count: " + enemies.Count);
+                GameLevel gl = new GameLevel(this.mapMaker.BuildLevel(map.Value), song,  enemies);
+
                 gameLevels.Add(map.Key, gl);
                 x++;
             }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Armalia.Sprites
 {
-    abstract class Sprite
+ public abstract class Sprite
     {
         protected Texture2D texture;
         protected Point frameSize;

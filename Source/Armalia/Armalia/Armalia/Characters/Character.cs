@@ -12,7 +12,7 @@ namespace Armalia.Characters
     /// <summary>
     /// This is the base class for characters. Characters are your main character, enemies, etc
     /// </summary>
-    abstract class Character
+   public abstract class Character
     {
         /// <summary>
         /// The default Layer that they're drawn at

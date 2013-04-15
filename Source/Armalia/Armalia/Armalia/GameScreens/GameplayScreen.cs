@@ -17,7 +17,7 @@ namespace Armalia.GameScreens
     ///<summary>
     ///This class will be used to control what the player sees. This includes the current game level and the section of the game level's map.
     ///</summary>
-    class GameplayScreen : Screen
+   public  class GameplayScreen : Screen
     {
         /// <summary>
         /// Default map window size (section of the screen for map)
@@ -31,7 +31,6 @@ namespace Armalia.GameScreens
         private Player player;
         private GameLevel level;
         private ArmaliaGame game;
-        private MapMaker mapMaker;
         private ScreenManager manager;
         private PlayerSidebar sidebar;
         private MapHandler mapHandler;
@@ -53,8 +52,7 @@ namespace Armalia.GameScreens
             this.game = game;
             this.manager = manager;
             mapWindow = new Rectangle(0, 0, DEFAULT_MAP_WINDOW_SIZE.X, DEFAULT_MAP_WINDOW_SIZE.Y);
-            mapMaker = new MapMaker(game);
-            mapHandler = new MapHandler(game);
+            
         }
 
         public Rectangle CameraView { get { return player.CameraView; } }
@@ -67,37 +65,6 @@ namespace Armalia.GameScreens
             box = game.Content.Load<Texture2D>(@"SpriteImages\border");
             splash = game.Content.Load<Texture2D>(@"SpriteImages\splash");
 
-            try
-            {
-                level = mapHandler.getMap("village1");
-            }
-            catch (MapDoesNotExistException e)
-            {
-                this.game.Exit();
-            }
-            // create an enemy knight
-            int knightHP = 100;
-            int knightMP = 100;
-            int knightXP = 0;
-            int knightStrength = 10;
-            int knightDefense = 10;
-
-            Texture2D knightTexture = game.Content.Load<Texture2D>(@"Characters\charchip01-2-1");
-            Point knightTextureFrameSize = new Point(32, 32);
-            int knightCollisionOffset = 0;
-            Point knightInitialFrame = new Point(1, 0);
-            Point knightSheetSize = new Point(3, 4);
-            Vector2 knightSpeed = new Vector2(1, 1);
-            Vector2 initialKnightPos = new Vector2(500, 325);
-
-            AnimatedSprite knightSprite = new AnimatedSprite(
-                knightTexture, knightTextureFrameSize, knightCollisionOffset, knightInitialFrame, knightSheetSize);
-
-            List<Point> knightTargets = new List<Point>() { new Point(200, 325), new Point(800, 325) };
-
-            // create level
-            List<EnemyCharacter> villageEnemies = new List<EnemyCharacter>();
-            
 
             // create player
             int playerHP = 100;
@@ -123,13 +90,17 @@ namespace Armalia.GameScreens
 
             player = new Player(playerCharacter);
 
-            EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, knightHP, knightMP, knightXP,
-                knightStrength, knightDefense, knightSpeed, this, knightTargets, playerCharacter);
-            villageEnemies.Add(knightEnemy);
 
-            level.addEnemies(villageEnemies);
+            mapHandler = new MapHandler(game, playerCharacter, this);
+            try
+            {
+                level = mapHandler.getMap("village1");
+            }
+            catch (MapDoesNotExistException e)
+            {
+                this.game.Exit();
+            }
 
-           // level.addEnemies(villageEnemies);
             // load on-screen menu
             // use RolePlayingGameWindows HUD as example
             Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,

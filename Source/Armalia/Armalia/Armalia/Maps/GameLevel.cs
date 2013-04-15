@@ -13,7 +13,7 @@ namespace Armalia.Maps
     ///<summary>
     ///This will be our town, dungeon, inside a house, etc. 
     ///</summary>
-    class GameLevel
+    public class GameLevel
     {
         /// <summary>
         /// The map object of the level
@@ -31,6 +31,8 @@ namespace Armalia.Maps
             this.bgMusic = bgMusic;
             this.enemies = enemies;
         }
+
+
         /// <summary>
         /// This just returns the map object.
         /// </summary>

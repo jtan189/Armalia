@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Armalia.Characters
 {
-    class MainCharacter : CombatableCharacter
+    public class MainCharacter : CombatableCharacter
     {
         /// <summary>
         /// This is a subjection of the map. This is what dictates what the player/character
