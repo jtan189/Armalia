@@ -84,15 +84,10 @@ namespace Armalia.Maps
             {
                 int xCoord = 0;
                 int yCoord = 0;
-                if (obj.Attribute("type") != null && obj.Attribute("type").ToString().ToLower().Equals("enemy"))
+                int width = 0;
+                int height = 0;
+                if(obj.Attribute("type") == null)
                 {
-                    var properties = obj.Elements("properties").Elements().ToList();
-
-                }
-                else
-                {
-                    int width = 0;
-                    int height = 0;
                     xCoord = Convert.ToInt32(obj.Attribute("x").Value);
                     yCoord = Convert.ToInt32(obj.Attribute("y").Value);
                     if (obj.Attribute("width") != null)
@@ -100,9 +95,10 @@ namespace Armalia.Maps
                     if (obj.Attribute("height") != null)
                         height = Convert.ToInt32(obj.Attribute("height").Value);
                     Rectangle boundaryRect = new Rectangle(xCoord, yCoord,
-                       width, height);
+                        width, height);
                     boundaries.Add(boundaryRect);
                 }
+               
             }
 
             return boundaries;
@@ -122,8 +118,6 @@ namespace Armalia.Maps
                       type = obj.Attribute("type").ToString().ToLower();
                 if (type != null)
                 {
-                    Console.WriteLine(type);
-                    Console.WriteLine("====================================");
                     var properties = obj.Elements("properties").Elements().ToList();
                     string name = obj.Attribute("name").Value.ToString().ToLower();
                     int hp = 100;
@@ -174,7 +168,7 @@ namespace Armalia.Maps
                                 knightTexture, knightTextureFrameSize, knightCollisionOffset, knightInitialFrame, knightSheetSize);
 
                             List<Point> knightTargets = new List<Point>() {
-                                new Point((int)(xcoord - 800), ycoord), new Point((int)(xcoord+800), ycoord) };
+                                new Point((int)(xcoord - 100), ycoord), new Point((int)(xcoord+100), ycoord) };
 
                               EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, hp, mp, xp,
                 strength, defense, knightSpeed, gs, knightTargets, pc);

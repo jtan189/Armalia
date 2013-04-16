@@ -57,9 +57,9 @@ namespace Armalia.Characters
         }
         public bool isNearPLayer()
         {
-            if (Vector2.Distance(this.position, this.player.position) <= (32*5))
+            if (Vector2.Distance(this.position, this.player.position) <= (32*3))
             {
-                return false;
+                return true;
             }
             return false;
         }
@@ -69,14 +69,7 @@ namespace Armalia.Characters
             bool hasMoved = false;
             MoveDirection moveDir = MoveDirection.Right;
             hasCollided = false;
-          
-            hasMoved = base.Move(moveDir, currentMap, out hasCollided);
-           
 
-            // this is gross. change it
-            base.Update(gameTime, moveDir, currentMap);
-
-            return hasMoved;
             if (IsNearPatrolTarget())
             {
                 // choose random new target

@@ -32,6 +32,7 @@ namespace Armalia.Maps
         {
             foreach (Rectangle boundary in boundaries) {
                 if (boundary.Intersects(characterRect)) {
+        
                     return true;
                 }
             }
