@@ -38,6 +38,11 @@ namespace Armalia.Characters
         /// This is implemented for level up
         /// </summary>
         public void LevelUp() { }
+
+        public Rectangle Box()
+        {
+            return new Rectangle((int)position.X, (int)position.Y, (int)sprite.Size().X, (int)sprite.Size().Y);
+        }
         /// <summary>
         /// The view of the map the characte rhas
         /// </summary>

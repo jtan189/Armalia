@@ -21,6 +21,11 @@ namespace Armalia.Sprites
         {
             get { return frameSize; }
         }
+        public Vector2 Size()
+        {
+            return new Vector2(texture.Width, texture.Height);
+        }
+
 
         public abstract void Draw(SpriteBatch spriteBatch, Vector2 spritePosition, float layerDepth);
         

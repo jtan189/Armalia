@@ -7,6 +7,7 @@ using Armalia.Exceptions;
 using Microsoft.Xna.Framework.Media;
 using Armalia.Characters;
 using Armalia.GameScreens;
+using Armalia.Object;
 
 namespace Armalia.Maps
 {
@@ -27,6 +28,7 @@ namespace Armalia.Maps
             gameLevels = new Dictionary<string, GameLevel>();
             songFiles = new Dictionary<string, string>();
             mapFiles.Add("village1",  @"Maps\Village1\Village0");
+            mapFiles.Add("building1", @"Maps\Building1\building1");
             songFiles.Add("village1", @"Music\Home");
             //Song villageBgMusic = game.Content.Load<Song>(@"Music\Home");
             this.gs = gs;
@@ -49,8 +51,8 @@ namespace Armalia.Maps
                    song = this.game.Content.Load<Song>(songFiles[map.Key]);
                 }
                 List <EnemyCharacter> enemies = this.mapMaker.GetEnemies(map.Value, this.playerChar, this.gs);
-                Console.WriteLine("Enemy count: " + enemies.Count);
-                GameLevel gl = new GameLevel(this.mapMaker.BuildLevel(map.Value), song,  enemies);
+                List<GameObject> objs = this.mapMaker.GetObjects(map.Value);
+                GameLevel gl = new GameLevel(this.mapMaker.BuildLevel(map.Value), song,  enemies, objs);
 
                 gameLevels.Add(map.Key, gl);
                 x++;

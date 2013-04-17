@@ -2879,6 +2879,15 @@
     <property name="xp" value="0"/>
    </properties>
   </object>
+  <object name="Knight" type="Enemy" x="576" y="800" width="32" height="32">
+   <properties>
+    <property name="defense" value="30"/>
+    <property name="hp" value="100"/>
+    <property name="speed" value="100"/>
+    <property name="strength" value="10"/>
+    <property name="xp" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="Tile Layer 2" width="50" height="50" visible="0">
   <data>

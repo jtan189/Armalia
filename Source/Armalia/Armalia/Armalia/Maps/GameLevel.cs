@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using Armalia.Characters;
+using Armalia.Object;
 
 // TODO: Have Map represent all of map stuff. Level contains Map. Map contain Layers (if want), rather just object with layerValue.
 namespace Armalia.Maps
@@ -24,15 +25,29 @@ namespace Armalia.Maps
         /// </summary>
         /// <param name="levelMap">The map object to instantiate the level with.</param>
         private Song bgMusic;
+        private List<GameObject> gameObjects;
         private List<EnemyCharacter> enemies;
 
-        public GameLevel(Map levelMap, Song bgMusic, List<EnemyCharacter> enemies) {
+        public GameLevel(Map levelMap, Song bgMusic, List<EnemyCharacter> enemies, List<GameObject> objs) {
             this.map = levelMap;
             this.bgMusic = bgMusic;
             this.enemies = enemies;
+            this.gameObjects = objs;
         }
 
-
+        public string telePort(Rectangle playerPos)
+        {
+            foreach (GameObject obj in this.gameObjects)
+            {
+                if( obj.GetType() == typeof(Portal) )
+                {
+                    Portal port = (Portal) obj;
+                    if(port.Collide(playerPos) )
+                         return port.getMapTo();
+                }
+            }
+            return null;
+        }
         /// <summary>
         /// This just returns the map object.
         /// </summary>

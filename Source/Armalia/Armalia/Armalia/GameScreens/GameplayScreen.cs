@@ -36,6 +36,7 @@ namespace Armalia.GameScreens
         private MapHandler mapHandler;
         private Texture2D splash;
         private Texture2D box;
+        private MainCharacter playerCharacter;
         private Vector2 borderPos = Vector2.Zero;
         
         // screen components
@@ -85,7 +86,7 @@ namespace Armalia.GameScreens
             AnimatedSprite playerSprite = new AnimatedSprite(
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
 
-            MainCharacter playerCharacter = new MainCharacter(playerSprite, initialPlayerPos, playerHP, playerMP,
+             playerCharacter = new MainCharacter(playerSprite, initialPlayerPos, playerHP, playerMP,
                 playerXP, playerStrength, playerDefense, playerSpeed, cameraView);
 
             player = new Player(playerCharacter);
@@ -110,7 +111,7 @@ namespace Armalia.GameScreens
 
             // start background music
             MediaPlayer.IsRepeating = true;
-            level.PlayBgMusic();
+       //     level.PlayBgMusic();
             
         }
 
@@ -134,6 +135,12 @@ namespace Armalia.GameScreens
                 borderPos.Y = (borderPos.Y * 32) + (32);
 
                 level.Update(gameTime);
+                string telePort = level.telePort(playerCharacter.Box());
+                if (telePort != null)
+                {
+                    level = mapHandler.getMap(telePort);
+
+                }
                 player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
             }
         }

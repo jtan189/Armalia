@@ -16,6 +16,7 @@ using Armalia.Sprites;
 using System.Text.RegularExpressions;
 using Armalia.Characters;
 using Armalia.GameScreens;
+using Armalia.Object;
 
 namespace Armalia.Maps
 {
@@ -114,9 +115,12 @@ namespace Armalia.Maps
             foreach (var obj in objectElements)
             {
                 string type = null;
-                if(obj.Attribute("type") != null)
-                      type = obj.Attribute("type").ToString().ToLower();
-                if (type != null)
+                if (obj.Attribute("type") != null)
+                {
+                    type = obj.Attribute("type").Value.ToString().ToLower();
+                    Console.WriteLine(type);
+                }
+                if (type != null && type.Equals("enemy"))
                 {
                     var properties = obj.Elements("properties").Elements().ToList();
                     string name = obj.Attribute("name").Value.ToString().ToLower();
@@ -183,6 +187,71 @@ namespace Armalia.Maps
 
             return enemies;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        public List<GameObject> GetObjects(String mapFilename)
+        {
+            var mapXML = XElement.Load(game.Content.RootDirectory + "\\" + mapFilename + ".tmx");
+            var objectElements = mapXML.Elements("objectgroup").Elements().ToList();
+
+            // convert boundaries to Rectangles; store in list
+            List<GameObject> gameObjects = new List<GameObject>();
+            foreach (var obj in objectElements)
+            {
+                string type = null;
+                if (obj.Attribute("type") != null)
+                    type = obj.Attribute("type").Value.ToString().ToLower();
+                if (type != null && !type.Equals("enemy"))
+                {
+                    var properties = obj.Elements("properties").Elements().ToList();
+                    string name = obj.Attribute("name").Value.ToString().ToLower();
+                    int xcoord = Convert.ToInt32(obj.Attribute("x").Value);
+                    int ycoord = Convert.ToInt32(obj.Attribute("y").Value);
+                    int width = Convert.ToInt32(obj.Attribute("width").Value);
+                    int height = Convert.ToInt32(obj.Attribute("height").Value);
+                    Console.WriteLine("===============> " + name);
+                    switch (name)
+                    {
+                        default:
+                        case "portal":
+                            string mapTo = "";
+                            string mapFrom = mapFilename.Split('\\')[2];
+                            foreach (var prop in properties)
+                            {
+                                string propName = prop.Attribute("name").Value.ToString().ToLower();
+                                switch (propName)
+                                {
+                                    default:
+                                    case "level":
+                                        mapTo = prop.Attribute("value").Value;
+                                        Console.WriteLine(" LEVEL NAME = " + mapTo);
+                                    break;
+                                }
+                            }
+                            Console.WriteLine("------------====================================");
+                            gameObjects.Add(new Portal(xcoord, ycoord, mapTo, mapFrom, width, height));
+                        break;
+
+                    }
+                }
+            }
+
+            return gameObjects;
+        }
+
+
+
+
 //END OF CLASS
     }
 }

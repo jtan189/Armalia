@@ -113,6 +113,27 @@ namespace Armalia.Characters
                     }
                 }
                 hasMoved = base.Move(moveDir, currentMap, out hasCollided);
+                if (hasCollided)
+                {
+                    switch (moveDir)
+                    {
+                        case MoveDirection.Up:
+                            moveDir = MoveDirection.Down;
+                            break;
+                        case MoveDirection.Down:
+                            moveDir = MoveDirection.Up;
+                            break;
+                        case MoveDirection.Left:
+                            moveDir = MoveDirection.Right;
+                            break;
+                        case MoveDirection.Right:
+                            moveDir = MoveDirection.Left;
+                            break;
+                    }
+                    currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
+                    hasMoved = base.Move(moveDir, currentMap, out hasCollided);
+                
+                }
             }
 
             // this is gross. change it

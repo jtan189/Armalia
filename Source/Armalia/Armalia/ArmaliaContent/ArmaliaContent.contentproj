@@ -47,6 +47,10 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <None Include="Maps\Building1\building1.tmx">
+      <Name>building1</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Maps\Village1\Village0.tmx">
       <Name>Village0</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -178,6 +182,13 @@
   <ItemGroup>
     <Compile Include="Maps\Village1\Village0.png">
       <Name>Village0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Maps\Building1\building1.png">
+      <Name>building1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
