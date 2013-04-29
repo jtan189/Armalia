@@ -92,7 +92,7 @@ namespace Armalia
         }
     }
 
-    enum GameState
+   public enum GameState
     {
         Exploration,
         Battle,

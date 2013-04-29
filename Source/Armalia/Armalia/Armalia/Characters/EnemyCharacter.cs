@@ -10,7 +10,7 @@ using Armalia.GameScreens;
 
 namespace Armalia.Characters
 {
-    abstract class EnemyCharacter : CombatableCharacter
+   public abstract class EnemyCharacter : CombatableCharacter
     {
         private static Random rand = new Random();
 
@@ -57,7 +57,7 @@ namespace Armalia.Characters
         }
         public bool isNearPLayer()
         {
-            if (Vector2.Distance(this.position, this.player.position) <= (32*5))
+            if (Vector2.Distance(this.position, this.player.position) <= (32*3))
             {
                 return true;
             }
@@ -67,9 +67,8 @@ namespace Armalia.Characters
         {
             Rectangle cameraView = gameplayScreen.CameraView;
             bool hasMoved = false;
-            MoveDirection moveDir = MoveDirection.None;
+            MoveDirection moveDir = MoveDirection.Right;
             hasCollided = false;
-          
 
             if (IsNearPatrolTarget())
             {

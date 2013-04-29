@@ -2870,6 +2870,15 @@
   </object>
   <object x="32" y="800" width="32" height="736"/>
   <object x="0" y="1536" width="1600" height="64"/>
+  <object name="Knight" type="Enemy" x="448" y="192" width="32" height="32">
+   <properties>
+    <property name="defense" value="30"/>
+    <property name="hp" value="100"/>
+    <property name="speed" value="100"/>
+    <property name="strength" value="10"/>
+    <property name="xp" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="Tile Layer 2" width="50" height="50" visible="0">
   <data>

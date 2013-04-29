@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Armalia.Characters
 {
-    abstract class CombatableCharacter : Character
+    public abstract class CombatableCharacter : Character
     {
         public int HitPoints { get; set; }
         public int ManaPoints { get; set; }

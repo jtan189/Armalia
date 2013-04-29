@@ -11,7 +11,7 @@ namespace Armalia.GameScreens
      /// <summary>
      /// This class will draw our stuff to the screen.
      /// </summary>
-    class ScreenManager : DrawableGameComponent
+   public class ScreenManager : DrawableGameComponent
     {
 
         //private Screen currentScreen;

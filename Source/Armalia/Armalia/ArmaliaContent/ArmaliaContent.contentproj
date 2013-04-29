@@ -50,6 +50,7 @@
     <None Include="Maps\Village1\Village0.tmx">
       <Name>Village0</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Maps\Village1\Village1.tmx">
       <Name>Village1</Name>

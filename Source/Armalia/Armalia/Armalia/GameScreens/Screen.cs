@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Armalia.GameScreens
 {
-    abstract class Screen
+    public abstract class Screen
     {
 
         

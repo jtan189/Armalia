@@ -8,7 +8,7 @@ using Armalia.GameScreens;
 
 namespace Armalia.Characters
 {
-    class Knight : EnemyCharacter
+   public class Knight : EnemyCharacter
     {
 
         public Knight(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,

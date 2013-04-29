@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Armalia.Sprites
 {
-    class ObjectSprite : Sprite
+  public  class ObjectSprite : Sprite
     {
         //public ObjectSprite(Vector2 pos, bool s)
         //    : base(pos, s)

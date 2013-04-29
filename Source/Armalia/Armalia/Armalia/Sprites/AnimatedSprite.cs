@@ -11,7 +11,7 @@ namespace Armalia.Sprites
     /// <summary>
     /// This is the base class for spites that have animation frames
     /// </summary>
-    class AnimatedSprite : Sprite
+ public class AnimatedSprite : Sprite
     {
         private const int DEFAULT_MS_PER_FRAME = 100;
 

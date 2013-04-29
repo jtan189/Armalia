@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Armalia.Sprites
 {
-    class SpriteManager
+  public  class SpriteManager
     {
     }
 }
