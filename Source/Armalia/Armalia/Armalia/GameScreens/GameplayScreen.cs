@@ -36,6 +36,9 @@ namespace Armalia.GameScreens
         private MapHandler mapHandler;
         private Texture2D box;
         private Vector2 borderPos = Vector2.Zero;
+
+       // transition to battle stuff
+       // isZoomingIn, isZoomingOut
         
         // screen components
         private Rectangle mapWindow;
@@ -82,7 +85,7 @@ namespace Armalia.GameScreens
             AnimatedSprite playerSprite = new AnimatedSprite(
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
 
-            MainCharacter playerCharacter = new MainCharacter(playerSprite, initialPlayerPos, playerHP, playerMP,
+            MainCharacter playerCharacter = new MainCharacter("Justin", playerSprite, initialPlayerPos, playerHP, playerMP,
                 playerXP, playerStrength, playerDefense, playerSpeed, cameraView);
 
             player = new Player(playerCharacter);
@@ -102,7 +105,7 @@ namespace Armalia.GameScreens
             // use RolePlayingGameWindows HUD as example
             Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
                 game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
-            sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter);
+            sidebar = new PlayerSidebar(game, manager, sidebarWindow, player.PlayerCharacter);
             sidebar.Load();
 
             // start background music
@@ -113,25 +116,38 @@ namespace Armalia.GameScreens
 
         public void Update(GameTime gameTime)
         {
+            sidebar.Update(gameTime);
+
             // TODO: move handling of state to ScreenManager
             MouseState mouseState = Mouse.GetState();
             if (manager.CurrentState == GameState.Exploration)
             {
                 // draw cursor border
-                borderPos.X = (int)Math.Floor((float)(mouseState.X / 32));
-                borderPos.Y = (int)Math.Floor((float)(mouseState.Y / 32));
-                borderPos.X = (borderPos.X * 32) + (32);
-                borderPos.Y = (borderPos.Y * 32) + (32);
+                //borderPos.X = (int)Math.Floor((float)(mouseState.X / 32));
+                //borderPos.Y = (int)Math.Floor((float)(mouseState.Y / 32));
+                //borderPos.X = (borderPos.X * 32) + (32);
+                //borderPos.Y = (borderPos.Y * 32) + (32);
 
                 level.Update(gameTime);
                 player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
             }
+            else if (manager.CurrentState == GameState.TransitionToBattle)
+            {
+                
+            }
+        }
+
+        public void InitiateBattle(EnemyCharacter enemy)
+        {
+            manager.CurrentState = GameState.TransitionToBattle;
+            sidebar.Enemy = enemy;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
 
-            if (manager.CurrentState == GameState.Exploration)
+            if (manager.CurrentState == GameState.Exploration ||
+                manager.CurrentState == GameState.TransitionToBattle)
             {
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
@@ -144,15 +160,15 @@ namespace Armalia.GameScreens
                 // draw player
                 player.Draw(spriteBatch);
 
-                // draw cursor box
-                spriteBatch.Draw(box,
-                    borderPos,
-                     new Rectangle(0, 0, 32, 32),
-                     Color.White,
-                     0.0f,
-                     Vector2.Zero,
-                     1.0f,
-                     SpriteEffects.None, 0f);
+                //// draw cursor box
+                //spriteBatch.Draw(box,
+                //    borderPos,
+                //     new Rectangle(0, 0, 32, 32),
+                //     Color.White,
+                //     0.0f,
+                //     Vector2.Zero,
+                //     1.0f,
+                //     SpriteEffects.None, 0f);
 
                 spriteBatch.End();
             }

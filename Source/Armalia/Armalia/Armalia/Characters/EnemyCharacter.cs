@@ -10,8 +10,10 @@ using Armalia.GameScreens;
 
 namespace Armalia.Characters
 {
-   public abstract class EnemyCharacter : CombatableCharacter
+    public abstract class EnemyCharacter : CombatableCharacter
     {
+        public static readonly int ATTACK_RANGE = 50;
+
         private static Random rand = new Random();
 
         private List<Point> patrolTargets;
@@ -57,12 +59,38 @@ namespace Armalia.Characters
         }
         public bool isNearPLayer()
         {
-            if (Vector2.Distance(this.position, this.player.position) <= (32*3))
+            if (Vector2.Distance(this.position, this.player.position) <= (32 * 3))
             {
                 return true;
             }
             return false;
         }
+
+        // TODO: make sure enemy and character are facing eachother at start of battle
+        public bool PlayerInAttackRange()
+        {
+
+            //Rectangle verticalRange = new Rectangle(getRectangle().X, getRectangle().Y - ATTACK_RANGE,
+            //    getRectangle().Width, getRectangle().Height + (2 * ATTACK_RANGE));
+            //Rectangle horizontalRange = new Rectangle(getRectangle().X - ATTACK_RANGE, getRectangle().Y,
+            //    getRectangle().Width + (2 * ATTACK_RANGE), getRectangle().Height);
+
+            int playerXCoord = player.getRectangle().X + player.getRectangle().Width / 2; // take midpoint
+            int playerYCoord = player.getRectangle().Y + player.getRectangle().Height / 2;
+            int enemyXCoord = getRectangle().X + getRectangle().Width / 2;
+            int enemyYCoord = getRectangle().Y + getRectangle().Height / 2;
+
+            if ((Math.Abs(enemyXCoord - playerXCoord) <= ATTACK_RANGE) && (enemyYCoord == playerYCoord) ||
+                (Math.Abs(enemyYCoord - playerYCoord) <= ATTACK_RANGE) && (enemyXCoord == playerXCoord))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool Move(GameTime gameTime, Map currentMap, out bool hasCollided)
         {
             Rectangle cameraView = gameplayScreen.CameraView;
@@ -70,49 +98,57 @@ namespace Armalia.Characters
             MoveDirection moveDir = MoveDirection.Right;
             hasCollided = false;
 
-            if (IsNearPatrolTarget())
+
+            if (PlayerInAttackRange())
             {
-                // choose random new target
-                currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
+                gameplayScreen.InitiateBattle(this);
             }
             else
             {
-                if (isNearPLayer() && !(this.player.getRectangle().Intersects( this.getRectangle() ) ) )
+                if (IsNearPatrolTarget())
                 {
-                    if (this.position.X > this.player.position.X)
+                    // choose random new target
+                    currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
+                }
+                else
+                {
+                    if (isNearPLayer() && !(this.player.getRectangle().Intersects(this.getRectangle())))
                     {
-                        moveDir = MoveDirection.Left;
-                    }
-                    else if (this.position.X < this.player.position.X)
-                    {
-                        moveDir = MoveDirection.Right;
-                    }
-                    else
-                    {
-                        if (this.position.Y > this.player.position.Y)
+                        if (this.position.X > this.player.position.X)
                         {
-                            moveDir = MoveDirection.Up;
+                            moveDir = MoveDirection.Left;
+                        }
+                        else if (this.position.X < this.player.position.X)
+                        {
+                            moveDir = MoveDirection.Right;
                         }
                         else
                         {
-                            moveDir = MoveDirection.Down;
+                            if (this.position.Y > this.player.position.Y)
+                            {
+                                moveDir = MoveDirection.Up;
+                            }
+                            else
+                            {
+                                moveDir = MoveDirection.Down;
+                            }
                         }
                     }
-                }
-                
-                else
-                {
-                    if (position.X < currentTarget.X)
-                    {
-                        moveDir = MoveDirection.Right;
-                    }
+
                     else
                     {
-                        moveDir = MoveDirection.Left;
-                        
+                        if (position.X < currentTarget.X)
+                        {
+                            moveDir = MoveDirection.Right;
+                        }
+                        else
+                        {
+                            moveDir = MoveDirection.Left;
+
+                        }
                     }
+                    hasMoved = base.Move(moveDir, currentMap, out hasCollided);
                 }
-                hasMoved = base.Move(moveDir, currentMap, out hasCollided);
             }
 
             // this is gross. change it

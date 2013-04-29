@@ -183,8 +183,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attacks\sword_attack.png">
-      <Name>sword_attack</Name>
+    <Compile Include="Attacks\massive_sword_attack.png">
+      <Name>massive_sword_attack</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Attacks\slice_attack.png">
+      <Name>slice_attack</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

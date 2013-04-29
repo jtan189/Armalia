@@ -16,6 +16,7 @@ namespace Armalia.Characters
         /// can see.
         /// </summary>
         private Rectangle cameraView;
+        public String Name {get; set;}
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -28,10 +29,11 @@ namespace Armalia.Characters
         /// <param name="defense">The defense attribute</param>
         /// <param name="speed">The movement speed of the character</param>
         /// <param name="cameraView">The subsection of the map to the player can see.</param>
-        public MainCharacter(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
+        public MainCharacter(String name, AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
             int expLevel, int strength, int defense, Vector2 speed, Rectangle cameraView)
             : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
         {
+            this.Name = name;
             this.cameraView = cameraView;
         }
         /// <summary>

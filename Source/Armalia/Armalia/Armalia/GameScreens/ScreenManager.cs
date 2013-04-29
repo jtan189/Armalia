@@ -82,6 +82,9 @@ namespace Armalia.GameScreens
                 case GameState.Exploration:
                     DrawExplorationScreen(gameTime, spriteBatch);
                     break;
+                case GameState.TransitionToBattle:
+                    DrawExplorationScreen(gameTime, spriteBatch);
+                    break;
             }
 
             base.Draw(gameTime);

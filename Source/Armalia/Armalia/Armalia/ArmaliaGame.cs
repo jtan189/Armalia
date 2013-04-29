@@ -95,6 +95,7 @@ namespace Armalia
    public enum GameState
     {
         Exploration,
+        TransitionToBattle,
         Battle,
         CutScene,
         GameOver,
