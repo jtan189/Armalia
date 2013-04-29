@@ -19,6 +19,7 @@ namespace Armalia.GameScreens
     ///</summary>
    public  class GameplayScreen : Screen
     {
+       int teleOnce = 0;
         /// <summary>
         /// Default map window size (section of the screen for map)
         /// </summary>
@@ -95,7 +96,7 @@ namespace Armalia.GameScreens
             mapHandler = new MapHandler(game, playerCharacter, this);
             try
             {
-                level = mapHandler.getMap("village1");
+                level = mapHandler.getMap("Village0");
             }
             catch (MapDoesNotExistException e)
             {
@@ -134,13 +135,25 @@ namespace Armalia.GameScreens
                 borderPos.X = (borderPos.X * 32) + (32);
                 borderPos.Y = (borderPos.Y * 32) + (32);
 
-                level.Update(gameTime);
+               
                 string telePort = level.telePort(playerCharacter.Box());
-                if (telePort != null)
+                if (telePort != null && this.teleOnce < 1)
                 {
+                    string from = level.getName();
+                    
+                    Console.WriteLine("Old Name: " + from);
+                    Point newPlayerPos = level.getGetTelePoint(telePort);
                     level = mapHandler.getMap(telePort);
+                    Console.WriteLine("New name: " + level.getName());
+                    Console.WriteLine("FROM = " + from);
+                    
+                    playerCharacter.setPosition(newPlayerPos);
+                    this.teleOnce++;
+
+                    //Need to move player.
 
                 }
+                level.Update(gameTime);
                 player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
             }
         }
@@ -156,8 +169,8 @@ namespace Armalia.GameScreens
                 sidebar.Draw(gameTime, spriteBatch);
 
                 // draw level
-                level.Draw(spriteBatch, mapWindow, player.CameraView);
-
+                level.Draw(this.game.GraphicsDevice, spriteBatch, mapWindow, player.CameraView);
+                
                 // draw player
                 player.Draw(spriteBatch);
 

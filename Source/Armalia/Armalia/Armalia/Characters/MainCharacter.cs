@@ -51,6 +51,13 @@ namespace Armalia.Characters
             get { return cameraView; }
             private set { cameraView = value; }
         }
+
+        public void setPosition(Point newP)
+        {
+            Console.WriteLine("Position = " + newP.ToString());
+            this.position.X = newP.X;
+            this.position.Y = newP.Y;
+        }
         /// <summary>
         /// This uses input of the player to move the character
         /// </summary>
@@ -107,6 +114,7 @@ namespace Armalia.Characters
         /// <param name="spriteBatch">The spritebatch to use to draw</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
+            
             int xOffset = (int)position.X - CameraView.X;
             int yOffset = (int)position.Y - CameraView.Y;
             Vector2 drawPosition = new Vector2(xOffset, yOffset);

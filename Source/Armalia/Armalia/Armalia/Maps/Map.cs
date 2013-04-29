@@ -27,6 +27,10 @@ namespace Armalia.Maps
         {
             spriteBatch.Draw(mapImage, mapWindow, cameraView, Color.White, 0f, Vector2.Zero, SpriteEffects.None, MAY_LAYER_VALUE);
         }
+        public List<Rectangle> getBounds()
+        {
+            return this.boundaries;
+        }
 
         public bool CollidesWithBoundary(Rectangle characterRect)
         {

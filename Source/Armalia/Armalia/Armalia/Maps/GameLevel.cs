@@ -27,11 +27,12 @@ namespace Armalia.Maps
         private Song bgMusic;
         private List<GameObject> gameObjects;
         private List<EnemyCharacter> enemies;
-
-        public GameLevel(Map levelMap, Song bgMusic, List<EnemyCharacter> enemies, List<GameObject> objs) {
+        private string name;
+        public GameLevel(string name, Map levelMap, Song bgMusic, List<EnemyCharacter> enemies, List<GameObject> objs) {
             this.map = levelMap;
             this.bgMusic = bgMusic;
             this.enemies = enemies;
+            this.name = name;
             this.gameObjects = objs;
         }
 
@@ -80,13 +81,50 @@ namespace Armalia.Maps
         {
             // draw map
            map.Draw(spriteBatch, mapWindow, cameraView);
-
+        
             // draw enemies, NPCs, etc
            foreach (EnemyCharacter enemy in enemies)
            {
                enemy.Draw(spriteBatch);
            }
         }
+        public void Draw(GraphicsDevice gd, SpriteBatch spriteBatch, Rectangle mapWindow, Rectangle cameraView)
+        {
+            // draw map
+            map.Draw(spriteBatch, mapWindow, cameraView);
+            var t = new Texture2D(gd, 1, 1);
+            t.SetData(new[] { Color.White });
+            foreach (Rectangle r in this.map.getBounds())
+            {
+                spriteBatch.Draw(t, r, Color.White*0.3f);
+            }
+            // draw enemies, NPCs, etc
+            foreach (EnemyCharacter enemy in enemies)
+            {
+                enemy.Draw(spriteBatch);
+            }
+        }
 
+        public Point getGetTelePoint(string from)
+        {
+            foreach (GameObject obj in gameObjects)
+            {
+                if (obj.GetType() == typeof(Portal))
+                {
+                    Portal port = (Portal)obj;
+                    if (port.getMapTo().Equals(from) )
+                    {
+                        return port.getMapToPt();
+                    }
+                }
+            }
+            return new Point(0, 0);
+        }
+
+        public string getName()
+        {
+            return this.name;
+        }
+        //end clss
     }
 }

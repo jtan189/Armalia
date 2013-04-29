@@ -21,12 +21,14 @@ using Armalia.Object;
 namespace Armalia.Maps
 {
 
+
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
     public class MapMaker 
     {
-       
+        const int spawnXOffset = 0;
+        const int spawnYOffset = -70;
         /// <summary>
         /// The Game object
         /// </summary>
@@ -56,6 +58,7 @@ namespace Armalia.Maps
         public Map BuildLevel(String mapFilename)
         {
             // load texture
+            Console.WriteLine("Map File Name " + mapFilename);
             Texture2D mapTexture = game.Content.Load<Texture2D>(mapFilename);
 
             // load boundaries
@@ -118,7 +121,6 @@ namespace Armalia.Maps
                 if (obj.Attribute("type") != null)
                 {
                     type = obj.Attribute("type").Value.ToString().ToLower();
-                    Console.WriteLine(type);
                 }
                 if (type != null && type.Equals("enemy"))
                 {
@@ -215,15 +217,16 @@ namespace Armalia.Maps
                 {
                     var properties = obj.Elements("properties").Elements().ToList();
                     string name = obj.Attribute("name").Value.ToString().ToLower();
+                    Console.WriteLine("NAME:" + name);
                     int xcoord = Convert.ToInt32(obj.Attribute("x").Value);
                     int ycoord = Convert.ToInt32(obj.Attribute("y").Value);
                     int width = Convert.ToInt32(obj.Attribute("width").Value);
                     int height = Convert.ToInt32(obj.Attribute("height").Value);
-                    Console.WriteLine("===============> " + name);
                     switch (name)
                     {
-                        default:
-                        case "portal":
+                       
+                        case "door":
+                            Console.WriteLine("test3");
                             string mapTo = "";
                             string mapFrom = mapFilename.Split('\\')[2];
                             foreach (var prop in properties)
@@ -233,13 +236,15 @@ namespace Armalia.Maps
                                 {
                                     default:
                                     case "level":
+
                                         mapTo = prop.Attribute("value").Value;
-                                        Console.WriteLine(" LEVEL NAME = " + mapTo);
+                                
                                     break;
                                 }
                             }
-                            Console.WriteLine("------------====================================");
-                            gameObjects.Add(new Portal(xcoord, ycoord, mapTo, mapFrom, width, height));
+                            //Map Location point?
+                            Point mapToPt = this.getMapToPoint(mapFilename, mapTo);
+                            gameObjects.Add(new Portal(xcoord, ycoord, mapTo, mapFrom, width, height, mapToPt));
                         break;
 
                     }
@@ -250,7 +255,52 @@ namespace Armalia.Maps
         }
 
 
+        public Point getMapToPoint(string from, string to)
+        {
+            var mapXML = XElement.Load(game.Content.RootDirectory + "\\Maps\\" + to + "\\" + to + ".tmx");
+            var objectElements = mapXML.Elements("objectgroup").Elements().ToList();
 
+            // convert boundaries to Rectangles; store in list
+            List<GameObject> gameObjects = new List<GameObject>();
+
+            foreach (var obj in objectElements)
+            {
+                string type = null;
+                int x = 0;
+                int y = 0;
+                if (obj.Attribute("type") != null)
+                {
+                    type = obj.Attribute("type").Value.ToString().ToLower();
+                }
+                if (type != null && !type.Equals("enemy"))
+                {
+                    if ((obj.Attribute("type").Value.ToString().ToLower() == "portal") )
+                    {
+                        var properties = obj.Elements("properties").Elements().ToList();
+                        x = Convert.ToInt32(obj.Attribute("x").Value);
+                        y = Convert.ToInt32(obj.Attribute("y").Value);
+                        foreach (var prop in properties)
+                        {
+                            string propName = prop.Attribute("name").Value.ToString().ToLower();
+                            switch (propName)
+                            {
+                               
+                                case "level":
+
+                                    if (prop.Attribute("value").Value.ToString() == from.Split('\\')[2])
+                                    {
+                                        Console.WriteLine("test");
+                                        return new Point(x, y);
+                                    }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("From = " + from + " and to = " + to);
+            return new Point(0, 0);
+        }
 
 //END OF CLASS
     }

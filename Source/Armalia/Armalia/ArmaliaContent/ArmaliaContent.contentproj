@@ -47,8 +47,12 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <None Include="Maps\Building1\building1.tmx">
-      <Name>building1</Name>
+    <None Include="Maps\Building1\Building1.tmx">
+      <Name>Building1</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Maps\Village0\Village0.tmx">
+      <Name>Village0</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Maps\Village1\Village0.tmx">
@@ -56,22 +60,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Maps\Village1\Village1.tmx">
-      <Name>Village1</Name>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Compile Include="SpriteFonts\MainCharacterStats.spritefont">
       <Name>MainCharacterStats</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Maps\Village1\Village1.png">
-      <Name>Village1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -187,8 +179,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Maps\Building1\building1.png">
-      <Name>building1</Name>
+    <Compile Include="Maps\Building1\Building1.png">
+      <Name>Building1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Maps\test\" />
+    <Folder Include="NewFolder1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Maps\Village0.png">
+      <Name>Village0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Maps\Village0\Village0.png">
+      <Name>Village0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
