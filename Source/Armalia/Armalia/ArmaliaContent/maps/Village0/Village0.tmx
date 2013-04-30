@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="MapStartPosX" value="80"/>
+  <property name="MapStartPosY" value="50"/>
+ </properties>
  <tileset firstgid="1" name="Village1_Tileset" tilewidth="32" tileheight="32">
   <image source="Village1_Tileset.png" width="2048" height="2048"/>
  </tileset>
@@ -2901,13 +2905,15 @@
   <object x="256" y="704" width="64" height="32"/>
   <object x="384" y="704" width="64" height="32"/>
   <object name="House" x="256" y="576" width="192" height="128"/>
-  <object name="Door" type="Portal" x="320" y="736" width="64" height="32">
+  <object name="Door" type="Portal" x="319" y="731" width="60" height="2">
    <properties>
     <property name="level" value="Building1"/>
+    <property name="startPositionX" value="870"/>
+    <property name="startPositionY" value="930"/>
    </properties>
   </object>
  </objectgroup>
- <layer name="Tile Layer 2" width="50" height="50" visible="0">
+ <layer name="Tile Layer 2" width="50" height="50">
   <data>
    <tile gid="0"/>
    <tile gid="0"/>

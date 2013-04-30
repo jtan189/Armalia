@@ -11,6 +11,7 @@ using Armalia.Sidebar;
 using Microsoft.Xna.Framework.Input;
 using Armalia.Exceptions;
 using Microsoft.Xna.Framework.Media;
+using Armalia.Object;
 
 namespace Armalia.GameScreens
 {
@@ -19,7 +20,7 @@ namespace Armalia.GameScreens
     ///</summary>
    public  class GameplayScreen : Screen
     {
-       int teleOnce = 0;
+       //int teleOnce = 0;
         /// <summary>
         /// Default map window size (section of the screen for map)
         /// </summary>
@@ -96,9 +97,9 @@ namespace Armalia.GameScreens
             mapHandler = new MapHandler(game, playerCharacter, this);
             try
             {
-                level = mapHandler.getMap("Village0");
+                level = mapHandler.getLevel("Village0");
             }
-            catch (MapDoesNotExistException e)
+            catch (MapDoesNotExistException)
             {
                 this.game.Exit();
             }
@@ -135,24 +136,61 @@ namespace Armalia.GameScreens
                 borderPos.X = (borderPos.X * 32) + (32);
                 borderPos.Y = (borderPos.Y * 32) + (32);
 
-               
-                string telePort = level.telePort(playerCharacter.Box());
-                if (telePort != null && this.teleOnce < 1)
+                // level teleportation stuff
+
+                foreach (LevelObject obj in level.LevelObjects)
                 {
-                    string from = level.getName();
-                    
-                    Console.WriteLine("Old Name: " + from);
-                    Point newPlayerPos = level.getGetTelePoint(telePort);
-                    level = mapHandler.getMap(telePort);
-                    Console.WriteLine("New name: " + level.getName());
-                    Console.WriteLine("FROM = " + from);
-                    
-                    playerCharacter.setPosition(newPlayerPos);
-                    this.teleOnce++;
+                    if (obj.GetType() == typeof(Portal))
+                    {
+                        Portal portal = (Portal)obj;
+                        if (portal.Collides(player.PlayerCharacter))
+                        {
+                            //level.CharReturnPosition = new Vector2(playerCharacter.position.X,
+                            //    playerCharacter.position.Y + playerCharacter.Speed.Y);
+                            GameLevel teleportLevel = portal.DestinationLevel;
+                            level = teleportLevel;
+                            playerCharacter.position = portal.CharStartPosition;
 
-                    //Need to move player.
-
+                            // center camera
+                            playerCharacter.CameraView = new Rectangle(
+                                (int) (portal.CharStartPosition.X - (playerCharacter.CameraView.Width / 2)),
+                                (int) (portal.CharStartPosition.Y - (playerCharacter.CameraView.Height / 2)),
+                                playerCharacter.CameraView.Width, playerCharacter.CameraView.Height);
+                        }
+                    }
                 }
+
+                //if (obj.GetType() == typeof(Portal))
+                //{
+                //    Portal port = (Portal)obj;
+                //    if (port.Collide(playerPos))
+                //    {
+                //        String teleportLevelName = port.getMapTo();
+
+                //    }
+                //}
+
+                //string telePort = level.telePort(playerCharacter.Box());
+
+
+                //if (telePort != null && this.teleOnce < 1)
+                //{
+                //    string from = level.getName();
+                    
+                //    Console.WriteLine("Old Name: " + from);
+                //    Point newPlayerPos = level.getGetTelePoint(telePort);
+                //    level = mapHandler.getMap(telePort);
+                //    Console.WriteLine("New name: " + level.getName());
+                //    Console.WriteLine("FROM = " + from);
+                    
+                //    playerCharacter.setPosition(newPlayerPos);
+                //    this.teleOnce++;
+
+                //    //Need to move player.
+
+                //}
+
+
                 level.Update(gameTime);
                 player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
             }
@@ -169,7 +207,7 @@ namespace Armalia.GameScreens
                 sidebar.Draw(gameTime, spriteBatch);
 
                 // draw level
-                level.Draw(this.game.GraphicsDevice, spriteBatch, mapWindow, player.CameraView);
+                level.Draw(spriteBatch, mapWindow, player.CameraView);
                 
                 // draw player
                 player.Draw(spriteBatch);

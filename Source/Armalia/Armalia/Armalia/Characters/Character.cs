@@ -106,8 +106,8 @@ namespace Armalia.Characters
                 Rectangle movedRectangle = new Rectangle((int)movedPosition.X, (int)movedPosition.Y, sprite.FrameSize.X, sprite.FrameSize.Y);
                 bool isCollision = currentMap.CollidesWithBoundary(movedRectangle);
                 hasCollided = isCollision; // needed to avoid abruptly stopping animation when collision occurs
-               if (!(outOfBounds || isCollision))
-               {
+                if (!(outOfBounds || isCollision))
+                {
                     position = movedPosition;
                     hasMoved = true;
                 }

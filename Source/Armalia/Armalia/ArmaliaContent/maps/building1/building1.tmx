@@ -2518,7 +2518,9 @@
   <object x="576" y="992" width="288" height="64"/>
   <object name="Door" type="Portal" x="864" y="992" width="64" height="64">
    <properties>
-    <property name="level" value="Village0"/>
+	<property name="level" value="Village0"/>
+    <property name="startPositionX" value="332"/>
+    <property name="startPositionY" value="757"/>
    </properties>
   </object>
  </objectgroup>

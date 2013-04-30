@@ -128,7 +128,7 @@
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapHandler.cs" />
     <Compile Include="Maps\MapMaker.cs" />
-    <Compile Include="Object\GameObject.cs" />
+    <Compile Include="Object\LevelObject.cs" />
     <Compile Include="Object\Portal.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

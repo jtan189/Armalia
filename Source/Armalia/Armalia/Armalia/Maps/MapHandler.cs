@@ -13,7 +13,7 @@ namespace Armalia.Maps
 {
    
     
- public   class MapHandler
+ public class MapHandler
     {
         private Dictionary<string, string> mapFiles;
         private Dictionary<string, GameLevel> gameLevels;
@@ -27,14 +27,15 @@ namespace Armalia.Maps
             mapFiles = new Dictionary<string, string>();
             gameLevels = new Dictionary<string, GameLevel>();
             songFiles = new Dictionary<string, string>();
+            mapFiles.Add("Building1", @"Maps\Building1\Building1"); // this needs to come before Village (TODO: don't require that)
             mapFiles.Add("Village0",  @"Maps\Village0\Village0");
-            mapFiles.Add("Building1", @"Maps\Building1\Building1");
+
             songFiles.Add("Village0", @"Music\Home");
             //Song villageBgMusic = game.Content.Load<Song>(@"Music\Home");
             this.gs = gs;
             this.game = gm;
             this.playerChar = pc;
-            this.mapMaker = new MapMaker(gm);
+            this.mapMaker = new MapMaker(gm, this);
             this.loadMaps();
             //Map villageMap = mapMaker.BuildLevel(villageMapFilename);
             //level = new GameLevel(villageMap);
@@ -51,16 +52,16 @@ namespace Armalia.Maps
                    song = this.game.Content.Load<Song>(songFiles[map.Key]);
                 }
                 List <EnemyCharacter> enemies = this.mapMaker.GetEnemies(map.Value, this.playerChar, this.gs);
-                List<GameObject> objs = this.mapMaker.GetObjects(map.Value);
+                List<LevelObject> objs = this.mapMaker.GetObjects(map.Value);
                
-                GameLevel gl = new GameLevel(map.Key, this.mapMaker.BuildLevel(map.Value), song,  enemies, objs);
+                GameLevel gl = new GameLevel(map.Key, this.mapMaker.BuildMap(map.Value), song,  enemies, objs);
 
                 gameLevels.Add(map.Key, gl);
                 x++;
             }
         }
 
-        public GameLevel getMap(string mapName)
+        public GameLevel getLevel(string mapName)
         {
             if(this.gameLevels.ContainsKey(mapName) )
             {

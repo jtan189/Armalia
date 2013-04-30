@@ -11,6 +11,7 @@ namespace Armalia.Maps
     public class Map
     {
         public const float MAY_LAYER_VALUE = 1f;
+        //public Vector2 CharStartPosition { get; set; }
 
         private Texture2D mapImage;
         private List<Rectangle> boundaries;
