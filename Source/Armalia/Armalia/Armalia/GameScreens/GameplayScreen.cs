@@ -108,7 +108,7 @@ namespace Armalia.GameScreens
             // use RolePlayingGameWindows HUD as example
             Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
                 game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
-            sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter, level);
+            sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter);
             sidebar.Load();
 
             // start background music
