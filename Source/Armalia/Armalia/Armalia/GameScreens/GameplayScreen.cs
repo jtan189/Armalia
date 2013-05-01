@@ -106,10 +106,10 @@ namespace Armalia.GameScreens
 
             // load on-screen menu
             // use RolePlayingGameWindows HUD as example
-            Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
-                game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
-            sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter);
-            sidebar.Load();
+          //  Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
+          //      game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
+         //   sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter, level);
+         //   sidebar.Load();
 
             // start background music
             MediaPlayer.IsRepeating = true;
@@ -204,7 +204,7 @@ namespace Armalia.GameScreens
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
                 // draw sidebar
-                sidebar.Draw(gameTime, spriteBatch);
+            //    sidebar.Draw(gameTime, spriteBatch);
 
                 // draw level
                 level.Draw(spriteBatch, mapWindow, player.CameraView);
