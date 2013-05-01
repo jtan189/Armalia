@@ -67,6 +67,12 @@ namespace Armalia.GameScreens
                 case GameState.Exploration:
                     gameplayScreen.Update(gameTime);
                     break;
+                case GameState.TransitionToBattle:
+                    gameplayScreen.Update(gameTime);
+                    break;
+                case GameState.Battle:
+                    gameplayScreen.Update(gameTime);
+                    break;
             }
 
             base.Update(gameTime);
@@ -83,6 +89,9 @@ namespace Armalia.GameScreens
                     DrawExplorationScreen(gameTime, spriteBatch);
                     break;
                 case GameState.TransitionToBattle:
+                    DrawExplorationScreen(gameTime, spriteBatch);
+                    break;
+                case GameState.Battle:
                     DrawExplorationScreen(gameTime, spriteBatch);
                     break;
             }

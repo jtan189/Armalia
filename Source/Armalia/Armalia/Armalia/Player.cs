@@ -42,6 +42,15 @@ namespace Armalia
             }
         }
 
+        public bool PressedAttack()
+        {
+
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+                return true;
+            else
+                return false;
+        }
+
         public Rectangle CameraView { get { return character.CameraView; } }
 
         public void Update(GameTime gameTime, Map currentMap)

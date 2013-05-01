@@ -98,6 +98,11 @@ namespace Armalia.Characters
             }
             return hasMoved;
         }
+
+        //public void Attack(CombatableCharacter enemy)
+        //{
+
+        //}
         /// <summary>
         /// This draws the character
         /// </summary>

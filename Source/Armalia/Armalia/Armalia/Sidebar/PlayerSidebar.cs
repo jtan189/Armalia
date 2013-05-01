@@ -18,17 +18,17 @@ namespace Armalia.Sidebar
         private Texture2D sidebarBackground;
         private Rectangle sidebarWindow;
         private ScreenManager manager;
+        private GameplayScreen gameplayScreen;
 
         private MainCharacter mainCharacter;
-        public EnemyCharacter Enemy {get; set;};
 
-        public PlayerSidebar(ArmaliaGame game, ScreenManager manager, Rectangle sidebarWindow, MainCharacter mainCharacter)
+        public PlayerSidebar(ArmaliaGame game, ScreenManager manager, GameplayScreen gameplayScreen, Rectangle sidebarWindow, MainCharacter mainCharacter)
         {
             this.game = game;
             this.sidebarWindow = sidebarWindow;
             this.mainCharacter = mainCharacter;
             this.manager = manager;
-
+            this.gameplayScreen = gameplayScreen;
         }
 
         public void Load()
@@ -41,11 +41,6 @@ namespace Armalia.Sidebar
         public void Update(GameTime gameTime)
         {
           
-        }
-
-        public void Update(GameTime gameTime, EnemyCharacter enemy)
-        {
-            Enemy = enemy;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -74,14 +69,16 @@ namespace Armalia.Sidebar
             spriteBatch.DrawString(charStatsFont, "Strength: " + mainCharacter.Strength.ToString(), mainCharStrengthLocation, Color.Black);
             spriteBatch.DrawString(charStatsFont, "Defense: " + mainCharacter.Defense.ToString(), mainCharDefenseLocation, Color.Black);
 
-            if (manager.CurrentState == GameState.TransitionToBattle)
+            if ((manager.CurrentState == GameState.TransitionToBattle ||
+                manager.CurrentState == GameState.Battle) && gameplayScreen.CurrentBattle != null)
             {
-                spriteBatch.DrawString(charStatsFont, Enemy.GetType().Name + ":", enemyCharNameLocation, Color.Black);
-                spriteBatch.DrawString(charStatsFont, "HP: " + Enemy.HitPoints.ToString(), enemyCharHpLocation, Color.Black);
-                spriteBatch.DrawString(charStatsFont, "MP: " + Enemy.ManaPoints.ToString(), enemyCharMpLocation, Color.Black);
-                spriteBatch.DrawString(charStatsFont, "XP: " + Enemy.ExpLevel.ToString(), enemyCharXpLocation, Color.Black);
-                spriteBatch.DrawString(charStatsFont, "Strength: " + Enemy.Strength.ToString(), enemyCharStrengthLocation, Color.Black);
-                spriteBatch.DrawString(charStatsFont, "Defense: " + Enemy.Defense.ToString(), enemyCharDefenseLocation, Color.Black);
+                EnemyCharacter enemy = gameplayScreen.CurrentBattle.Enemy;
+                spriteBatch.DrawString(charStatsFont, enemy.GetType().Name + ":", enemyCharNameLocation, Color.Black);
+                spriteBatch.DrawString(charStatsFont, "HP: " + enemy.HitPoints.ToString(), enemyCharHpLocation, Color.Black);
+                spriteBatch.DrawString(charStatsFont, "MP: " + enemy.ManaPoints.ToString(), enemyCharMpLocation, Color.Black);
+                spriteBatch.DrawString(charStatsFont, "XP: " + enemy.ExpLevel.ToString(), enemyCharXpLocation, Color.Black);
+                spriteBatch.DrawString(charStatsFont, "Strength: " + enemy.Strength.ToString(), enemyCharStrengthLocation, Color.Black);
+                spriteBatch.DrawString(charStatsFont, "Defense: " + enemy.Defense.ToString(), enemyCharDefenseLocation, Color.Black);
             }
 
         }

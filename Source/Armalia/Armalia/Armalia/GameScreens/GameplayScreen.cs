@@ -11,6 +11,7 @@ using Armalia.Sidebar;
 using Microsoft.Xna.Framework.Input;
 using Armalia.Exceptions;
 using Microsoft.Xna.Framework.Media;
+using Armalia.BattleSystem;
 
 namespace Armalia.GameScreens
 {
@@ -39,6 +40,7 @@ namespace Armalia.GameScreens
 
        // transition to battle stuff
        // isZoomingIn, isZoomingOut
+        public Battle CurrentBattle {get; set;}
         
         // screen components
         private Rectangle mapWindow;
@@ -105,7 +107,7 @@ namespace Armalia.GameScreens
             // use RolePlayingGameWindows HUD as example
             Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
                 game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
-            sidebar = new PlayerSidebar(game, manager, sidebarWindow, player.PlayerCharacter);
+            sidebar = new PlayerSidebar(game, manager, this, sidebarWindow, player.PlayerCharacter);
             sidebar.Load();
 
             // start background music
@@ -117,6 +119,8 @@ namespace Armalia.GameScreens
         public void Update(GameTime gameTime)
         {
             sidebar.Update(gameTime);
+            level.Update(gameTime);
+            player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
 
             // TODO: move handling of state to ScreenManager
             MouseState mouseState = Mouse.GetState();
@@ -128,26 +132,45 @@ namespace Armalia.GameScreens
                 //borderPos.X = (borderPos.X * 32) + (32);
                 //borderPos.Y = (borderPos.Y * 32) + (32);
 
-                level.Update(gameTime);
-                player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
+                //level.Update(gameTime);
+                //player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
             }
             else if (manager.CurrentState == GameState.TransitionToBattle)
             {
-                
+                // have face each other
+                manager.CurrentState = GameState.Battle;
+
+            }
+            else if (manager.CurrentState == GameState.Battle)
+            {
+                if (player.PressedAttack())
+                {
+                    bool enemyDead;
+                    CurrentBattle.ExecutePlayerAttack(out enemyDead);
+
+                    // if enemy is dead, remove from game
+                    if (enemyDead)
+                    {
+                        level.removeEnemy(CurrentBattle.Enemy);
+                        manager.CurrentState = GameState.Exploration;
+                    }
+                    
+                }
             }
         }
 
         public void InitiateBattle(EnemyCharacter enemy)
         {
             manager.CurrentState = GameState.TransitionToBattle;
-            sidebar.Enemy = enemy;
+            CurrentBattle = new Battle(player.PlayerCharacter, enemy);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
 
             if (manager.CurrentState == GameState.Exploration ||
-                manager.CurrentState == GameState.TransitionToBattle)
+                manager.CurrentState == GameState.TransitionToBattle ||
+                manager.CurrentState == GameState.Battle)
             {
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 

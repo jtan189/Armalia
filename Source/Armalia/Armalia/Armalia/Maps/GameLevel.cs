@@ -41,6 +41,11 @@ namespace Armalia.Maps
         {
             this.enemies = enemies;
         }
+
+        public void removeEnemy(EnemyCharacter enemy)
+        {
+            enemies.Remove(enemy);
+        }
         /// <summary>
         /// This draws the gam level
         /// </summary>
