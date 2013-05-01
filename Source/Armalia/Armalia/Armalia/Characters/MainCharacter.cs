@@ -39,25 +39,27 @@ namespace Armalia.Characters
         /// </summary>
         public void LevelUp() { }
 
-        public Rectangle Box()
-        {
-            return new Rectangle((int)position.X, (int)position.Y, (int)sprite.Size().X, (int)sprite.Size().Y);
-        }
+        //public Rectangle Box()
+        //{
+        //    return new Rectangle((int)position.X, (int)position.Y, (int)sprite.Size().X, (int)sprite.Size().Y);
+        //}
         /// <summary>
         /// The view of the map the characte rhas
         /// </summary>
         public Rectangle CameraView
         {
             get { return cameraView; }
-            private set { cameraView = value; }
+            set { cameraView = value; }
         }
 
-        public void setPosition(Point newP)
-        {
-            Console.WriteLine("Position = " + newP.ToString());
-            this.position.X = newP.X;
-            this.position.Y = newP.Y;
-        }
+        public Vector2 Speed { get { return speed; } }
+
+        //public void setPosition(Point newP)
+        //{
+        //    Console.WriteLine("Position = " + newP.ToString());
+        //    this.position.X = newP.X;
+        //    this.position.Y = newP.Y;
+        //}
         /// <summary>
         /// This uses input of the player to move the character
         /// </summary>
