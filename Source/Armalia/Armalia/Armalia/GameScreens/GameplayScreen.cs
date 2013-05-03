@@ -87,8 +87,15 @@ namespace Armalia.GameScreens
             AnimatedSprite playerSprite = new AnimatedSprite(
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
 
+            Texture2D swordTexture = game.Content.Load<Texture2D>(@"Attacks\massive_sword");
+            int swordMsPerFrame = 16;
+            float swordScale = 0.5f;
+            Vector2 swordGripPoint = new Vector2(12, 139);
+
+            SwordSprite playerSwordSprite = new SwordSprite(swordTexture, swordMsPerFrame, swordScale, swordGripPoint);
+
             MainCharacter playerCharacter = new MainCharacter("Justin", playerSprite, initialPlayerPos, playerHP, playerMP,
-                playerXP, playerStrength, playerDefense, playerSpeed, cameraView);
+                playerXP, playerStrength, playerDefense, playerSpeed, cameraView, playerSwordSprite);
 
             player = new Player(playerCharacter);
 
@@ -98,7 +105,7 @@ namespace Armalia.GameScreens
             {
                 level = mapHandler.getMap("village1");
             }
-            catch (MapDoesNotExistException e)
+            catch (MapDoesNotExistException)
             {
                 this.game.Exit();
             }
@@ -145,16 +152,16 @@ namespace Armalia.GameScreens
             {
                 if (player.PressedAttack())
                 {
-                    bool enemyDead;
-                    CurrentBattle.ExecutePlayerAttack(out enemyDead);
+                    CurrentBattle.InitiatePlayerAttack();
+                }
 
-                    // if enemy is dead, remove from game
-                    if (enemyDead)
-                    {
-                        level.removeEnemy(CurrentBattle.Enemy);
-                        manager.CurrentState = GameState.Exploration;
-                    }
-                    
+                bool battleOver;
+                CurrentBattle.UpdateBattle(gameTime, out battleOver);
+
+                if (battleOver)
+                {
+                    CurrentBattle = null;
+                    manager.CurrentState = GameState.Exploration;
                 }
             }
         }
@@ -162,7 +169,7 @@ namespace Armalia.GameScreens
         public void InitiateBattle(EnemyCharacter enemy)
         {
             manager.CurrentState = GameState.TransitionToBattle;
-            CurrentBattle = new Battle(player.PlayerCharacter, enemy);
+            CurrentBattle = new Battle(player.PlayerCharacter, enemy, level);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -182,6 +189,11 @@ namespace Armalia.GameScreens
 
                 // draw player
                 player.Draw(spriteBatch);
+
+                if (manager.CurrentState == GameState.Battle)
+                {
+                    CurrentBattle.DrawBattle(spriteBatch);
+                }
 
                 //// draw cursor box
                 //spriteBatch.Draw(box,

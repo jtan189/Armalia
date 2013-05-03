@@ -17,6 +17,8 @@ namespace Armalia.Characters
         /// </summary>
         private Rectangle cameraView;
         public String Name {get; set;}
+
+        public SwordSprite Sword { get; set; }
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -30,11 +32,12 @@ namespace Armalia.Characters
         /// <param name="speed">The movement speed of the character</param>
         /// <param name="cameraView">The subsection of the map to the player can see.</param>
         public MainCharacter(String name, AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
-            int expLevel, int strength, int defense, Vector2 speed, Rectangle cameraView)
+            int expLevel, int strength, int defense, Vector2 speed, Rectangle cameraView, SwordSprite swordSprite)
             : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
         {
             this.Name = name;
             this.cameraView = cameraView;
+            this.Sword = swordSprite;
         }
         /// <summary>
         /// This is implemented for level up
@@ -62,12 +65,12 @@ namespace Armalia.Characters
             {
 
                 // center x coord of camera
-                if (position.X + (sprite.FrameSize.X / 2) <= (cameraView.Width / 2))
+                if (position.X + (CharacterSprite.FrameSize.X / 2) <= (cameraView.Width / 2))
                 {
                     // center camera to left edge
                     cameraView.X = 0;
                 }
-                else if (position.X + (sprite.FrameSize.X / 2) >= currentMap.Size.X - (cameraView.Width / 2))
+                else if (position.X + (CharacterSprite.FrameSize.X / 2) >= currentMap.Size.X - (cameraView.Width / 2))
                 {
                     // center camera to right edge
                     cameraView.X = currentMap.Size.X - cameraView.Width;
@@ -76,16 +79,16 @@ namespace Armalia.Characters
                 else
                 {
                     // center camera x coord to player position
-                    cameraView.X = (int)position.X - (cameraView.Width / 2) + (sprite.FrameSize.X / 2);
+                    cameraView.X = (int)position.X - (cameraView.Width / 2) + (CharacterSprite.FrameSize.X / 2);
                 }
 
                 // center y cood of camera
-                if (position.Y + (sprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
+                if (position.Y + (CharacterSprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
                 {
                     // center camera to top edge
                     cameraView.Y = 0;
                 }
-                else if (position.Y + (sprite.FrameSize.Y / 2) >= currentMap.Size.Y - (cameraView.Height / 2))
+                else if (position.Y + (CharacterSprite.FrameSize.Y / 2) >= currentMap.Size.Y - (cameraView.Height / 2))
                 {
                     // center camera to bottom edge
                     cameraView.Y = currentMap.Size.Y - cameraView.Height;
@@ -93,7 +96,7 @@ namespace Armalia.Characters
                 else
                 {
                     // center camera y coord to player position
-                    cameraView.Y = (int)position.Y - (cameraView.Height / 2) + (sprite.FrameSize.Y / 2);
+                    cameraView.Y = (int)position.Y - (cameraView.Height / 2) + (CharacterSprite.FrameSize.Y / 2);
                 }
             }
             return hasMoved;
@@ -113,7 +116,7 @@ namespace Armalia.Characters
             int yOffset = (int)position.Y - CameraView.Y;
             Vector2 drawPosition = new Vector2(xOffset, yOffset);
             // normalize position relative to camera view
-            sprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
+            CharacterSprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
         }
         /// <summary>
         /// The enumeration used for drawing
@@ -121,6 +124,11 @@ namespace Armalia.Characters
         enum StatusEffect
         {
             Cursed
+        }
+
+        public Vector2 CameraRelativePosition
+        {
+            get { return new Vector2(position.X - CameraView.X, position.Y - CameraView.Y); }
         }
     }
 }

@@ -11,9 +11,10 @@ namespace Armalia.Sprites
     /// <summary>
     /// This is the base class for spites that have animation frames
     /// </summary>
- public class AnimatedSprite : Sprite
+    public class AnimatedSprite : Sprite
     {
         private const int DEFAULT_MS_PER_FRAME = 100;
+        private const float DEFAULT_SCALE = 1f;
 
         // stuff needed to draw the sprite
         /// <summary>
@@ -43,6 +44,8 @@ namespace Armalia.Sprites
         /// How many frames per second. This is to control the frame rate.
         /// </summary>
         protected int msPerFrame;
+        public float Scale {get; set;}
+
 
         /// <summary>
         /// Default Constructor
@@ -54,16 +57,25 @@ namespace Armalia.Sprites
         /// <param name="sheetSize">The number of frames per row/column.</param>
         public AnimatedSprite(Texture2D texture, Point frameSize, int collisionOffset,
             Point initialFrame, Point sheetSize)
+            : this(texture, frameSize, collisionOffset, initialFrame, sheetSize, DEFAULT_MS_PER_FRAME, DEFAULT_SCALE)
+        {
+
+        }
+
+        public AnimatedSprite(Texture2D texture, Point frameSize, int collisionOffset,
+            Point initialFrame, Point sheetSize, int msPerFrame, float scale)
             : base(texture, frameSize)
         {
+            this.msPerFrame = msPerFrame;
             this.collisionOffset = collisionOffset;
             currentFrame = initialFrame;
             this.sheetSize = sheetSize;
+            this.Scale = scale;
 
             // set prevFrame coords to negative value, so animation can start (TODO: necessary?)
             prevFrame = new Point(-1, -1);
-            msPerFrame = DEFAULT_MS_PER_FRAME;
         }
+
         /// <summary>
         /// This is the update method. Update our animated sprite by chaning the frame.
         /// </summary>
@@ -101,10 +113,46 @@ namespace Armalia.Sprites
                 }
 
                 prevFrame = tempCurrentFrame;
-             
+
             }
 
         }
+
+        //public void Update(GameTime gameTime)
+        //{
+        //    // update frame if time to do so, based on framerate
+        //    timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+        //    if (timeSinceLastFrame > msPerFrame)
+        //    {
+        //        // reset time since last frame
+        //        timeSinceLastFrame = 0;
+
+                //if (currentFrame.Y == 0)
+                //{ // if on first row of sprite sheet
+                //    if ((currentFrame.X + 1) < sheetSize.X - 1) // if there are more frames to go through on first row
+                //    {
+                //        currentFrame.X++;
+                //    }
+                //    else
+                //    {
+                //        if (sheetSize.Y > 1)
+                //        { // if at end of first row and second row exists
+                //            currentFrame.X = sheetSize.X - 1;
+                //            currentFrame.Y = 1;
+                //        }
+                //    }
+                //}
+                //else if (currentFrame.Y == 1)
+                //{
+                //    if ((currentFrame.X - 1) >= 0)
+                //    { // if there are more frames to go through on second row
+                //        currentFrame.X--;
+                //    }
+                //}
+
+        //    }
+
+        //}
         /// <summary>
         /// This restarts the animations. I.E the player walks left and there are 2 frames for that. 
         /// We need to reset the walking animations. The paramaters are weakly described.
@@ -141,7 +189,7 @@ namespace Armalia.Sprites
                     currentFrame.Y * frameSize.Y,
                     frameSize.X, frameSize.Y),
                 Color.White, 0, Vector2.Zero,
-                1f, SpriteEffects.None, layerDepth);
+                Scale, SpriteEffects.None, layerDepth);
         }
     }
 }

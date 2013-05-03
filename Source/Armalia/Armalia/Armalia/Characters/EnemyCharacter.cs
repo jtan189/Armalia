@@ -163,7 +163,7 @@ namespace Armalia.Characters
             int yOffset = (int)position.Y - gameplayScreen.CameraView.Y;
             Vector2 drawPosition = new Vector2(xOffset, yOffset);
             // normalize position relative to camera view
-            sprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
+            CharacterSprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
         }
 
         enum StatusEffect

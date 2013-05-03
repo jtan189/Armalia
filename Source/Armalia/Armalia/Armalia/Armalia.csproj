@@ -138,6 +138,7 @@
     <Compile Include="Sprites\ObjectSprite.cs" />
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteManager.cs" />
+    <Compile Include="Sprites\SwordSprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

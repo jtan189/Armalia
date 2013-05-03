@@ -26,10 +26,10 @@ namespace Armalia.Characters
             Defense = defense;
         }
 
-        public void Attack(CombatableCharacter enemy, out bool enemyIsDefeated) {
+        public void Attack(CombatableCharacter enemy) {
             int damage = (int) (Strength - (0.5 * enemy.Defense));
             enemy.HitPoints -= damage;
-            enemyIsDefeated = enemy.HitPoints <= 0 ? true : false;
+            //enemyIsDefeated = enemy.HitPoints <= 0 ? true : false;
         }
 
         

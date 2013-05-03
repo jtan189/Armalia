@@ -3,27 +3,73 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Armalia.Characters;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Armalia.Maps;
 
 namespace Armalia.BattleSystem
 {
     public class Battle
     {
+        private GameLevel level;
         private MainCharacter mainCharacter;
         public EnemyCharacter Enemy {get; set;}
         public bool IsPlayerTurn {get; set;}
 
-        public Battle(MainCharacter mainCharacter, EnemyCharacter enemy)
+        private bool attackInProgress;
+
+        public Battle(MainCharacter mainCharacter, EnemyCharacter enemy, GameLevel level)
         {
             this.mainCharacter = mainCharacter;
             this.Enemy = enemy;
+            this.level = level;
+            attackInProgress = false;
             IsPlayerTurn = true;
         }
 
 
 
-        public void ExecutePlayerAttack(out bool enemyDead)
+        public void InitiatePlayerAttack()
         {
-            mainCharacter.Attack(Enemy, out enemyDead);   
+            attackInProgress = true;
+            mainCharacter.Attack(Enemy);  
+        }
+
+        public void UpdateBattle(GameTime gameTime, out bool battleOver)
+        {
+
+            if (Enemy.HitPoints <= 0)
+            {
+                level.removeEnemy(Enemy);
+                battleOver = true;
+            }
+            else
+            {
+                battleOver = false;
+            }
+
+            if (IsPlayerTurn && attackInProgress)
+            {
+                bool attackFinished;
+                mainCharacter.Sword.Update(gameTime, out attackFinished);
+
+                if (attackFinished)
+                {
+                    attackInProgress = false;
+                }
+            }
+
+            
+        }
+
+        public void DrawBattle(SpriteBatch spriteBatch)
+        {
+            if (IsPlayerTurn && attackInProgress)
+            {
+                Vector2 handPosition = new Vector2(mainCharacter.CameraRelativePosition.X + mainCharacter.CharacterSprite.FrameSize.X / 2.0f,
+                    mainCharacter.CameraRelativePosition.Y + mainCharacter.CharacterSprite.FrameSize.Y * (2 / 3.0f));
+                mainCharacter.Sword.Draw(spriteBatch, handPosition);
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Armalia.Characters
         /// <summary>
         /// The animated sprite that defines their looks and animations
         /// </summary>
-        protected AnimatedSprite sprite;
+        public AnimatedSprite CharacterSprite { get; set; }
         /// <summary>
         /// This is used for currency.
         /// </summary>
@@ -53,7 +53,7 @@ namespace Armalia.Characters
         /// <param name="speed">The movement speed of the character.</param>
         public Character(AnimatedSprite sprite, Vector2 position, int numCoins, Vector2 speed)
         {
-            this.sprite = sprite;
+            this.CharacterSprite = sprite;
             this.position = position;
             this.numCoins = 0;
             this.speed = speed;
@@ -95,15 +95,15 @@ namespace Armalia.Characters
                 // check if movement would take character out of bounds
                 bool outOfBounds = false;
                 if ((movedPosition.X < 0) || (movedPosition.Y < 0) ||
-                    (movedPosition.X > currentMap.Size.X - sprite.FrameSize.X) ||
-                    (movedPosition.Y > currentMap.Size.Y - sprite.FrameSize.Y))
+                    (movedPosition.X > currentMap.Size.X - CharacterSprite.FrameSize.X) ||
+                    (movedPosition.Y > currentMap.Size.Y - CharacterSprite.FrameSize.Y))
                 {
                     outOfBounds = true;
                 }
 
                 // TODO: use better collision offsets
                 // check if movement would result in boundary collision
-                Rectangle movedRectangle = new Rectangle((int)movedPosition.X, (int)movedPosition.Y, sprite.FrameSize.X, sprite.FrameSize.Y);
+                Rectangle movedRectangle = new Rectangle((int)movedPosition.X, (int)movedPosition.Y, CharacterSprite.FrameSize.X, CharacterSprite.FrameSize.Y);
                 bool isCollision = currentMap.CollidesWithBoundary(movedRectangle);
                 hasCollided = isCollision; // needed to avoid abruptly stopping animation when collision occurs
                if (!(outOfBounds || isCollision))
@@ -139,7 +139,7 @@ namespace Armalia.Characters
             bool hasCollided;
             bool hasMoved = Move(moveDirection, currentMap, out hasCollided);
 
-            sprite.Update(gameTime, moveDirection, hasCollided);
+            CharacterSprite.Update(gameTime, moveDirection, hasCollided);
         }
         /// <summary>
         /// This draws the character to the map
@@ -147,12 +147,12 @@ namespace Armalia.Characters
         /// <param name="spriteBatch">The spritebatch object used for drawing.</param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            sprite.Draw(spriteBatch, position, DEFAULT_LAYER_DEPTH);
+            CharacterSprite.Draw(spriteBatch, position, DEFAULT_LAYER_DEPTH);
         }
 
         public Rectangle getRectangle()
         {
-            return new Rectangle((int)position.X, (int)position.Y, sprite.FrameSize.X, sprite.FrameSize.Y);
+            return new Rectangle((int)position.X, (int)position.Y, CharacterSprite.FrameSize.X, CharacterSprite.FrameSize.Y);
         }
     }
 }
