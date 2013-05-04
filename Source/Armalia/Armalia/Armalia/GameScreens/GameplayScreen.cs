@@ -145,50 +145,13 @@ namespace Armalia.GameScreens
                         Portal portal = (Portal)obj;
                         if (portal.Collides(player.PlayerCharacter))
                         {
-                            //level.CharReturnPosition = new Vector2(playerCharacter.position.X,
-                            //    playerCharacter.position.Y + playerCharacter.Speed.Y);
                             GameLevel teleportLevel = portal.DestinationLevel;
                             level = teleportLevel;
-                            playerCharacter.position = portal.CharStartPosition;
-
-                            // center camera
-                            playerCharacter.CameraView = new Rectangle(
-                                (int) (portal.CharStartPosition.X - (playerCharacter.CameraView.Width / 2)),
-                                (int) (portal.CharStartPosition.Y - (playerCharacter.CameraView.Height / 2)),
-                                playerCharacter.CameraView.Width, playerCharacter.CameraView.Height);
+                            
+                            playerCharacter.setPosition(portal.CharStartPosition, level.LevelMap);
                         }
                     }
                 }
-
-                //if (obj.GetType() == typeof(Portal))
-                //{
-                //    Portal port = (Portal)obj;
-                //    if (port.Collide(playerPos))
-                //    {
-                //        String teleportLevelName = port.getMapTo();
-
-                //    }
-                //}
-
-                //string telePort = level.telePort(playerCharacter.Box());
-
-
-                //if (telePort != null && this.teleOnce < 1)
-                //{
-                //    string from = level.getName();
-                    
-                //    Console.WriteLine("Old Name: " + from);
-                //    Point newPlayerPos = level.getGetTelePoint(telePort);
-                //    level = mapHandler.getMap(telePort);
-                //    Console.WriteLine("New name: " + level.getName());
-                //    Console.WriteLine("FROM = " + from);
-                    
-                //    playerCharacter.setPosition(newPlayerPos);
-                //    this.teleOnce++;
-
-                //    //Need to move player.
-
-                //}
 
 
                 level.Update(gameTime);

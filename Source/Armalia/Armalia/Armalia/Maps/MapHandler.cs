@@ -29,7 +29,7 @@ namespace Armalia.Maps
             songFiles = new Dictionary<string, string>();
             mapFiles.Add("Building1", @"Maps\Building1\Building1"); // this needs to come before Village (TODO: don't require that)
             mapFiles.Add("Village0",  @"Maps\Village0\Village0");
-
+            mapFiles.Add("Forest1", @"Maps\Forest1\Forest1");
             songFiles.Add("Village0", @"Music\Home");
             //Song villageBgMusic = game.Content.Load<Song>(@"Music\Home");
             this.gs = gs;

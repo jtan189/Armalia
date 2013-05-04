@@ -9,19 +9,18 @@ using Armalia.Sprites;
 using Armalia.Characters;
 using Armalia.Sidebar;
 using Microsoft.Xna.Framework.Input;
-<<<<<<< HEAD
 using Armalia.Exceptions;
-=======
 using Microsoft.Xna.Framework.Media;
->>>>>>> origin/hud
+using Armalia.Object;
 
 namespace Armalia.GameScreens
 {
     ///<summary>
     ///This class will be used to control what the player sees. This includes the current game level and the section of the game level's map.
     ///</summary>
-    class GameplayScreen : Screen
+   public  class GameplayScreen : Screen
     {
+       //int teleOnce = 0;
         /// <summary>
         /// Default map window size (section of the screen for map)
         /// </summary>
@@ -34,12 +33,12 @@ namespace Armalia.GameScreens
         private Player player;
         private GameLevel level;
         private ArmaliaGame game;
-        private MapMaker mapMaker;
         private ScreenManager manager;
         private PlayerSidebar sidebar;
         private MapHandler mapHandler;
         private Texture2D splash;
         private Texture2D box;
+        private MainCharacter playerCharacter;
         private Vector2 borderPos = Vector2.Zero;
         
         // screen components
@@ -47,17 +46,16 @@ namespace Armalia.GameScreens
         // private Rectangle hudWindow
         // private List<Tiles or something> uncoveredArea
         /// <summary>
-        /// 
+        /// This creates an object for dealing with the gameplay screen (the left portion)
         /// </summary>
-        /// <param name="game"></param>
-        /// <param name="manager"></param>
+        /// <param name="game">The game object of the game</param>
+        /// <param name="manager">The screen manager for the game</param>
         public GameplayScreen(ArmaliaGame game, ScreenManager manager)
         {
             this.game = game;
             this.manager = manager;
             mapWindow = new Rectangle(0, 0, DEFAULT_MAP_WINDOW_SIZE.X, DEFAULT_MAP_WINDOW_SIZE.Y);
-            mapMaker = new MapMaker(game);
-            mapHandler = new MapHandler(game);
+            
         }
 
         public Rectangle CameraView { get { return player.CameraView; } }
@@ -70,48 +68,7 @@ namespace Armalia.GameScreens
             box = game.Content.Load<Texture2D>(@"SpriteImages\border");
             splash = game.Content.Load<Texture2D>(@"SpriteImages\splash");
 
-<<<<<<< HEAD
-            try
-            {
-                level = mapHandler.getMap("village1");
-            }
-            catch (MapDoesNotExistException e)
-            {
-                this.game.Exit();
-            }
-=======
-            // create an enemy knight
-            int knightHP = 100;
-            int knightMP = 100;
-            int knightXP = 0;
-            int knightStrength = 10;
-            int knightDefense = 10;
 
-            Texture2D knightTexture = game.Content.Load<Texture2D>(@"Characters\charchip01-2-1");
-            Point knightTextureFrameSize = new Point(32, 32);
-            int knightCollisionOffset = 0;
-            Point knightInitialFrame = new Point(1, 0);
-            Point knightSheetSize = new Point(3, 4);
-            Vector2 knightSpeed = new Vector2(1, 1);
-            Vector2 initialKnightPos = new Vector2(500, 325);
-
-            AnimatedSprite knightSprite = new AnimatedSprite(
-                knightTexture, knightTextureFrameSize, knightCollisionOffset, knightInitialFrame, knightSheetSize);
-
-            List<Point> knightTargets = new List<Point>() { new Point(200, 325), new Point(800, 325) };
-
-            // create level
-            List<EnemyCharacter> villageEnemies = new List<EnemyCharacter>();
-            EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, knightHP, knightMP, knightXP, 
-                knightStrength, knightDefense, knightSpeed, this, knightTargets);
-            villageEnemies.Add(knightEnemy);
-            String villageMapFilename = @"Maps\Village1\Village1";
-            Map villageMap = mapMaker.BuildLevel(villageMapFilename);
-            // song from: http://www.tannerhelland.com/21/song-home/
-            Song villageBgMusic = game.Content.Load<Song>(@"Music\Home");
-            level = new GameLevel(villageMap, villageBgMusic, villageEnemies);
-
->>>>>>> origin/hud
             // create player
             int playerHP = 100;
             int playerMP = 100;
@@ -131,21 +88,39 @@ namespace Armalia.GameScreens
             AnimatedSprite playerSprite = new AnimatedSprite(
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
 
-            MainCharacter playerCharacter = new MainCharacter(playerSprite, initialPlayerPos, playerHP, playerMP,
+             playerCharacter = new MainCharacter(playerSprite, initialPlayerPos, playerHP, playerMP,
                 playerXP, playerStrength, playerDefense, playerSpeed, cameraView);
 
             player = new Player(playerCharacter);
 
+
+            mapHandler = new MapHandler(game, playerCharacter, this);
+            try
+            {
+                level = mapHandler.getLevel("Village0");
+            }
+            catch (MapDoesNotExistException)
+            {
+                this.game.Exit();
+            }
+
             // load on-screen menu
             // use RolePlayingGameWindows HUD as example
+<<<<<<< HEAD
             Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
                 game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
-            sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter);
+            sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter, level);
             sidebar.Load();
+=======
+          //  Rectangle sidebarWindow = new Rectangle(mapWindow.Width, 0,
+          //      game.Window.ClientBounds.Width - mapWindow.Width, mapWindow.Height);
+         //   sidebar = new PlayerSidebar(game, sidebarWindow, player.PlayerCharacter, level);
+         //   sidebar.Load();
+>>>>>>> wtf
 
             // start background music
             MediaPlayer.IsRepeating = true;
-            level.PlayBgMusic();
+       //     level.PlayBgMusic();
             
         }
 
@@ -168,6 +143,61 @@ namespace Armalia.GameScreens
                 borderPos.X = (borderPos.X * 32) + (32);
                 borderPos.Y = (borderPos.Y * 32) + (32);
 
+                // level teleportation stuff
+
+                foreach (LevelObject obj in level.LevelObjects)
+                {
+                    if (obj.GetType() == typeof(Portal))
+                    {
+                        Portal portal = (Portal)obj;
+                        if (portal.Collides(player.PlayerCharacter))
+                        {
+                            //level.CharReturnPosition = new Vector2(playerCharacter.position.X,
+                            //    playerCharacter.position.Y + playerCharacter.Speed.Y);
+                            GameLevel teleportLevel = portal.DestinationLevel;
+                            level = teleportLevel;
+                            playerCharacter.position = portal.CharStartPosition;
+
+                            // center camera
+                            playerCharacter.CameraView = new Rectangle(
+                                (int) (portal.CharStartPosition.X - (playerCharacter.CameraView.Width / 2)),
+                                (int) (portal.CharStartPosition.Y - (playerCharacter.CameraView.Height / 2)),
+                                playerCharacter.CameraView.Width, playerCharacter.CameraView.Height);
+                        }
+                    }
+                }
+
+                //if (obj.GetType() == typeof(Portal))
+                //{
+                //    Portal port = (Portal)obj;
+                //    if (port.Collide(playerPos))
+                //    {
+                //        String teleportLevelName = port.getMapTo();
+
+                //    }
+                //}
+
+                //string telePort = level.telePort(playerCharacter.Box());
+
+
+                //if (telePort != null && this.teleOnce < 1)
+                //{
+                //    string from = level.getName();
+                    
+                //    Console.WriteLine("Old Name: " + from);
+                //    Point newPlayerPos = level.getGetTelePoint(telePort);
+                //    level = mapHandler.getMap(telePort);
+                //    Console.WriteLine("New name: " + level.getName());
+                //    Console.WriteLine("FROM = " + from);
+                    
+                //    playerCharacter.setPosition(newPlayerPos);
+                //    this.teleOnce++;
+
+                //    //Need to move player.
+
+                //}
+
+
                 level.Update(gameTime);
                 player.Update(gameTime, level.LevelMap); // new Point(1600,1600)
             }
@@ -181,11 +211,11 @@ namespace Armalia.GameScreens
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
                 // draw sidebar
-                sidebar.Draw(gameTime, spriteBatch);
+            //    sidebar.Draw(gameTime, spriteBatch);
 
                 // draw level
                 level.Draw(spriteBatch, mapWindow, player.CameraView);
-
+                
                 // draw player
                 player.Draw(spriteBatch);
 

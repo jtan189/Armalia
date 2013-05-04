@@ -38,7 +38,7 @@ namespace Armalia.Characters
         /// This is implemented for level up
         /// </summary>
         public void LevelUp() { }
-
+        public Sprite Sprite{ get { return this.sprite; } }
         //public Rectangle Box()
         //{
         //    return new Rectangle((int)position.X, (int)position.Y, (int)sprite.Size().X, (int)sprite.Size().Y);
@@ -54,12 +54,34 @@ namespace Armalia.Characters
 
         public Vector2 Speed { get { return speed; } }
 
-        //public void setPosition(Point newP)
-        //{
-        //    Console.WriteLine("Position = " + newP.ToString());
-        //    this.position.X = newP.X;
-        //    this.position.Y = newP.Y;
-        //}
+        public void setPosition(Vector2 newP, Map map)
+        {
+            position = newP;
+            int cx = (int)position.X - (cameraView.Width / 2) + (sprite.FrameSize.X / 2);
+            int cy = (int)position.Y - (cameraView.Height / 2) + (sprite.FrameSize.Y / 2);
+            if ((position.Y + (sprite.FrameSize.Y / 2) >= map.Size.Y - (cameraView.Height / 2)))
+            {
+                cameraView.Y = map.Size.Y - cameraView.Height;
+            }
+
+            if ((position.X + (sprite.FrameSize.X / 2) >= map.Size.X - (cameraView.Width / 2)))
+            {
+                cameraView.X = map.Size.X - cameraView.Width;
+
+            }
+
+            // center y cood of camera
+            if (position.Y + (sprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
+            {
+                // center camera to top edge
+                cameraView.Y = 0;
+            }
+            if (position.X + (sprite.FrameSize.X / 2) <= (cameraView.Width / 2))
+            {
+                // center camera to left edge
+                cameraView.X = 0;
+            }
+        }
         /// <summary>
         /// This uses input of the player to move the character
         /// </summary>

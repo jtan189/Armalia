@@ -60,7 +60,7 @@ namespace Armalia.Maps
         public Map BuildMap(String mapFilename)
         {
             // load texture
-            Console.WriteLine("Map File Name " + mapFilename);
+          
             Texture2D mapTexture = game.Content.Load<Texture2D>(mapFilename);
 
             // load boundaries
@@ -208,7 +208,6 @@ namespace Armalia.Maps
                 {
                     var properties = obj.Elements("properties").Elements().ToList();
                     string name = obj.Attribute("name").Value.ToString();
-                    Console.WriteLine("NAME:" + name);
                     int xcoord = Convert.ToInt32(obj.Attribute("x").Value);
                     int ycoord = Convert.ToInt32(obj.Attribute("y").Value);
                     int width = Convert.ToInt32(obj.Attribute("width").Value);
@@ -217,7 +216,6 @@ namespace Armalia.Maps
                     {
 
                         case "Door":
-                            Console.WriteLine("test3");
                             string destinationMapFilename = "";
                             Vector2 charStartPosition = Vector2.Zero;
                             foreach (var prop in properties)
@@ -227,7 +225,7 @@ namespace Armalia.Maps
                                 {
                                     case "level":
                                         destinationMapFilename = prop.Attribute("value").Value;
-                                      
+                                        Console.WriteLine("==============\r\n" + prop.Attribute("value").Value);
                                         break;
                                     case "startPositionX":
                                         charStartPosition.X = Convert.ToInt32(prop.Attribute("value").Value);
@@ -237,12 +235,7 @@ namespace Armalia.Maps
                                         break;
                                 }
                             }
-                            //Map Location point?
-                            //Point mapToPt = this.getMapToPoint(mapFilename, mapTo);
-                            //gameObjects.Add(new Portal(xcoord, ycoord, mapTo, mapFrom, width, height, mapToPt));
-                            //GameLevel doorLevel = new GameLevel(destinationMapFilename,
-                            //    mapHandler.getLevel(desintationMapFilename);, null, null, null, charStartPosition);
-                            //GameLevel doorLevel = mapHandler.getLevel(destinationMapFilename);
+
                             gameObjects.Add(new Portal(new Rectangle(xcoord, ycoord, width, height), destinationMapFilename, charStartPosition, mapHandler));
                             break;
 
@@ -253,53 +246,6 @@ namespace Armalia.Maps
             return gameObjects;
         }
 
-
-        //public Point getMapToPoint(string from, string to)
-        //{
-        //    var mapXML = XElement.Load(game.Content.RootDirectory + "\\Maps\\" + to + "\\" + to + ".tmx");
-        //    var objectElements = mapXML.Elements("objectgroup").Elements().ToList();
-
-        //    // convert boundaries to Rectangles; store in list
-        //    List<LevelObject> gameObjects = new List<LevelObject>();
-
-        //    foreach (var obj in objectElements)
-        //    {
-        //        string type = null;
-        //        int x = 0;
-        //        int y = 0;
-        //        if (obj.Attribute("type") != null)
-        //        {
-        //            type = obj.Attribute("type").Value.ToString().ToLower();
-        //        }
-        //        if (type != null && !type.Equals("enemy"))
-        //        {
-        //            if ((obj.Attribute("type").Value.ToString().ToLower() == "portal") )
-        //            {
-        //                var properties = obj.Elements("properties").Elements().ToList();
-        //                x = Convert.ToInt32(obj.Attribute("x").Value);
-        //                y = Convert.ToInt32(obj.Attribute("y").Value);
-        //                foreach (var prop in properties)
-        //                {
-        //                    string propName = prop.Attribute("name").Value.ToString().ToLower();
-        //                    switch (propName)
-        //                    {
-                               
-        //                        case "level":
-
-        //                            if (prop.Attribute("value").Value.ToString() == from.Split('\\')[2])
-        //                            {
-        //                                Console.WriteLine("test");
-        //                                return new Point(x, y);
-        //                            }
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    Console.WriteLine("From = " + from + " and to = " + to);
-        //    return new Point(0, 0);
-        //}
 
 //END OF CLASS
     }
