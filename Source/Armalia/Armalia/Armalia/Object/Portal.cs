@@ -21,36 +21,7 @@ namespace Armalia.Object
             this.CharStartPosition = charStartPosition;
 
         }
-        //public Portal(Vector2 pos, string mt, int w, int h, Point p)
-        //    : base(pos)
-        //{
-        //    this.mapToPt = p;
-        //    this.mapTo = mt;
-        //    this.size = new Vector2(w,h);
 
-        //}
-        //public Portal(int x, int y, string mt, int w, int h, Point p)
-        //    : base(new Vector2(x,y))
-        //{
-        //    this.mapTo = mt;
-        //    this.size = new Vector2(w, h);
-        //    this.mapToPt = p;
-
-        //}
-
-        //public string getMapTo()
-        //{
-        //    return this.mapTo;
-        //}
-        //public Point getMapToPt()
-        //{
-        //    return this.mapToPt;
-        //}
-
-        //public bool Collide(Rectangle r)
-        //{
-        //    return r.Intersects(new Rectangle((int)this.position.X, (int)this.position.Y, (int)this.size.X, (int) this.size.Y));
-        //}
 
   
     }

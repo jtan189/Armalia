@@ -36,28 +36,6 @@ namespace Armalia.Maps
             this.name = name;
             this.LevelObjects = objs;
         }
-        //public GameLevel(string name, Map levelMap, Song bgMusic, List<EnemyCharacter> enemies, List<LevelObject> objs, Vector2 charReturnPosition)
-        //    : this(name, levelMap, bgMusic, enemies, objs)
-        //{
-        //    this.CharReturnPosition = charReturnPosition;
-        //}
-
-        //public GameLevel TeleportLevel(Rectangle playerPos)
-        //{
-        //    foreach (LevelObject obj in this.LevelObjects)
-        //    {
-        //        if( obj.GetType() == typeof(Portal) )
-        //        {
-        //            Portal port = (Portal) obj;
-        //            if (port.Collides(playerPos))
-        //            {
-        //                String teleportLevelName = port.getMapTo();
-
-        //            }
-        //        }
-        //    }
-        //    return null;
-        //}
         /// <summary>
         /// This just returns the map object.
         /// </summary>
@@ -97,38 +75,6 @@ namespace Armalia.Maps
                enemy.Draw(spriteBatch);
            }
         }
-        //public void Draw(GraphicsDevice gd, SpriteBatch spriteBatch, Rectangle mapWindow, Rectangle cameraView)
-        //{
-        //    // draw map
-        //    map.Draw(spriteBatch, mapWindow, cameraView);
-        //    var t = new Texture2D(gd, 1, 1);
-        //    t.SetData(new[] { Color.White });
-        //    foreach (Rectangle r in this.map.getBounds())
-        //    {
-        //        spriteBatch.Draw(t, r, Color.White*0.3f);
-        //    }
-        //    // draw enemies, NPCs, etc
-        //    foreach (EnemyCharacter enemy in enemies)
-        //    {
-        //        enemy.Draw(spriteBatch);
-        //    }
-        //}
-
-        //public GameLevel GetTelePoint(string from)
-        //{
-        //    foreach (LevelObject obj in LevelObjects)
-        //    {
-        //        if (obj.GetType() == typeof(Portal))
-        //        {
-        //            Portal port = (Portal)obj;
-        //            if (port.getMapTo().Equals(from) )
-        //            {
-        //                return port.getMapToPt();
-        //            }
-        //        }
-        //    }
-        //    return new Point(0, 0);
-        //}
 
         public string getName()
         {
