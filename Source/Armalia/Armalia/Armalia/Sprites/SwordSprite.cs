@@ -7,59 +7,59 @@ using Microsoft.Xna.Framework;
 
 namespace Armalia.Sprites
 {
-    public class SwordSprite
+    class SwordSprite
     {
+        private const int DEFAULT_MS_PER_FRAME = 17; //17
+        private const float DEFAULT_SCALE = 1f;
+        private const float DEFAULT_LAYER_DEPTH = 0F;
+        private const float DEFAULT_ROTATION_INCREMENT = .4F;
 
-        protected const int DEFAULT_MS_PER_FRAME = 17; //17
-        protected const float DEFAULT_SCALE = 1f;
-        protected const float DEFAULT_LAYER_DEPTH = 0F;
-        protected const float DEFAULT_ROTATION_INCREMENT = .17F;
+        private int timeSinceLastFrame = 0;
+        private int msPerFrame;
 
-
-        /// <summary>
-        /// We don't want our animated sprite to be moving to fast. The player wont be able to see
-        /// the animations.
-        /// </summary>
-        protected int timeSinceLastFrame = 0;
-        /// <summary>
-        /// How many frames per second. This is to control the frame rate.
-        /// </summary>
-        protected int msPerFrame;
         private float scale;
         private float rotation;
         private float layerDepth;
-        private Vector2 gripPoint;
+        private Vector2 rotationPoint;
         private Texture2D texture;
 
-        public SwordSprite(Texture2D texture, int msPerFrame, float scale, Vector2 gripPoint)
+        public bool Animating { get; set; }
+
+        public SwordSprite(Texture2D texture, int msPerFrame, float scale, Vector2 rotationPoint)
         {
-            layerDepth = DEFAULT_LAYER_DEPTH;
+            this.layerDepth = DEFAULT_LAYER_DEPTH;
             this.msPerFrame = msPerFrame;
             this.texture = texture;
             this.scale = scale;
-            this.gripPoint = gripPoint;
-            rotation = 0;
+            this.rotationPoint = rotationPoint;
+            this.rotation = 0;
+            Animating = false;
         }
 
-
-        public void Update(GameTime gameTime, out bool attackFinished)
+        public void Update(GameTime gameTime, bool playerPressedAttack)
         {
-            attackFinished = false;
-
-            // update frame if time to do so, based on framerate
-            timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
-            if (timeSinceLastFrame > msPerFrame)
+            if (!Animating && playerPressedAttack)
             {
-                // reset time since last frame
-                timeSinceLastFrame = 0;
-                if (rotation + DEFAULT_ROTATION_INCREMENT <= Math.PI / 2.0)
+                Animating = true;
+            }
+
+            if (Animating)
+            {
+                // update frame if time to do so, based on framerate
+                timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
+                if (timeSinceLastFrame > msPerFrame)
                 {
-                    rotation += DEFAULT_ROTATION_INCREMENT;
-                }
-                else
-                {
-                    rotation = 0;
-                    attackFinished = true;
+                    // reset time since last frame
+                    timeSinceLastFrame = 0;
+                    if (rotation + DEFAULT_ROTATION_INCREMENT <= (2 * Math.PI))
+                    {
+                        rotation += DEFAULT_ROTATION_INCREMENT;
+                    }
+                    else
+                    {
+                        rotation = 0;
+                        Animating = false;
+                    }
                 }
             }
 
@@ -70,13 +70,15 @@ namespace Armalia.Sprites
         /// </summary>
         /// <param name="spriteBatch">The SpriteBatch object of the game.</param>
         /// <param name="spritePosition">The position of the sprite</param>
-        /// <param name="layerDepth">The z-index of the sprite</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 spritePosition)
         {
-            // draw the sprite
-            spriteBatch.Draw(texture, spritePosition,
-                null, Color.White, rotation, gripPoint,
-                scale, SpriteEffects.None, layerDepth);
+            if (Animating)
+            {
+                // draw the sprite
+                spriteBatch.Draw(texture, spritePosition,
+                    null, Color.White, rotation, rotationPoint,
+                    scale, SpriteEffects.None, layerDepth);
+            }
         }
     }
 }

@@ -5,16 +5,17 @@ using System.Text;
 using Armalia.Characters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Armalia.Maps;
+using Armalia.Levels;
 
 namespace Armalia.BattleSystem
 {
-    public class Battle
+    class Battle
     {
         private GameLevel level;
         private MainCharacter mainCharacter;
-        public EnemyCharacter Enemy {get; set;}
-        public bool IsPlayerTurn {get; set;}
+
+        public EnemyCharacter Enemy { get; set; }
+        public bool IsPlayerTurn { get; set; }
 
         private bool attackInProgress;
 
@@ -27,42 +28,39 @@ namespace Armalia.BattleSystem
             IsPlayerTurn = true;
         }
 
-
-
         public void InitiatePlayerAttack()
         {
             attackInProgress = true;
-            mainCharacter.Attack(Enemy);  
+            mainCharacter.Attack(Enemy);
         }
 
-        public void UpdateBattle(GameTime gameTime, out bool battleOver)
-        {
+        //public void Update(GameTime gameTime, out bool battleOver)
+        //{
 
-            if (Enemy.HitPoints <= 0)
-            {
-                level.removeEnemy(Enemy);
-                battleOver = true;
-            }
-            else
-            {
-                battleOver = false;
-            }
+            //if (Enemy.HitPoints <= 0)
+            //{
+            //    level.RemoveEnemy(Enemy);
+            //    battleOver = true;
+            //}
+            //else
+            //{
+            //    battleOver = false;
+            //}
 
-            if (IsPlayerTurn && attackInProgress)
-            {
-                bool attackFinished;
-                mainCharacter.Sword.Update(gameTime, out attackFinished);
+            //if (IsPlayerTurn && attackInProgress)
+            //{
+                //bool attackFinished;
+                //mainCharacter.Sword.Update(gameTime, out attackFinished);
 
-                if (attackFinished)
-                {
-                    attackInProgress = false;
-                }
-            }
+                //if (attackFinished)
+                //{
+                //    attackInProgress = false;
+                //}
+            //}
 
-            
-        }
+        //}
 
-        public void DrawBattle(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             if (IsPlayerTurn && attackInProgress)
             {

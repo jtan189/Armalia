@@ -5,45 +5,53 @@ using System.Text;
 using Armalia.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Armalia.Maps;
+using Armalia.Levels;
 
 namespace Armalia.Characters
-{ 
+{
     /// <summary>
     /// This is the base class for characters. Characters are your main character, enemies, etc
     /// </summary>
-   public abstract class Character
+    abstract class Character
     {
         /// <summary>
         /// The default Layer that they're drawn at
         /// </summary>
         public const float DEFAULT_LAYER_DEPTH = 0.1F;
-        /// <summary>
-        /// The animated sprite that defines their looks and animations
-        /// </summary>
-        public AnimatedSprite CharacterSprite { get; set; }
+
         /// <summary>
         /// This is used for currency.
         /// </summary>
         private int numCoins;
 
         /// <summary>
-        /// This is the location of the character on the map
-        /// </summary>
-        public Vector2 position;
-        /// <summary>
         /// The speed that the character moves
         /// </summary>
         protected Vector2 speed;
 
         /// <summary>
-        /// Constructor 1 (don't use)
-        /// It is not implemented
+        /// The animated sprite that defines their looks and animations
+        /// </summary>
+        public AnimatedSprite CharacterSprite { get; set; }
+
+        /// <summary>
+        /// This is the location of the character on the map
+        /// </summary>
+        public Vector2 Position { get; set; }
+
+        public Rectangle AsRectangle()
+        {
+            return new Rectangle((int)Position.X, (int)Position.Y, CharacterSprite.FrameSize.X, CharacterSprite.FrameSize.Y);
+        }
+
+        /// <summary>
+        /// Constructor 1
         /// </summary>
         /// <param name="sprite">The animation sprite of the character</param>
         /// <param name="position">The position to place the character</param>
         /// <param name="speed">The movement speed of the character</param>
         public Character(AnimatedSprite sprite, Vector2 position, Vector2 speed) : this(sprite, position, 0, speed) { }
+
         /// <summary>
         /// Constructor 2
         /// </summary>
@@ -54,8 +62,8 @@ namespace Armalia.Characters
         public Character(AnimatedSprite sprite, Vector2 position, int numCoins, Vector2 speed)
         {
             this.CharacterSprite = sprite;
-            this.position = position;
-            this.numCoins = 0;
+            this.Position = position;
+            this.numCoins = numCoins;
             this.speed = speed;
         }
 
@@ -73,7 +81,7 @@ namespace Armalia.Characters
 
             if (direction != MoveDirection.None)
             {
-                Vector2 movedPosition = position;
+                Vector2 movedPosition = Position;
 
                 // caculate position if character were to move
                 switch (direction)
@@ -91,7 +99,7 @@ namespace Armalia.Characters
                         movedPosition.X += speed.X;
                         break;
                 }
-                
+
                 // check if movement would take character out of bounds
                 bool outOfBounds = false;
                 if ((movedPosition.X < 0) || (movedPosition.Y < 0) ||
@@ -103,31 +111,21 @@ namespace Armalia.Characters
 
                 // TODO: use better collision offsets
                 // check if movement would result in boundary collision
-                Rectangle movedRectangle = new Rectangle((int)movedPosition.X, (int)movedPosition.Y, CharacterSprite.FrameSize.X, CharacterSprite.FrameSize.Y);
-                bool isCollision = currentMap.CollidesWithBoundary(movedRectangle);
-                hasCollided = isCollision; // needed to avoid abruptly stopping animation when collision occurs
-               if (!(outOfBounds || isCollision))
-               {
-                    position = movedPosition;
+                Rectangle movedRectangle = new Rectangle(
+                    (int)movedPosition.X, (int)movedPosition.Y, CharacterSprite.FrameSize.X, CharacterSprite.FrameSize.Y);
+                hasCollided = currentMap.CollidesWithBoundary(movedRectangle);
+
+                if (!(outOfBounds || hasCollided))
+                {
+                    Position = movedPosition;
                     hasMoved = true;
                 }
 
             }
 
             return hasMoved;
+        }
 
-        }
-        /// <summary>
-        /// This is an enumeration of movements
-        /// </summary>
-        public enum MoveDirection
-        {
-            Down = 0,
-            Left = 1,
-            Right = 2,
-            Up = 3,
-            None = -1
-        }
         /// <summary>
         /// This updates the character's state
         /// </summary>
@@ -141,18 +139,26 @@ namespace Armalia.Characters
 
             CharacterSprite.Update(gameTime, moveDirection, hasCollided);
         }
+
         /// <summary>
         /// This draws the character to the map
         /// </summary>
         /// <param name="spriteBatch">The spritebatch object used for drawing.</param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            CharacterSprite.Draw(spriteBatch, position, DEFAULT_LAYER_DEPTH);
+            CharacterSprite.Draw(spriteBatch, Position, DEFAULT_LAYER_DEPTH);
         }
 
-        public Rectangle getRectangle()
+        /// <summary>
+        /// This is an enumeration of movements
+        /// </summary>
+        public enum MoveDirection
         {
-            return new Rectangle((int)position.X, (int)position.Y, CharacterSprite.FrameSize.X, CharacterSprite.FrameSize.Y);
+            Down = 0,
+            Left = 1,
+            Right = 2,
+            Up = 3,
+            None = -1
         }
     }
 }

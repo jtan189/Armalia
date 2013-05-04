@@ -6,22 +6,22 @@ using Armalia.Sprites;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace Armalia.Maps
+namespace Armalia.Levels
 {
-    public class Map
+    class Map
     {
         public const float MAY_LAYER_VALUE = 1f;
 
         private Texture2D mapImage;
         private List<Rectangle> boundaries;
 
+        public Point Size { get { return new Point(mapImage.Width, mapImage.Height); } }
+
         public Map(Texture2D mapImage, List<Rectangle> boundaries)
         {
             this.mapImage = mapImage;
             this.boundaries = boundaries;
         }
-
-        public Point Size { get { return new Point(mapImage.Width, mapImage.Height); } }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle mapWindow, Rectangle cameraView)
         {
@@ -30,12 +30,15 @@ namespace Armalia.Maps
 
         public bool CollidesWithBoundary(Rectangle characterRect)
         {
-            foreach (Rectangle boundary in boundaries) {
-                if (boundary.Intersects(characterRect)) {
-        
+            foreach (Rectangle boundary in boundaries)
+            {
+                if (boundary.Intersects(characterRect))
+                {
+
                     return true;
                 }
             }
+
             return false;
         }
 

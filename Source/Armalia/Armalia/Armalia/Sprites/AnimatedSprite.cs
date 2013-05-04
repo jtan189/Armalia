@@ -11,20 +11,21 @@ namespace Armalia.Sprites
     /// <summary>
     /// This is the base class for spites that have animation frames
     /// </summary>
-    public class AnimatedSprite : Sprite
+    class AnimatedSprite : Sprite
     {
-        private const int DEFAULT_MS_PER_FRAME = 100;
-        private const float DEFAULT_SCALE = 1f;
+        protected const int DEFAULT_MS_PER_FRAME = 100;
+        protected const float DEFAULT_SCALE = 1f;
 
-        // stuff needed to draw the sprite
         /// <summary>
         /// Point of current Frame.
         /// </summary>
         protected Point currentFrame;
+
         /// <summary>
         /// We need to keep track of the previous frame for animations.
         /// </summary>
         protected Point prevFrame;
+
         /// <summary>
         /// The number of frames per row and column.
         /// </summary>
@@ -40,12 +41,13 @@ namespace Armalia.Sprites
         /// the animations.
         /// </summary>
         protected int timeSinceLastFrame = 0;
+
         /// <summary>
         /// How many frames per second. This is to control the frame rate.
         /// </summary>
         protected int msPerFrame;
-        public float Scale {get; set;}
 
+        public float Scale { get; set; }
 
         /// <summary>
         /// Default Constructor
@@ -58,9 +60,7 @@ namespace Armalia.Sprites
         public AnimatedSprite(Texture2D texture, Point frameSize, int collisionOffset,
             Point initialFrame, Point sheetSize)
             : this(texture, frameSize, collisionOffset, initialFrame, sheetSize, DEFAULT_MS_PER_FRAME, DEFAULT_SCALE)
-        {
-
-        }
+        { }
 
         public AnimatedSprite(Texture2D texture, Point frameSize, int collisionOffset,
             Point initialFrame, Point sheetSize, int msPerFrame, float scale)
@@ -73,7 +73,7 @@ namespace Armalia.Sprites
             this.Scale = scale;
 
             // set prevFrame coords to negative value, so animation can start (TODO: necessary?)
-            prevFrame = new Point(-1, -1);
+            //prevFrame = new Point(-1, -1);
         }
 
         /// <summary>
@@ -90,14 +90,14 @@ namespace Armalia.Sprites
             {
                 // reset time since last frame
                 timeSinceLastFrame = 0;
-                // if moving
-
                 Point tempCurrentFrame = currentFrame;
+
                 // change to next frame based on previous frame and movement direction
                 int currentDirection = currentFrame.Y;
-                if (currentDirection == (int)moveDirection && !hasCollided)
-                {
-                    currentFrame.X = GetOscillatedValue(currentFrame.X, prevFrame.X, 0, sheetSize.X - 1);
+
+                if (currentDirection == (int)moveDirection && !hasCollided) // if moving
+                { 
+                    currentFrame.X = OscillatedAnimationIndexX(currentFrame.X, prevFrame.X, 0, sheetSize.X - 1);
                 }
                 else
                 {
@@ -118,63 +118,28 @@ namespace Armalia.Sprites
 
         }
 
-        //public void Update(GameTime gameTime)
-        //{
-        //    // update frame if time to do so, based on framerate
-        //    timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
-        //    if (timeSinceLastFrame > msPerFrame)
-        //    {
-        //        // reset time since last frame
-        //        timeSinceLastFrame = 0;
-
-                //if (currentFrame.Y == 0)
-                //{ // if on first row of sprite sheet
-                //    if ((currentFrame.X + 1) < sheetSize.X - 1) // if there are more frames to go through on first row
-                //    {
-                //        currentFrame.X++;
-                //    }
-                //    else
-                //    {
-                //        if (sheetSize.Y > 1)
-                //        { // if at end of first row and second row exists
-                //            currentFrame.X = sheetSize.X - 1;
-                //            currentFrame.Y = 1;
-                //        }
-                //    }
-                //}
-                //else if (currentFrame.Y == 1)
-                //{
-                //    if ((currentFrame.X - 1) >= 0)
-                //    { // if there are more frames to go through on second row
-                //        currentFrame.X--;
-                //    }
-                //}
-
-        //    }
-
-        //}
         /// <summary>
         /// This restarts the animations. I.E the player walks left and there are 2 frames for that. 
-        /// We need to reset the walking animations. The paramaters are weakly described.
-        /// Talk to Josh for more details. He may even update the comments
+        /// We need to reset the walking animations.
         /// </summary>
-        /// <param name="current">Current time</param>
-        /// <param name="prev">Previous time</param>
-        /// <param name="min">The minumum</param>
-        /// <param name="max">The maximum</param>
-        /// <returns>The frame to be drawn?</returns>
-        private int GetOscillatedValue(int current, int prev, int min, int max)
+        /// <param name="currentFrameIndexX">Current frame X index</param>
+        /// <param name="prevFrameIndexX">Previous frame X index</param>
+        /// <param name="minFrameIndexX">The minumum frame X index to use</param>
+        /// <param name="maxFrameIndexX">The maximum frame X index to use</param>
+        /// <returns>The X index of frame to be drawn</returns>
+        private int OscillatedAnimationIndexX(int currentFrameIndexX, int prevFrameIndexX, int minFrameIndexX, int maxFrameIndexX)
         {
-            if (current <= prev)
+            if (currentFrameIndexX <= prevFrameIndexX)
             {
 
-                return (current == min) ? ++current : --current;
+                return (currentFrameIndexX == minFrameIndexX) ? ++currentFrameIndexX : --currentFrameIndexX;
             }
             else
             {
-                return (current == max) ? --current : ++current;
+                return (currentFrameIndexX == maxFrameIndexX) ? --currentFrameIndexX : ++currentFrameIndexX;
             }
         }
+
         /// <summary>
         /// This draws the animated sprite onto the map or whatever.
         /// </summary>

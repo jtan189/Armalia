@@ -9,25 +9,24 @@ namespace Armalia.GameScreens
 {
     class SplashScreen : Screen
     {
-        private ArmaliaGame game;
-        private ScreenManager manager;
-        private Texture2D splash;
+        private string splashFilename;
+        private Texture2D splashTexture;
 
-        public SplashScreen(ArmaliaGame game, ScreenManager manager)
+        public SplashScreen(ArmaliaGame game, ScreenManager manager, String splashFilename) 
+            : base(game, manager)
         {
-            this.game = game;
-            this.manager = manager;
+            this.splashFilename = splashFilename;
         }
 
         public void Load()
         {
-            splash = game.Content.Load<Texture2D>(@"SpriteImages\splash");
+            splashTexture = game.Content.Load<Texture2D>(splashFilename);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            spriteBatch.Draw(splash, new Rectangle(0, 0, splash.Width, splash.Height), Color.White);
+            spriteBatch.Draw(splashTexture, new Rectangle(0, 0, splashTexture.Width, splashTexture.Height), Color.White);
             spriteBatch.End();
         }
     }

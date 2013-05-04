@@ -8,41 +8,26 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Armalia.GameScreens
 {
-     /// <summary>
-     /// This class will draw our stuff to the screen.
-     /// </summary>
-   public class ScreenManager : DrawableGameComponent
+    /// <summary>
+    /// This class will draw our stuff to the screen.
+    /// </summary>
+    class ScreenManager : DrawableGameComponent
     {
+        private const string SPLASH_FILENAME = @"SpriteImages\splash";
 
-        //private Screen currentScreen;
         private SpriteBatch spriteBatch;
-        private Stack<GameState> stateStack;
-
-        private GameplayScreen gameplayScreen;
         private SplashScreen splashScreen;
+        private GameplayScreen gameplayScreen;
 
-        public GameState CurrentState
-        {
-            get
-            {
-                return stateStack.Peek();
-            }
-
-            set
-            {
-                stateStack.Push(value);
-            }
-        }
+        public GameState CurrentState { get; set; }
 
         public ScreenManager(ArmaliaGame game)
             : base(game)
         {
-            this.splashScreen = new SplashScreen(game, this);
-            //this.currentScreen = splashScreen;
-            stateStack = new Stack<GameState>();
-            CurrentState = GameState.Splash; // push onto stack
             spriteBatch = game.SpriteBatch;
+            splashScreen = new SplashScreen(game, this, SPLASH_FILENAME);
             gameplayScreen = new GameplayScreen(game, this);
+            CurrentState = GameState.Splash;
         }
 
         protected override void LoadContent()
@@ -55,22 +40,15 @@ namespace Armalia.GameScreens
 
         public override void Update(GameTime gameTime)
         {
-            switch (stateStack.Peek())
+            switch (CurrentState)
             {
                 case GameState.Splash:
-
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
-                        CurrentState = GameState.Exploration;
+                        CurrentState = GameState.Gameplay;
                     }
                     break;
-                case GameState.Exploration:
-                    gameplayScreen.Update(gameTime);
-                    break;
-                case GameState.TransitionToBattle:
-                    gameplayScreen.Update(gameTime);
-                    break;
-                case GameState.Battle:
+                case GameState.Gameplay:
                     gameplayScreen.Update(gameTime);
                     break;
             }
@@ -80,33 +58,17 @@ namespace Armalia.GameScreens
 
         public override void Draw(GameTime gameTime)
         {
-            switch (stateStack.Peek())
+            switch (CurrentState)
             {
                 case GameState.Splash:
-                    DrawSplashScreen(spriteBatch);
+                    splashScreen.Draw(spriteBatch);
                     break;
-                case GameState.Exploration:
-                    DrawExplorationScreen(gameTime, spriteBatch);
-                    break;
-                case GameState.TransitionToBattle:
-                    DrawExplorationScreen(gameTime, spriteBatch);
-                    break;
-                case GameState.Battle:
-                    DrawExplorationScreen(gameTime, spriteBatch);
+                case GameState.Gameplay:
+                    gameplayScreen.Draw(gameTime, spriteBatch);
                     break;
             }
 
             base.Draw(gameTime);
-        }
-
-        public void DrawSplashScreen(SpriteBatch spriteBatch)
-        {
-            splashScreen.Draw(spriteBatch);
-        }
-
-        public void DrawExplorationScreen(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            gameplayScreen.Draw(gameTime, spriteBatch);
         }
     }
 }

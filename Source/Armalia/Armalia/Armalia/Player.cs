@@ -7,28 +7,20 @@ using Microsoft.Xna.Framework.Content;
 using Armalia.Characters;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Armalia.Maps;
+using Armalia.Levels;
 
 namespace Armalia
 {
     class Player
     {
 
-        private MainCharacter character;
-
-        public Player(MainCharacter character)
-        {
-            this.character = character;
-        }
-
-        public MainCharacter PlayerCharacter { get { return character; } }
+        public MainCharacter PlayerCharacter { get; set; }
+        public Rectangle CameraView { get { return PlayerCharacter.CameraView; } }
 
         public Character.MoveDirection KeyInputDirection
         {
             get
             {
-                Vector2 inputDirection = Vector2.Zero;
-
                 if (Keyboard.GetState().IsKeyDown(Keys.W))
                     return Character.MoveDirection.Up;
                 else if (Keyboard.GetState().IsKeyDown(Keys.S))
@@ -42,25 +34,28 @@ namespace Armalia
             }
         }
 
+        public Player(MainCharacter character)
+        {
+            PlayerCharacter = character;
+        }
+
+
         public bool PressedAttack()
         {
-
             if (Keyboard.GetState().IsKeyDown(Keys.K))
                 return true;
             else
                 return false;
         }
 
-        public Rectangle CameraView { get { return character.CameraView; } }
-
         public void Update(GameTime gameTime, Map currentMap)
         {
-            character.Update(gameTime, KeyInputDirection, currentMap);
+            PlayerCharacter.Update(gameTime, KeyInputDirection, currentMap, PressedAttack());
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            character.Draw(spriteBatch);
+            PlayerCharacter.Draw(spriteBatch);
         }
 
     }

@@ -17,19 +17,19 @@ using System.Text.RegularExpressions;
 using Armalia.Characters;
 using Armalia.GameScreens;
 
-namespace Armalia.Maps
+namespace Armalia.Levels
 {
 
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class MapMaker 
+    class MapMaker
     {
-       
         /// <summary>
         /// The Game object
         /// </summary>
         private Game game;
+
         /// <summary>
         /// Constructor 1
         /// </summary>
@@ -38,21 +38,13 @@ namespace Armalia.Maps
         {
             this.game = game;
         }
-        /// <summary>
-        /// Constructor 2
-        /// </summary>
-        /// <param name="gm">The GAme object</param>
-        public MapMaker(Game gm)
-        {
-            // TODO: Complete member initialization
-            this.game = gm;
-        }
+
         /// <summary>
         /// This will build a map object form XML filecode
         /// </summary>
         /// <param name="mapFilename">The TMX file of the map to be made</param>
         /// <returns></returns>
-        public Map BuildLevel(String mapFilename)
+        public Map BuildMap(String mapFilename)
         {
             // load texture
             Texture2D mapTexture = game.Content.Load<Texture2D>(mapFilename);
@@ -60,16 +52,12 @@ namespace Armalia.Maps
             // load boundaries
             List<Rectangle> boundaries = GetBoundaries(mapFilename);
 
-            // load enemies, NPCs, etc.
-
             return new Map(mapTexture, boundaries);
         }
 
-        
-        
         /// <summary>
         /// This will load the boundaries from the TMX file
-        /// sources: http://stackoverflow.com/questions/2439636/xna-best-way-to-load-and-read-a-xml-file
+        /// source: http://stackoverflow.com/questions/2439636/xna-best-way-to-load-and-read-a-xml-file
         /// </summary>
         /// <param name="mapFilename">The TMX file name</param>
         /// <returns></returns>
@@ -86,7 +74,7 @@ namespace Armalia.Maps
                 int yCoord = 0;
                 int width = 0;
                 int height = 0;
-                if(obj.Attribute("type") == null)
+                if (obj.Attribute("type") == null)
                 {
                     xCoord = Convert.ToInt32(obj.Attribute("x").Value);
                     yCoord = Convert.ToInt32(obj.Attribute("y").Value);
@@ -98,7 +86,7 @@ namespace Armalia.Maps
                         width, height);
                     boundaries.Add(boundaryRect);
                 }
-               
+
             }
 
             return boundaries;
@@ -109,17 +97,18 @@ namespace Armalia.Maps
             var mapXML = XElement.Load(game.Content.RootDirectory + "\\" + mapFilename + ".tmx");
             var objectElements = mapXML.Elements("objectgroup").Elements().ToList();
 
-            // convert boundaries to Rectangles; store in list
             List<EnemyCharacter> enemies = new List<EnemyCharacter>();
             foreach (var obj in objectElements)
             {
                 string type = null;
-                if(obj.Attribute("type") != null)
-                      type = obj.Attribute("type").ToString().ToLower();
+                if (obj.Attribute("type") != null)
+                    type = obj.Attribute("type").ToString().ToLower();
                 if (type != null)
                 {
                     var properties = obj.Elements("properties").Elements().ToList();
                     string name = obj.Attribute("name").Value.ToString().ToLower();
+
+                    // default attributes
                     int hp = 100;
                     int mp = 100;
                     int xp = 0;
@@ -135,26 +124,24 @@ namespace Armalia.Maps
                         {
                             case "strength":
                                 strength = Convert.ToInt32(prop.Attribute("value").Value);
-                            break;
+                                break;
                             case "hp":
-                              hp = Convert.ToInt32(prop.Attribute("value").Value);
-                            break;
+                                hp = Convert.ToInt32(prop.Attribute("value").Value);
+                                break;
                             case "mp":
                                 mp = Convert.ToInt32(prop.Attribute("value").Value);
-                            break;
+                                break;
                             case "defense":
-                              defense = Convert.ToInt32(prop.Attribute("value").Value);
-                            break;
+                                defense = Convert.ToInt32(prop.Attribute("value").Value);
+                                break;
                             case "xp":
-                               xp = Convert.ToInt32(prop.Attribute("value").Value);
-                            break;
-
+                                xp = Convert.ToInt32(prop.Attribute("value").Value);
+                                break;
                         }
                     }
 
                     switch (name.ToLower())
                     {
-                    default:
                         case "knight":
                             Texture2D knightTexture = game.Content.Load<Texture2D>(@"Characters\charchip01-2-1");
                             Point knightTextureFrameSize = new Point(32, 32);
@@ -170,19 +157,16 @@ namespace Armalia.Maps
                             List<Point> knightTargets = new List<Point>() {
                                 new Point((int)(xcoord - 100), ycoord), new Point((int)(xcoord+100), ycoord) };
 
-                              EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, hp, mp, xp,
-                strength, defense, knightSpeed, gs, knightTargets, pc);
-                        enemies.Add(knightEnemy);
+                            EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, hp, mp, xp,
+                                strength, defense, knightSpeed, gs, knightTargets, pc);
+                            enemies.Add(knightEnemy);
 
-              
-                        break;
-
+                            break;
                     }
                 }
             }
 
             return enemies;
         }
-//END OF CLASS
     }
 }

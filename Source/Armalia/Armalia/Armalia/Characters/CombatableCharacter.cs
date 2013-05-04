@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Armalia.Characters
 {
-    public abstract class CombatableCharacter : Character
+    abstract class CombatableCharacter : Character
     {
         public int HitPoints { get; set; }
         public int ManaPoints { get; set; }
@@ -19,19 +19,25 @@ namespace Armalia.Characters
             int expLevel, int strength, int defense, Vector2 speed)
             : base(sprite, position, speed)
         {
-            HitPoints = hitPoints;
-            ManaPoints = manaPoints;
-            ExpLevel = expLevel;
-            Strength = strength;
-            Defense = defense;
+            this.HitPoints = hitPoints;
+            this.ManaPoints = manaPoints;
+            this.ExpLevel = expLevel;
+            this.Strength = strength;
+            this.Defense = defense;
         }
 
         public void Attack(CombatableCharacter enemy) {
             int damage = (int) (Strength - (0.5 * enemy.Defense));
             enemy.HitPoints -= damage;
-            //enemyIsDefeated = enemy.HitPoints <= 0 ? true : false;
         }
 
-        
+        /// <summary>
+        /// The enumeration used for drawing
+        /// </summary>
+        enum StatusEffect
+        {
+            Cursed
+        }
+
     }
 }

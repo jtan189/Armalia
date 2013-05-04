@@ -4,40 +4,42 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Armalia.Sprites;
-using Armalia.Maps;
+using Armalia.Levels;
 using Microsoft.Xna.Framework.Graphics;
 using Armalia.GameScreens;
 
 namespace Armalia.Characters
 {
-    public abstract class EnemyCharacter : CombatableCharacter
+    abstract class EnemyCharacter : CombatableCharacter
     {
-        public static readonly int ATTACK_RANGE = 50;
-
         private static Random rand = new Random();
 
+        public static readonly int ATTACK_RANGE = 50;
+
+        private GameplayScreen gameplayScreen;
+        private MainCharacter mainCharacter;
+
+        private EnemyState currentState;
         private List<Point> patrolTargets;
         private Point currentTarget;
-        private EnemyState currentState;
-        private GameplayScreen gameplayScreen;
-        // private SomeShape fieldOfVision;
-        private Character player;
+
         public EnemyCharacter(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
-            int expLevel, int strength, int defense, Vector2 speed, GameplayScreen gameplayScreen, List<Point> patrolTargets, Character p)
+            int expLevel, int strength, int defense, Vector2 speed, GameplayScreen gameplayScreen, List<Point> patrolTargets, MainCharacter mainCharacter)
             : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
         {
             this.gameplayScreen = gameplayScreen;
             this.patrolTargets = patrolTargets;
+            this.mainCharacter = mainCharacter;
+
             currentState = EnemyState.Patrol;
             currentTarget = patrolTargets[0];
-            this.player = p;
         }
 
         // TODO: incorporate path finding algorithm or something
         // for now, just oscilate between two x coordinates
         public bool IsNearPatrolTarget()
         {
-            if (Math.Abs(position.X - currentTarget.X) <= speed.X)
+            if (Math.Abs(Position.X - currentTarget.X) <= speed.X)
             {
                 return true;
             }
@@ -48,8 +50,6 @@ namespace Armalia.Characters
         public void Update(GameTime gameTime, Map currentMap)
         {
 
-            // see if should change state
-
             // act based on state
             bool hasCollided;
             if (currentState == EnemyState.Patrol)
@@ -57,9 +57,10 @@ namespace Armalia.Characters
                 Move(gameTime, currentMap, out hasCollided);
             }
         }
-        public bool isNearPLayer()
+
+        public bool IsNearPlayer()
         {
-            if (Vector2.Distance(this.position, this.player.position) <= (32 * 3))
+            if (Vector2.Distance(this.Position, this.mainCharacter.Position) <= (32 * 3))
             {
                 return true;
             }
@@ -69,16 +70,10 @@ namespace Armalia.Characters
         // TODO: make sure enemy and character are facing eachother at start of battle
         public bool PlayerInAttackRange()
         {
-
-            //Rectangle verticalRange = new Rectangle(getRectangle().X, getRectangle().Y - ATTACK_RANGE,
-            //    getRectangle().Width, getRectangle().Height + (2 * ATTACK_RANGE));
-            //Rectangle horizontalRange = new Rectangle(getRectangle().X - ATTACK_RANGE, getRectangle().Y,
-            //    getRectangle().Width + (2 * ATTACK_RANGE), getRectangle().Height);
-
-            int playerXCoord = player.getRectangle().X + player.getRectangle().Width / 2; // take midpoint
-            int playerYCoord = player.getRectangle().Y + player.getRectangle().Height / 2;
-            int enemyXCoord = getRectangle().X + getRectangle().Width / 2;
-            int enemyYCoord = getRectangle().Y + getRectangle().Height / 2;
+            int playerXCoord = mainCharacter.AsRectangle().X + mainCharacter.AsRectangle().Width / 2; // take midpoint
+            int playerYCoord = mainCharacter.AsRectangle().Y + mainCharacter.AsRectangle().Height / 2;
+            int enemyXCoord = AsRectangle().X + AsRectangle().Width / 2;
+            int enemyYCoord = AsRectangle().Y + AsRectangle().Height / 2;
 
             if ((Math.Abs(enemyXCoord - playerXCoord) <= ATTACK_RANGE) && (enemyYCoord == playerYCoord) ||
                 (Math.Abs(enemyYCoord - playerYCoord) <= ATTACK_RANGE) && (enemyXCoord == playerXCoord))
@@ -98,60 +93,51 @@ namespace Armalia.Characters
             MoveDirection moveDir = MoveDirection.Right;
             hasCollided = false;
 
-
-            if (PlayerInAttackRange())
+            if (IsNearPatrolTarget())
             {
-                gameplayScreen.InitiateBattle(this);
+                // choose random new target
+                currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
             }
             else
             {
-                if (IsNearPatrolTarget())
+                if (IsNearPlayer() && !(this.mainCharacter.AsRectangle().Intersects(this.AsRectangle())))
                 {
-                    // choose random new target
-                    currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
-                }
-                else
-                {
-                    if (isNearPLayer() && !(this.player.getRectangle().Intersects(this.getRectangle())))
+                    if (this.Position.X > this.mainCharacter.Position.X)
                     {
-                        if (this.position.X > this.player.position.X)
-                        {
-                            moveDir = MoveDirection.Left;
-                        }
-                        else if (this.position.X < this.player.position.X)
-                        {
-                            moveDir = MoveDirection.Right;
-                        }
-                        else
-                        {
-                            if (this.position.Y > this.player.position.Y)
-                            {
-                                moveDir = MoveDirection.Up;
-                            }
-                            else
-                            {
-                                moveDir = MoveDirection.Down;
-                            }
-                        }
+                        moveDir = MoveDirection.Left;
                     }
-
+                    else if (this.Position.X < this.mainCharacter.Position.X)
+                    {
+                        moveDir = MoveDirection.Right;
+                    }
                     else
                     {
-                        if (position.X < currentTarget.X)
+                        if (this.Position.Y > this.mainCharacter.Position.Y)
                         {
-                            moveDir = MoveDirection.Right;
+                            moveDir = MoveDirection.Up;
                         }
                         else
                         {
-                            moveDir = MoveDirection.Left;
-
+                            moveDir = MoveDirection.Down;
                         }
                     }
-                    hasMoved = base.Move(moveDir, currentMap, out hasCollided);
                 }
+
+                else
+                {
+                    if (Position.X < currentTarget.X)
+                    {
+                        moveDir = MoveDirection.Right;
+                    }
+                    else
+                    {
+                        moveDir = MoveDirection.Left;
+
+                    }
+                }
+                hasMoved = base.Move(moveDir, currentMap, out hasCollided);
             }
 
-            // this is gross. change it
             base.Update(gameTime, moveDir, currentMap);
 
             return hasMoved;
@@ -159,16 +145,12 @@ namespace Armalia.Characters
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            int xOffset = (int)position.X - gameplayScreen.CameraView.X;
-            int yOffset = (int)position.Y - gameplayScreen.CameraView.Y;
+            int xOffset = (int)Position.X - gameplayScreen.CameraView.X;
+            int yOffset = (int)Position.Y - gameplayScreen.CameraView.Y;
             Vector2 drawPosition = new Vector2(xOffset, yOffset);
+
             // normalize position relative to camera view
             CharacterSprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
-        }
-
-        enum StatusEffect
-        {
-            Cursed
         }
 
         enum EnemyState

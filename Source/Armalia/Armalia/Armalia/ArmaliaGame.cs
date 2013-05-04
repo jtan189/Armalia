@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Armalia.Maps;
+using Armalia.Levels;
 using Armalia.Characters;
 using Armalia.Sprites;
 using Armalia.GameScreens;
@@ -18,7 +18,7 @@ namespace Armalia
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class ArmaliaGame : Microsoft.Xna.Framework.Game
+    class ArmaliaGame : Microsoft.Xna.Framework.Game
     {
         private GraphicsDeviceManager graphics;
         private ScreenManager screenManager;
@@ -28,8 +28,8 @@ namespace Armalia
         {
             graphics = new GraphicsDeviceManager(this);
             //graphics.IsFullScreen = true;
-            graphics.PreferredBackBufferWidth = 1280; // was 800
-            graphics.PreferredBackBufferHeight = 720; // was 800
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
             
         }
@@ -76,7 +76,6 @@ namespace Armalia
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
             base.Update(gameTime);
         }
 
@@ -88,18 +87,14 @@ namespace Armalia
         {
            GraphicsDevice.Clear(Color.CornflowerBlue);
            base.Draw(gameTime);
-
         }
     }
 
    public enum GameState
     {
-        Exploration,
-        TransitionToBattle,
-        Battle,
+        Splash,
+        Gameplay,
         CutScene,
-        GameOver,
-        Splash
-
+        GameOver
     }
 }
