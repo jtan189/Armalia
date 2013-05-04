@@ -120,7 +120,6 @@ namespace Armalia.Characters
                     Position = movedPosition;
                     hasMoved = true;
                 }
-
             }
 
             return hasMoved;

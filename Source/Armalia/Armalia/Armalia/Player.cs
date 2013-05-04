@@ -13,7 +13,6 @@ namespace Armalia
 {
     class Player
     {
-
         public MainCharacter PlayerCharacter { get; set; }
         public Rectangle CameraView { get { return PlayerCharacter.CameraView; } }
 

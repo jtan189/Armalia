@@ -12,7 +12,7 @@ namespace Armalia.GameScreens
         private string splashFilename;
         private Texture2D splashTexture;
 
-        public SplashScreen(ArmaliaGame game, ScreenManager manager, String splashFilename) 
+        public SplashScreen(ArmaliaGame game, ScreenManager manager, String splashFilename)
             : base(game, manager)
         {
             this.splashFilename = splashFilename;

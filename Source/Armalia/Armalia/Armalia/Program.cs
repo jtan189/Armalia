@@ -11,7 +11,7 @@ namespace Armalia
         static void Main(string[] args)
         {
             using (ArmaliaGame game = new ArmaliaGame())
-           {
+            {
                 game.Run();
             }
         }

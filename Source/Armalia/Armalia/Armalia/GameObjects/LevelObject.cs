@@ -5,9 +5,9 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Armalia.Characters;
 
-namespace Armalia.Object
+namespace Armalia.GameObjects
 {
-    public abstract class LevelObject
+    abstract class LevelObject
     {
         protected Rectangle objectRect;
 
@@ -18,7 +18,7 @@ namespace Armalia.Object
 
         public bool Collides(MainCharacter mainChar)
         {
-            return objectRect.Intersects(mainChar.getRectangle());
+            return objectRect.Intersects(mainChar.AsRectangle());
         }
     }
 }

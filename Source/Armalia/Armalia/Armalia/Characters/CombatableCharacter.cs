@@ -26,8 +26,9 @@ namespace Armalia.Characters
             this.Defense = defense;
         }
 
-        public void Attack(CombatableCharacter enemy) {
-            int damage = (int) (Strength - (0.5 * enemy.Defense));
+        public void Attack(CombatableCharacter enemy)
+        {
+            int damage = (int)(Strength - (0.5 * enemy.Defense));
             enemy.HitPoints -= damage;
         }
 

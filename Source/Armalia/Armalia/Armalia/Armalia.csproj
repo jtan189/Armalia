@@ -110,7 +110,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattleSystem\Battle.cs" />
     <Compile Include="BattleSystem\SemiCircle.cs" />
     <Compile Include="Characters\Assassin.cs" />
     <Compile Include="Characters\Attack.cs" />
@@ -131,6 +130,8 @@
     <Compile Include="Levels\Map.cs" />
     <Compile Include="Levels\LevelManager.cs" />
     <Compile Include="Levels\MapMaker.cs" />
+    <Compile Include="GameObjects\LevelObject.cs" />
+    <Compile Include="GameObjects\Portal.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

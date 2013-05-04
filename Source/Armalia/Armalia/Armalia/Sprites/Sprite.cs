@@ -29,6 +29,5 @@ namespace Armalia.Sprites
             return new Vector2(texture.Width, texture.Height);
         }
 
-
     }
 }

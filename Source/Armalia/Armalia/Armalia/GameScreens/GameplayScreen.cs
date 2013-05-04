@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using Armalia.Exceptions;
 using Microsoft.Xna.Framework.Media;
 using Armalia.BattleSystem;
+using Armalia.GameObjects;
 
 namespace Armalia.GameScreens
 {
@@ -37,7 +38,6 @@ namespace Armalia.GameScreens
         private PlayerSidebar sidebar;
         private LevelManager levelManager;
 
-        public Battle CurrentBattle { get; set; }
         public Rectangle CameraView { get { return player.CameraView; } }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Armalia.GameScreens
 
             # region Player Weapon Initialization Region
 
-            Texture2D swordTexture = game.Content.Load<Texture2D>(@"Attacks\massive_sword_single");
+            Texture2D swordTexture = game.Content.Load<Texture2D>(@"Attacks\massive_sword");
             int swordMsPerFrame = 16;
             float swordScale = 0.5f;
             Vector2 swordRotationPoint = new Vector2(12, 200);
@@ -73,10 +73,6 @@ namespace Armalia.GameScreens
             int playerCollisionOffset = 0;
             Point playerInitialFrame = new Point(1, 0);
             Point playerSheetSize = new Point(3, 4);
-
-			// TODO: necessary?
-            Vector2 playerSpeed = new Vector2(2, 2);
-            Vector2 initialPlayerPos = new Vector2(80, 50);
 
             AnimatedSprite playerSprite = new AnimatedSprite(
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
@@ -105,7 +101,7 @@ namespace Armalia.GameScreens
 
             # region Level Initialization Region
 
-            string initialLevelName = "village1";
+            string initialLevelName = "Village0";
             levelManager = new LevelManager(game, playerCharacter, this);
             try
             {
@@ -136,27 +132,25 @@ namespace Armalia.GameScreens
 
         public void Update(GameTime gameTime)
         {
-
             switch (manager.CurrentState)
             {
                 case GameState.Gameplay:
 
-                // level teleportation stuff
-
-                foreach (LevelObject obj in level.LevelObjects)
-                {
-                    if (obj.GetType() == typeof(Portal))
+                    // level teleportation stuff
+                    foreach (LevelObject obj in level.LevelObjects)
                     {
-                        Portal portal = (Portal)obj;
-                        if (portal.Collides(player.PlayerCharacter))
+                        if (obj.GetType() == typeof(Portal))
                         {
-                            GameLevel teleportLevel = portal.DestinationLevel;
-                            level = teleportLevel;
-                            
-                            playerCharacter.setPosition(portal.CharStartPosition, level.LevelMap);
+                            Portal portal = (Portal)obj;
+                            if (portal.Collides(player.PlayerCharacter))
+                            {
+                                GameLevel teleportLevel = portal.DestinationLevel;
+                                level = teleportLevel;
+
+                                player.PlayerCharacter.SetPosition(portal.CharStartPosition, level.LevelMap);
+                            }
                         }
                     }
-                }
 
                     player.Update(gameTime, level.LevelMap);
                     level.Update(gameTime);

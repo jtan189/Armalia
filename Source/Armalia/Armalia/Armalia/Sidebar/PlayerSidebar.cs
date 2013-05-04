@@ -37,7 +37,6 @@ namespace Armalia.Sidebar
 
         SpriteFont charStatsFont;
 
-
         public PlayerSidebar(ArmaliaGame game, ScreenManager manager, GameplayScreen gameplayScreen, Rectangle sidebarWindow, MainCharacter mainCharacter)
         {
             this.game = game;

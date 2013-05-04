@@ -7,6 +7,7 @@ using Armalia.Exceptions;
 using Microsoft.Xna.Framework.Media;
 using Armalia.Characters;
 using Armalia.GameScreens;
+using Armalia.GameObjects;
 
 namespace Armalia.Levels
 {
@@ -25,15 +26,17 @@ namespace Armalia.Levels
         {
             this.game = game;
             this.gameplayScreen = gameplayScreen;
-            this.mapMaker = new MapMaker(game);
+            this.mapMaker = new MapMaker(game, this);
             this.playerCharacter = playerCharacter;
 
             mapFiles = new Dictionary<string, string>();
             songFiles = new Dictionary<string, string>();
             gameLevels = new Dictionary<string, GameLevel>();
 
-            mapFiles.Add("village1", @"Maps\Village1\Village0");
-            songFiles.Add("village1", @"Music\Home");
+            mapFiles.Add("Building1", @"Maps\Building1\Building1");
+            mapFiles.Add("Village0", @"Maps\Village0\Village0");
+            mapFiles.Add("Forest1", @"Maps\Forest1\Forest1");
+            songFiles.Add("Village0", @"Music\Home");
 
             LoadLevels();
         }
@@ -49,7 +52,8 @@ namespace Armalia.Levels
                 }
 
                 List<EnemyCharacter> enemies = this.mapMaker.GetEnemies(mapPair.Value, this.playerCharacter, this.gameplayScreen);
-                GameLevel level = new GameLevel(this.mapMaker.BuildMap(mapPair.Value), song, enemies);
+                List<LevelObject> levelObjects = this.mapMaker.GetObjects(mapPair.Value);
+                GameLevel level = new GameLevel(mapPair.Key, this.mapMaker.BuildMap(mapPair.Value), song, enemies, levelObjects);
                 gameLevels.Add(mapPair.Key, level);
             }
         }

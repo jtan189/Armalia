@@ -15,6 +15,6 @@ namespace Armalia.GameScreens
             this.game = game;
             this.manager = manager;
         }
-        
+
     }
 }

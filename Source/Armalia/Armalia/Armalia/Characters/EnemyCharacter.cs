@@ -49,7 +49,6 @@ namespace Armalia.Characters
 
         public void Update(GameTime gameTime, Map currentMap)
         {
-
             // act based on state
             bool hasCollided;
             if (currentState == EnemyState.Patrol)
@@ -155,7 +154,7 @@ namespace Armalia.Characters
                     }
                     currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
                     hasMoved = base.Move(moveDir, currentMap, out hasCollided);
-                
+
                 }
             }
 

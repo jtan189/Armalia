@@ -8,7 +8,6 @@ namespace Armalia.BattleSystem
 {
     class SemiCircle
     {
-
         public CircleHalf Half { get; set; }
         public int X { get; set; }
         public int Y { get; set; }

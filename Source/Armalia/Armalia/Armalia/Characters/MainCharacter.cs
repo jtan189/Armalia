@@ -17,8 +17,6 @@ namespace Armalia.Characters
         /// </summary>
         private Rectangle cameraView;
 
-        private bool attackInProgress;
-
         public String Name { get; set; }
         public SwordSprite Sword { get; set; }
 
@@ -57,7 +55,6 @@ namespace Armalia.Characters
             this.Name = name;
             this.cameraView = cameraView;
             this.Sword = swordSprite;
-            attackInProgress = false;
         }
 
         /// <summary>
@@ -65,35 +62,29 @@ namespace Armalia.Characters
         /// </summary>
         public void LevelUp() { }
 
-		// TODO figure out what this is used for (and if necessary)
-		public Sprite Sprite{ get { return this.sprite; } }
-
-		// TODO ""
-		public Vector2 Speed { get { return speed; } }
-
-        public void setPosition(Vector2 newP, Map map)
+        public void SetPosition(Vector2 newPosition, Map map)
         {
-            position = newP;
-            int cx = (int)position.X - (cameraView.Width / 2) + (sprite.FrameSize.X / 2);
-            int cy = (int)position.Y - (cameraView.Height / 2) + (sprite.FrameSize.Y / 2);
-            if ((position.Y + (sprite.FrameSize.Y / 2) >= map.Size.Y - (cameraView.Height / 2)))
+            Position = newPosition;
+            int cx = (int)Position.X - (cameraView.Width / 2) + (CharacterSprite.FrameSize.X / 2);
+            int cy = (int)Position.Y - (cameraView.Height / 2) + (CharacterSprite.FrameSize.Y / 2);
+            if ((Position.Y + (CharacterSprite.FrameSize.Y / 2) >= map.Size.Y - (cameraView.Height / 2)))
             {
                 cameraView.Y = map.Size.Y - cameraView.Height;
             }
 
-            if ((position.X + (sprite.FrameSize.X / 2) >= map.Size.X - (cameraView.Width / 2)))
+            if ((Position.X + (CharacterSprite.FrameSize.X / 2) >= map.Size.X - (cameraView.Width / 2)))
             {
                 cameraView.X = map.Size.X - cameraView.Width;
 
             }
 
             // center y cood of camera
-            if (position.Y + (sprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
+            if (Position.Y + (CharacterSprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
             {
                 // center camera to top edge
                 cameraView.Y = 0;
             }
-            if (position.X + (sprite.FrameSize.X / 2) <= (cameraView.Width / 2))
+            if (Position.X + (CharacterSprite.FrameSize.X / 2) <= (cameraView.Width / 2))
             {
                 // center camera to left edge
                 cameraView.X = 0;

@@ -11,7 +11,6 @@ namespace Armalia.Levels
     class Map
     {
         public const float MAY_LAYER_VALUE = 1f;
-        //public Vector2 CharStartPosition { get; set; }
 
         private Texture2D mapImage;
         private List<Rectangle> boundaries;
@@ -28,7 +27,7 @@ namespace Armalia.Levels
         {
             spriteBatch.Draw(mapImage, mapWindow, cameraView, Color.White, 0f, Vector2.Zero, SpriteEffects.None, MAY_LAYER_VALUE);
         }
-        public List<Rectangle> getBounds()
+        public List<Rectangle> GetBounds()
         {
             return this.boundaries;
         }
@@ -43,7 +42,6 @@ namespace Armalia.Levels
                     return true;
                 }
             }
-
             return false;
         }
 

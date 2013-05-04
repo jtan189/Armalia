@@ -22,7 +22,7 @@ namespace Armalia
     {
         private GraphicsDeviceManager graphics;
         private ScreenManager screenManager;
-        public SpriteBatch SpriteBatch { get; set;}
+        public SpriteBatch SpriteBatch { get; set; }
 
         public ArmaliaGame()
         {
@@ -31,7 +31,7 @@ namespace Armalia
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
-            
+
         }
 
         /// <summary>
@@ -85,12 +85,12 @@ namespace Armalia
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-           GraphicsDevice.Clear(Color.CornflowerBlue);
-           base.Draw(gameTime);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            base.Draw(gameTime);
         }
     }
 
-   public enum GameState
+    public enum GameState
     {
         Splash,
         Gameplay,

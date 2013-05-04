@@ -16,7 +16,7 @@ using Armalia.Sprites;
 using System.Text.RegularExpressions;
 using Armalia.Characters;
 using Armalia.GameScreens;
-using Armalia.Object;
+using Armalia.GameObjects;
 
 namespace Armalia.Levels
 {
@@ -26,21 +26,24 @@ namespace Armalia.Levels
     /// </summary>
     class MapMaker
     {
-        const int spawnXOffset = 0;
-        const int spawnYOffset = -70;
+        private const int spawnXOffset = 0;
+        private const int spawnYOffset = -70;
+
         /// <summary>
         /// The Game object
         /// </summary>
         private Game game;
-        private MapHandler mapHandler;
+        private LevelManager levelManager;
+
         /// <summary>
         /// Constructor 1
         /// </summary>
         /// <param name="game"> ArmaliaGame Object</param>
-        public MapMaker(ArmaliaGame game, MapHandler mapHandler)
+        /// <param name="levelManager">Level manager for this game.</param>
+        public MapMaker(ArmaliaGame game, LevelManager levelManager)
         {
             this.game = game;
-            this.mapHandler = mapHandler;
+            this.levelManager = levelManager;
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ namespace Armalia.Levels
 
             return new Map(mapTexture, boundaries);
         }
- 
+
         /// <summary>
         /// This will load the boundaries from the TMX file
         /// source: http://stackoverflow.com/questions/2439636/xna-best-way-to-load-and-read-a-xml-file
@@ -90,7 +93,6 @@ namespace Armalia.Levels
                         width, height);
                     boundaries.Add(boundaryRect);
                 }
-
             }
 
             return boundaries;
@@ -180,7 +182,6 @@ namespace Armalia.Levels
             var mapXML = XElement.Load(game.Content.RootDirectory + "\\" + mapFilename + ".tmx");
             var objectElements = mapXML.Elements("objectgroup").Elements().ToList();
 
-            // convert boundaries to Rectangles; store in list
             List<LevelObject> gameObjects = new List<LevelObject>();
             foreach (var obj in objectElements)
             {
@@ -219,7 +220,7 @@ namespace Armalia.Levels
                                 }
                             }
 
-                            gameObjects.Add(new Portal(new Rectangle(xcoord, ycoord, width, height), destinationMapFilename, charStartPosition, mapHandler));
+                            gameObjects.Add(new Portal(new Rectangle(xcoord, ycoord, width, height), destinationMapFilename, charStartPosition, levelManager));
                             break;
 
                     }

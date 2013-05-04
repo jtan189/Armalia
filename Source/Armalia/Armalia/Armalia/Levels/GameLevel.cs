@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Media;
 using Armalia.Characters;
+using Armalia.GameObjects;
 
 namespace Armalia.Levels
 {
@@ -14,6 +15,7 @@ namespace Armalia.Levels
     ///</summary>
     class GameLevel
     {
+        private string name;
         private Song bgMusic;
         private List<EnemyCharacter> enemies;
 
@@ -22,17 +24,23 @@ namespace Armalia.Levels
         /// </summary>
         public Map LevelMap { get; set; }
 
+        public List<LevelObject> LevelObjects { get; set; }
+
         /// <summary>
         /// Default constructor
         /// </summary>
+        /// <param name="name">Name of the level.</param>
         /// <param name="levelMap">The map object to instantiate the level with.</param>
         /// <param name="bgMusic">Background music for the level.</param>
         /// <param name="enemies">Enemies located in the level.</param>
-        public GameLevel(Map levelMap, Song bgMusic, List<EnemyCharacter> enemies)
+        /// <param name="levelObjects">Objects located in the level.</param>
+        public GameLevel(string name, Map levelMap, Song bgMusic, List<EnemyCharacter> enemies, List<LevelObject> levelObjects)
         {
             this.LevelMap = levelMap;
             this.bgMusic = bgMusic;
             this.enemies = enemies;
+            this.name = name;
+            this.LevelObjects = levelObjects;
         }
 
         /// <summary>

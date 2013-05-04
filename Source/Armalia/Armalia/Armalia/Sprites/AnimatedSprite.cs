@@ -71,9 +71,6 @@ namespace Armalia.Sprites
             currentFrame = initialFrame;
             this.sheetSize = sheetSize;
             this.Scale = scale;
-
-            // set prevFrame coords to negative value, so animation can start (TODO: necessary?)
-            //prevFrame = new Point(-1, -1);
         }
 
         /// <summary>
@@ -96,7 +93,7 @@ namespace Armalia.Sprites
                 int currentDirection = currentFrame.Y;
 
                 if (currentDirection == (int)moveDirection && !hasCollided) // if moving
-                { 
+                {
                     currentFrame.X = OscillatedAnimationIndexX(currentFrame.X, prevFrame.X, 0, sheetSize.X - 1);
                 }
                 else
