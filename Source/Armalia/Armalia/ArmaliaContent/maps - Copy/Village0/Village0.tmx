@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="Village1_Tileset" tilewidth="32" tileheight="32">
-  <image source="Village1_Tileset.png" width="2048" height="2048"/>
+  <image source="../Village1/Village1_Tileset.png" width="2048" height="2048"/>
  </tileset>
  <tileset firstgid="4097" name="Church" tilewidth="32" tileheight="32">
   <image source="../../TileSets/Church.png" width="1024" height="1024"/>
@@ -2879,31 +2879,13 @@
     <property name="xp" value="0"/>
    </properties>
   </object>
-  <object name="Knight" type="Enemy" x="864" y="288" width="32" height="32">
+  <object name="Knight" type="Enemy" x="576" y="800" width="32" height="32">
    <properties>
     <property name="defense" value="30"/>
     <property name="hp" value="100"/>
     <property name="speed" value="100"/>
     <property name="strength" value="10"/>
     <property name="xp" value="0"/>
-   </properties>
-  </object>
-  <object name="Knight" type="Enemy" x="672" y="608" width="32" height="32">
-   <properties>
-    <property name="defense" value="30"/>
-    <property name="hp" value="100"/>
-    <property name="speed" value="100"/>
-    <property name="strength" value="10"/>
-    <property name="xp" value="0"/>
-   </properties>
-  </object>
-  <object x="256" y="576" width="192" height="128"/>
-  <object x="384" y="736" width="64"/>
-  <object x="256" y="704" width="64" height="32"/>
-  <object x="384" y="704" width="64" height="32"/>
-  <object name="Door" type="Portal" x="320" y="704" width="64" height="32">
-   <properties>
-    <property name="level" value="Building1"/>
    </properties>
   </object>
  </objectgroup>

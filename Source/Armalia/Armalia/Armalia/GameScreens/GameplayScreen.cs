@@ -74,6 +74,10 @@ namespace Armalia.GameScreens
             Point playerInitialFrame = new Point(1, 0);
             Point playerSheetSize = new Point(3, 4);
 
+			// TODO: necessary?
+            Vector2 playerSpeed = new Vector2(2, 2);
+            Vector2 initialPlayerPos = new Vector2(80, 50);
+
             AnimatedSprite playerSprite = new AnimatedSprite(
                 playerTexture, playerTextureFrameSize, playerCollisionOffset, playerInitialFrame, playerSheetSize);
 
@@ -136,6 +140,24 @@ namespace Armalia.GameScreens
             switch (manager.CurrentState)
             {
                 case GameState.Gameplay:
+
+                // level teleportation stuff
+
+                foreach (LevelObject obj in level.LevelObjects)
+                {
+                    if (obj.GetType() == typeof(Portal))
+                    {
+                        Portal portal = (Portal)obj;
+                        if (portal.Collides(player.PlayerCharacter))
+                        {
+                            GameLevel teleportLevel = portal.DestinationLevel;
+                            level = teleportLevel;
+                            
+                            playerCharacter.setPosition(portal.CharStartPosition, level.LevelMap);
+                        }
+                    }
+                }
+
                     player.Update(gameTime, level.LevelMap);
                     level.Update(gameTime);
                     sidebar.Update(gameTime);

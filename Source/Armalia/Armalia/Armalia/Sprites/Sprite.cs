@@ -24,6 +24,11 @@ namespace Armalia.Sprites
         {
             get { return frameSize; }
         }
+        public Vector2 Size()
+        {
+            return new Vector2(texture.Width, texture.Height);
+        }
+
 
     }
 }

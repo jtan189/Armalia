@@ -16,6 +16,7 @@ using Armalia.Sprites;
 using System.Text.RegularExpressions;
 using Armalia.Characters;
 using Armalia.GameScreens;
+using Armalia.Object;
 
 namespace Armalia.Levels
 {
@@ -25,18 +26,21 @@ namespace Armalia.Levels
     /// </summary>
     class MapMaker
     {
+        const int spawnXOffset = 0;
+        const int spawnYOffset = -70;
         /// <summary>
         /// The Game object
         /// </summary>
         private Game game;
-
+        private MapHandler mapHandler;
         /// <summary>
         /// Constructor 1
         /// </summary>
         /// <param name="game"> ArmaliaGame Object</param>
-        public MapMaker(ArmaliaGame game)
+        public MapMaker(ArmaliaGame game, MapHandler mapHandler)
         {
             this.game = game;
+            this.mapHandler = mapHandler;
         }
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace Armalia.Levels
 
             return new Map(mapTexture, boundaries);
         }
-
+ 
         /// <summary>
         /// This will load the boundaries from the TMX file
         /// source: http://stackoverflow.com/questions/2439636/xna-best-way-to-load-and-read-a-xml-file
@@ -102,8 +106,10 @@ namespace Armalia.Levels
             {
                 string type = null;
                 if (obj.Attribute("type") != null)
-                    type = obj.Attribute("type").ToString().ToLower();
-                if (type != null)
+                {
+                    type = obj.Attribute("type").Value.ToString().ToLower();
+                }
+                if (type != null && type.Equals("enemy"))
                 {
                     var properties = obj.Elements("properties").Elements().ToList();
                     string name = obj.Attribute("name").Value.ToString().ToLower();
@@ -168,5 +174,60 @@ namespace Armalia.Levels
 
             return enemies;
         }
+
+        public List<LevelObject> GetObjects(String mapFilename)
+        {
+            var mapXML = XElement.Load(game.Content.RootDirectory + "\\" + mapFilename + ".tmx");
+            var objectElements = mapXML.Elements("objectgroup").Elements().ToList();
+
+            // convert boundaries to Rectangles; store in list
+            List<LevelObject> gameObjects = new List<LevelObject>();
+            foreach (var obj in objectElements)
+            {
+                string type = null;
+                if (obj.Attribute("type") != null)
+                    type = obj.Attribute("type").Value.ToString().ToLower();
+                if (type != null && !type.Equals("enemy"))
+                {
+                    var properties = obj.Elements("properties").Elements().ToList();
+                    string name = obj.Attribute("name").Value.ToString();
+                    int xcoord = Convert.ToInt32(obj.Attribute("x").Value);
+                    int ycoord = Convert.ToInt32(obj.Attribute("y").Value);
+                    int width = Convert.ToInt32(obj.Attribute("width").Value);
+                    int height = Convert.ToInt32(obj.Attribute("height").Value);
+                    switch (name)
+                    {
+
+                        case "Door":
+                            string destinationMapFilename = "";
+                            Vector2 charStartPosition = Vector2.Zero;
+                            foreach (var prop in properties)
+                            {
+                                string propName = prop.Attribute("name").Value.ToString();
+                                switch (propName)
+                                {
+                                    case "level":
+                                        destinationMapFilename = prop.Attribute("value").Value;
+                                        Console.WriteLine("==============\r\n" + prop.Attribute("value").Value);
+                                        break;
+                                    case "startPositionX":
+                                        charStartPosition.X = Convert.ToInt32(prop.Attribute("value").Value);
+                                        break;
+                                    case "startPositionY":
+                                        charStartPosition.Y = Convert.ToInt32(prop.Attribute("value").Value);
+                                        break;
+                                }
+                            }
+
+                            gameObjects.Add(new Portal(new Rectangle(xcoord, ycoord, width, height), destinationMapFilename, charStartPosition, mapHandler));
+                            break;
+
+                    }
+                }
+            }
+
+            return gameObjects;
+        }
+
     }
 }
