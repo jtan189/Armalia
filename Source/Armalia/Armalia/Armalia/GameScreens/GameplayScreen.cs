@@ -166,7 +166,7 @@ namespace Armalia.GameScreens
                 case GameState.Gameplay:
                     spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 
-                    sidebar.Draw(gameTime, spriteBatch);
+                    sidebar.Draw(gameTime, spriteBatch, level);
                     level.Draw(spriteBatch, mapWindow, player.CameraView);
                     player.Draw(spriteBatch);
 

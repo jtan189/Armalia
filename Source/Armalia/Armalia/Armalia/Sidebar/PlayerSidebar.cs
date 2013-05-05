@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Armalia.Characters;
 using Armalia.GameScreens;
+using Armalia.Levels;
 
 namespace Armalia.Sidebar
 {
@@ -20,6 +21,7 @@ namespace Armalia.Sidebar
 
         private Texture2D sidebarBackground;
         private Rectangle sidebarWindow;
+        private Rectangle minimapArea;
 
         Vector2 mainCharNameLocation;
         Vector2 mainCharHpLocation;
@@ -27,13 +29,6 @@ namespace Armalia.Sidebar
         Vector2 mainCharXpLocation;
         Vector2 mainCharStrengthLocation;
         Vector2 mainCharDefenseLocation;
-
-        Vector2 enemyCharNameLocation;
-        Vector2 enemyCharHpLocation;
-        Vector2 enemyCharMpLocation;
-        Vector2 enemyCharXpLocation;
-        Vector2 enemyCharStrengthLocation;
-        Vector2 enemyCharDefenseLocation;
 
         SpriteFont charStatsFont;
 
@@ -45,19 +40,14 @@ namespace Armalia.Sidebar
             this.manager = manager;
             this.gameplayScreen = gameplayScreen;
 
-            mainCharNameLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 10);
-            mainCharHpLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 30);
-            mainCharMpLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 50);
-            mainCharXpLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 70);
-            mainCharStrengthLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 90);
-            mainCharDefenseLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 110);
+            minimapArea = new Rectangle(sidebarWindow.X, sidebarWindow.Y, sidebarWindow.Width, sidebarWindow.Width);
 
-            enemyCharNameLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 150);
-            enemyCharHpLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 170);
-            enemyCharMpLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 190);
-            enemyCharXpLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 210);
-            enemyCharStrengthLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 230);
-            enemyCharDefenseLocation = new Vector2(sidebarWindow.X + 10, sidebarWindow.Y + 250);
+            mainCharNameLocation = new Vector2(sidebarWindow.X + 10, minimapArea.Height + 10);
+            mainCharHpLocation = new Vector2(sidebarWindow.X + 10, minimapArea.Height + 30);
+            mainCharMpLocation = new Vector2(sidebarWindow.X + 10, minimapArea.Height + 50);
+            mainCharXpLocation = new Vector2(sidebarWindow.X + 10, minimapArea.Height + 70);
+            mainCharStrengthLocation = new Vector2(sidebarWindow.X + 10, minimapArea.Height + 90);
+            mainCharDefenseLocation = new Vector2(sidebarWindow.X + 10, minimapArea.Height + 110);
         }
 
         public void Load()
@@ -71,8 +61,14 @@ namespace Armalia.Sidebar
 
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, GameLevel currentLevel)
         {
+            # region Draw Minimap
+
+            spriteBatch.Draw(currentLevel.LevelMap.MapImage, minimapArea, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+
+            # endregion
+
             # region Draw Main Character Stats
 
             spriteBatch.Draw(sidebarBackground, sidebarWindow, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
@@ -84,14 +80,6 @@ namespace Armalia.Sidebar
             spriteBatch.DrawString(charStatsFont, "Defense: " + mainCharacter.Defense.ToString(), mainCharDefenseLocation, Color.Black);
 
             # endregion
-
-            //EnemyCharacter enemy = gameplayScreen.CurrentBattle.Enemy;
-            //spriteBatch.DrawString(charStatsFont, enemy.GetType().Name + ":", enemyCharNameLocation, Color.Black);
-            //spriteBatch.DrawString(charStatsFont, "HP: " + enemy.HitPoints.ToString(), enemyCharHpLocation, Color.Black);
-            //spriteBatch.DrawString(charStatsFont, "MP: " + enemy.ManaPoints.ToString(), enemyCharMpLocation, Color.Black);
-            //spriteBatch.DrawString(charStatsFont, "XP: " + enemy.ExpLevel.ToString(), enemyCharXpLocation, Color.Black);
-            //spriteBatch.DrawString(charStatsFont, "Strength: " + enemy.Strength.ToString(), enemyCharStrengthLocation, Color.Black);
-            //spriteBatch.DrawString(charStatsFont, "Defense: " + enemy.Defense.ToString(), enemyCharDefenseLocation, Color.Black);
 
         }
     }
