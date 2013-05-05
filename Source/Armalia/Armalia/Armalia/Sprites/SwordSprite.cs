@@ -36,6 +36,15 @@ namespace Armalia.Sprites
 
         public bool Animating { get; set; }
 
+        public float AttackRange
+        {
+            get
+            {
+                return scale * rotationPoint.Y;
+            }
+        }
+
+
         public SwordSprite(Texture2D texture, int msPerFrame, float scale, Vector2 rotationPoint, CombatableCharacter swordOwner)
         {
             this.layerDepth = DEFAULT_LAYER_DEPTH;
@@ -55,7 +64,7 @@ namespace Armalia.Sprites
         }
 
         // source: http://xbox.create.msdn.com/en-US/education/catalog/tutorial/collision_2d_perpixel_transformed
-        bool Intersects(CombatableCharacter character, GameLevel currentLevel)
+        public bool Intersects(CombatableCharacter character, GameLevel currentLevel)
         {
             bool intersectionOccured = false;
 
@@ -74,8 +83,8 @@ namespace Armalia.Sprites
             int anchorOffset = (int)(rotationPoint.Y - texture.Height);
             Rectangle swordRectangle = CalculateBoundingRectangle(
                      new Rectangle(0, 0,
-                         (int)(2 * (anchorOffset + texture.Height)),
-                         (int)(2 * (anchorOffset + texture.Height))),
+                         (int)(anchorOffset + texture.Width),
+                         (int)(anchorOffset + texture.Height)),
                      swordTransform);
 
             // The per-pixel check is expensive, so check the bounding rectangles
@@ -89,11 +98,7 @@ namespace Armalia.Sprites
                                     texture.Height, textureData))
                 {
                     intersectionOccured = true;
-                    character.IsInPain = true;
-                }
-                else
-                {
-                    character.IsInPain = false;
+                    
                 }
             }
 
@@ -125,7 +130,7 @@ namespace Armalia.Sprites
                 {
                     // reset time since last frame
                     timeSinceLastFrame = 0;
-                    if (rotation + DEFAULT_ROTATION_INCREMENT <= (2 * Math.PI))
+                    if (rotation + DEFAULT_ROTATION_INCREMENT < (2 * Math.PI))
                     {
                         rotation += DEFAULT_ROTATION_INCREMENT;
                     }
@@ -145,12 +150,17 @@ namespace Armalia.Sprites
                     {
                         if (Intersects(character, currentLevel))
                         {
+                            character.IsInPain = true;
                             if (!charactersHit.Contains(character))
                             {
                                 swordOwner.Attack(character);
                                 charactersHit.Add(character);
                                 Console.WriteLine("Enemy hit! HP = {0}", character.HitPoints);
                             }
+                        }
+                        else
+                        {
+                            character.IsInPain = false;
                         }
                     }
                 }
@@ -159,9 +169,17 @@ namespace Armalia.Sprites
                     EnemyCharacter enemy = swordOwner as EnemyCharacter;
                     if (Intersects(enemy.PlayerCharacter, currentLevel))
                     {
+                        enemy.PlayerCharacter.IsInPain = true;
                         enemy.Attack(enemy.PlayerCharacter);
-                        charactersHit.Add(enemy.PlayerCharacter);
+                        if (!charactersHit.Contains(enemy.PlayerCharacter))
+                        {
+                            charactersHit.Add(enemy.PlayerCharacter);
+                        }
                         Console.WriteLine("Player hit! HP = {0}", enemy.PlayerCharacter.HitPoints);
+                    }
+                    else
+                    {
+                        enemy.PlayerCharacter.IsInPain = false;
                     }
                 }
             }

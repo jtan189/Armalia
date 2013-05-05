@@ -2922,8 +2922,8 @@
   <object name="Door" type="Portal" x="64" y="0" width="128" height="32">
    <properties>
     <property name="level" value="Forest1"/>
-    <property name="startPositionX" value="135"/>
-    <property name="startPositionY" value="1150"/>
+    <property name="startPositionX" value="145"/>
+    <property name="startPositionY" value="1548"/>
    </properties>
   </object>
   <object x="64" y="1184" width="64" height="128"/>

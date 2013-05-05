@@ -14,12 +14,15 @@ namespace Armalia.Characters
     {
         private static Random rand = new Random();
         public const int VISION_RANGE = 100;
-        public const int ATTACK_RANGE = 40;
 
         protected EnemyState currentState;
         private List<Vector2> patrolTargets;
         private Vector2 currentTarget;
         public MainCharacter PlayerCharacter { get; set; }
+
+        private MoveDirection DirectionStuckIn { get; set; }
+        private int UnstickAttempts;
+        Random randomMover;
 
         public EnemyCharacter(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
             int expLevel, int strength, int defense, Vector2 speed,
@@ -28,6 +31,10 @@ namespace Armalia.Characters
         {
             this.patrolTargets = patrolTargets;
             this.PlayerCharacter = mainCharacter;
+
+            DirectionStuckIn = MoveDirection.None;
+            UnstickAttempts = 0;
+            randomMover = new Random();
 
             currentState = EnemyState.Patrol;
             currentTarget = patrolTargets[0];
@@ -53,92 +60,52 @@ namespace Armalia.Characters
                 currentState = EnemyState.Patrol;
             }
 
-            Move(gameTime, currentLevel.LevelMap, out hasCollided);
+            Move(gameTime, currentLevel, out hasCollided);
 
         }
 
         public bool PlayerInVisionRange()
         {
-            if (Vector2.Distance(this.Position, this.PlayerCharacter.Position) <= VISION_RANGE)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Vector2.Distance(this.SpriteCenter, this.PlayerCharacter.SpriteCenter)
+                - (PlayerCharacter.CharacterSprite.FrameSize.X / 2) < VISION_RANGE;
         }
 
+        // source: http://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
         public bool PlayerInAttackRange()
         {
-            //int playerXCoord = PlayerCharacter.AsRectangle().X + PlayerCharacter.AsRectangle().Width / 2; // take midpoint
-            //int playerYCoord = PlayerCharacter.AsRectangle().Y + PlayerCharacter.AsRectangle().Height / 2;
-            //int enemyXCoord = AsRectangle().X + AsRectangle().Width / 2;
-            //int enemyYCoord = AsRectangle().Y + AsRectangle().Height / 2;
-
-            //if ((Math.Abs(enemyXCoord - playerXCoord) <= ATTACK_RANGE) && (enemyYCoord == playerYCoord) ||
-            //    (Math.Abs(enemyYCoord - playerYCoord) <= ATTACK_RANGE) && (enemyXCoord == playerXCoord))
-            //{
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
-
-            bool inRange = false;
-            if ((PlayerCharacter.Position.X <= Position.X) &&
-                PlayerCharacter.Position.X + PlayerCharacter.CharacterSprite.FrameSize.X >= Position.X)
-            {
-                inRange = true;
-            }
-            else if ((PlayerCharacter.Position.X >= Position.X) &&
-                PlayerCharacter.Position.X <= Position.X + CharacterSprite.FrameSize.X)
-            {
-                inRange = true;
-            }
-            else if ((PlayerCharacter.Position.Y <= Position.Y) &&
-                PlayerCharacter.Position.X + PlayerCharacter.CharacterSprite.FrameSize.Y >= Position.Y)
-            {
-                inRange = true;
-            }
-            else if ((PlayerCharacter.Position.Y >= Position.Y) &&
-                PlayerCharacter.Position.Y <= Position.Y + CharacterSprite.FrameSize.Y)
-            {
-                inRange = true;
-            }
-
-            return inRange;
+            return (Vector2.Distance(this.SpriteCenter, this.PlayerCharacter.SpriteCenter) - (PlayerCharacter.CharacterSprite.FrameSize.X / 4)) < (Sword.AttackRange);
         }
 
         // TODO: incorporate path finding algorithm or something
         // for now, just oscilate between two x coordinates
         public bool HasReachedTarget()
         {
-            return AsRectangle().Contains(new Point((int)currentTarget.X, (int)currentTarget.Y));
+            Rectangle proximityRect = new Rectangle(AsRectangle().X - (int)speed.X, AsRectangle().Y - (int)speed.Y,
+                AsRectangle().Width + (int)(2 * speed.X), AsRectangle().Width + (int)(2 * speed.Y));
+            return proximityRect.Contains(new Point((int)currentTarget.X, (int)currentTarget.Y));
         }
 
         public void MoveTowardPlayer(Map currentMap, GameTime gameTime, out bool hasMoved, out bool hasCollided)
         {
 
             MoveDirection direction = MoveDirection.None;
-            if ((PlayerCharacter.Position.X < Position.X) &&
-                PlayerCharacter.Position.X + ATTACK_RANGE < Position.X)
+            if (PlayerCharacter.Position.X < Position.X
+                && (Position.X - speed.X) > PlayerCharacter.Position.X)
             {
                 direction = MoveDirection.Left;
             }
-            else if ((PlayerCharacter.Position.X > Position.X) &&
-              PlayerCharacter.Position.X - ATTACK_RANGE > Position.X)
+            else if (PlayerCharacter.Position.X > Position.X
+                && (Position.X + speed.X) < PlayerCharacter.Position.X)
             {
                 direction = MoveDirection.Right;
             }
-            else if ((PlayerCharacter.Position.Y < Position.Y) &&
-              PlayerCharacter.Position.Y + ATTACK_RANGE < Position.X)
+            else if (PlayerCharacter.Position.Y < Position.Y
+                && (Position.Y - speed.Y) > PlayerCharacter.Position.Y)
             {
                 direction = MoveDirection.Up;
             }
-            else if ((PlayerCharacter.Position.Y > Position.Y) &&
-              PlayerCharacter.Position.Y - ATTACK_RANGE > Position.Y)
+            else if (PlayerCharacter.Position.Y > Position.Y
+                && (Position.Y + speed.Y) < PlayerCharacter.Position.Y)
             {
                 direction = MoveDirection.Down;
             }
@@ -150,32 +117,90 @@ namespace Armalia.Characters
         public void MoveTowardTarget(Vector2 destination, Map currentMap, GameTime gameTime, out bool hasMoved, out bool hasCollided)
         {
             MoveDirection direction = MoveDirection.None;
-            if ((destination.X < Position.X) &&
-                destination.X < Position.X)
+
+            if (DirectionStuckIn == MoveDirection.None)
             {
-                direction = MoveDirection.Left;
+                if ((destination.X < Position.X) &&
+                    (Position.X - speed.X) > destination.X)
+                {
+                    direction = MoveDirection.Left;
+                }
+                else if ((destination.X > Position.X) &&
+                  (Position.X + speed.X) < destination.X)
+                {
+                    direction = MoveDirection.Right;
+                }
+                else if ((destination.Y < Position.Y) &&
+                  (Position.Y - speed.Y) > destination.Y)
+                {
+                    direction = MoveDirection.Up;
+                }
+                else if ((destination.Y > Position.Y) &&
+                  (Position.Y + speed.Y) < destination.Y)
+                {
+                    direction = MoveDirection.Down;
+                }
             }
-            else if ((destination.X > Position.X) &&
-              destination.X  > Position.X)
+            else
             {
-                direction = MoveDirection.Right;
-            }
-            else if ((destination.Y < Position.Y) &&
-              destination.Y  < Position.X)
-            {
-                direction = MoveDirection.Up;
-            }
-            else if ((destination.Y > Position.Y) &&
-              destination.Y  > Position.Y)
-            {
-                direction = MoveDirection.Down;
+                // get unstuck
+                switch (DirectionStuckIn)
+                {
+                    case MoveDirection.Up:
+                        direction = MoveDirection.Left;
+                        break;
+                    case MoveDirection.Left:
+                        direction = MoveDirection.Down;
+                        break;
+                    case MoveDirection.Down:
+                        direction = MoveDirection.Right;
+                        break;
+                    case MoveDirection.Right:
+                        direction = MoveDirection.Up;
+                        break;
+                }
+                UnstickAttempts++;
             }
 
             hasMoved = base.Move(direction, currentMap, out hasCollided);
             base.Update(gameTime, direction, currentMap);
+
+            // cheap way to try to get enemies unstuck
+            if (hasCollided)
+            {
+                // randomly pick the direction stuck in
+                int randMove = randomMover.Next(3);
+                switch (direction)
+                {
+                    case MoveDirection.Up:
+                        DirectionStuckIn = randMove < 2 ? MoveDirection.Up : MoveDirection.Down;
+                        break;
+                    case MoveDirection.Left:
+                        DirectionStuckIn = randMove < 2 ? MoveDirection.Left : MoveDirection.Right;
+                        break;
+                    case MoveDirection.Down:
+                        DirectionStuckIn = randMove < 2 ? MoveDirection.Down : MoveDirection.Up;
+                        break;
+                    case MoveDirection.Right:
+                        DirectionStuckIn = randMove < 2 ? MoveDirection.Right : MoveDirection.Left;
+                        break;
+                }
+
+            }
+            else
+            {
+
+                if (UnstickAttempts > 100)
+                {
+                    DirectionStuckIn = MoveDirection.None;
+                    UnstickAttempts = 0;
+                }
+
+            }
+
         }
 
-        public bool Move(GameTime gameTime, Map currentMap, out bool hasCollided)
+        public bool Move(GameTime gameTime, GameLevel currentLevel, out bool hasCollided)
         {
             Rectangle cameraView = gameplayScreen.CameraView;
             bool hasMoved;
@@ -193,7 +218,7 @@ namespace Armalia.Characters
                     }
                     else
                     {
-                        MoveTowardTarget(currentTarget, currentMap, gameTime, out hasMoved, out hasCollided);
+                        MoveTowardTarget(currentTarget, currentLevel.LevelMap, gameTime, out hasMoved, out hasCollided);
                     }
                     break;
 
@@ -202,7 +227,7 @@ namespace Armalia.Characters
                     if (!PlayerInAttackRange())
                     {
                         // move towards player
-                        MoveTowardPlayer(currentMap, gameTime, out hasMoved, out hasCollided);
+                        MoveTowardPlayer(currentLevel.LevelMap, gameTime, out hasMoved, out hasCollided);
                     }
                     else
                     {

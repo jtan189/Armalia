@@ -52,6 +52,16 @@ namespace Armalia.Characters
             return new Rectangle((int)Position.X, (int)Position.Y, CharacterSprite.FrameSize.X, CharacterSprite.FrameSize.Y);
         }
 
+        public Vector2 SpriteCenter
+        {
+            get
+            {
+                return new Vector2(
+                    Position.X + ((float)CharacterSprite.FrameSize.X / 2),
+                    Position.Y + ((float)CharacterSprite.FrameSize.Y / 2));
+            }
+        }
+
         /// <summary>
         /// Constructor 1
         /// </summary>
