@@ -110,9 +110,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattleSystem\SemiCircle.cs" />
     <Compile Include="Characters\Assassin.cs" />
-    <Compile Include="Characters\Attack.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CombatableCharacter.cs" />
     <Compile Include="Characters\EnemyCharacter.cs" />

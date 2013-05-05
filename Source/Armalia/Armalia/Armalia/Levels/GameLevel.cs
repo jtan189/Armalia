@@ -17,13 +17,13 @@ namespace Armalia.Levels
     {
         private string name;
         private Song bgMusic;
-        private List<EnemyCharacter> enemies;
 
         /// <summary>
         /// This just returns the map object.
         /// </summary>
         public Map LevelMap { get; set; }
 
+        public List<EnemyCharacter> Enemies { get; set; }
         public List<LevelObject> LevelObjects { get; set; }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Armalia.Levels
         {
             this.LevelMap = levelMap;
             this.bgMusic = bgMusic;
-            this.enemies = enemies;
+            this.Enemies = enemies;
             this.name = name;
             this.LevelObjects = levelObjects;
         }
@@ -54,16 +54,24 @@ namespace Armalia.Levels
         public void Update(GameTime gameTime)
         {
             // update enemies
-            foreach (EnemyCharacter enemy in enemies)
+            List<EnemyCharacter> enemiesToRemove = new List<EnemyCharacter>();
+            foreach (EnemyCharacter enemy in Enemies)
             {
+
                 if (enemy.HitPoints <= 0)
                 {
-                    enemies.Remove(enemy);
+                    enemiesToRemove.Add(enemy);
                 }
                 else
                 {
                     enemy.Update(gameTime, LevelMap);
                 }
+            }
+
+            // remove enemies that were killed
+            foreach (EnemyCharacter enemy in enemiesToRemove)
+            {
+                Enemies.Remove(enemy);
             }
         }
 
@@ -73,9 +81,9 @@ namespace Armalia.Levels
             LevelMap.Draw(spriteBatch, mapWindow, cameraView);
 
             // draw enemies, NPCs, etc
-            foreach (EnemyCharacter enemy in enemies)
+            foreach (EnemyCharacter enemy in Enemies)
             {
-                enemy.Draw(spriteBatch);
+                enemy.Draw(spriteBatch, cameraView);
             }
         }
 

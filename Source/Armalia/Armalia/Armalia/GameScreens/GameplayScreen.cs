@@ -11,7 +11,6 @@ using Armalia.Sidebar;
 using Microsoft.Xna.Framework.Input;
 using Armalia.Exceptions;
 using Microsoft.Xna.Framework.Media;
-using Armalia.BattleSystem;
 using Armalia.GameObjects;
 
 namespace Armalia.GameScreens
@@ -55,17 +54,6 @@ namespace Armalia.GameScreens
         {
             // TODO: parse all this stuff based on XML config files in DataManager
 
-            # region Player Weapon Initialization Region
-
-            Texture2D swordTexture = game.Content.Load<Texture2D>(@"Attacks\massive_sword");
-            int swordMsPerFrame = 16;
-            float swordScale = 0.5f;
-            Vector2 swordRotationPoint = new Vector2(12, 200);
-
-            SwordSprite playerSwordSprite = new SwordSprite(swordTexture, swordMsPerFrame, swordScale, swordRotationPoint);
-
-            # endregion
-
             # region Player Sprite Initialization Region
 
             Texture2D playerTexture = game.Content.Load<Texture2D>(@"Characters\vx_chara01_b-1-1");
@@ -93,9 +81,21 @@ namespace Armalia.GameScreens
             Rectangle cameraView = new Rectangle(0, 0, DEFAULT_CAMERA_WINDOW_SIZE.X, DEFAULT_CAMERA_WINDOW_SIZE.Y);
 
             MainCharacter playerCharacter = new MainCharacter(playerName, playerSprite, initialPlayerPos, playerHP, playerMP,
-                playerXP, playerStrength, playerDefense, playerSpeed, cameraView, playerSwordSprite);
+                playerXP, playerStrength, playerDefense, playerSpeed, cameraView);
 
             player = new Player(playerCharacter);
+
+            # endregion
+
+            # region Player Weapon Initialization Region
+
+            Texture2D swordTexture = game.Content.Load<Texture2D>(@"Attacks\massive_sword");
+            int swordMsPerFrame = 16;
+            float swordScale = 0.5f;
+            Vector2 swordRotationPoint = new Vector2(12, 200);
+
+            SwordSprite playerSwordSprite = new SwordSprite(swordTexture, swordMsPerFrame, swordScale, swordRotationPoint, playerCharacter);
+            playerCharacter.Sword = playerSwordSprite;
 
             # endregion
 
@@ -152,7 +152,7 @@ namespace Armalia.GameScreens
                         }
                     }
 
-                    player.Update(gameTime, level.LevelMap);
+                    player.Update(gameTime, level);
                     level.Update(gameTime);
                     sidebar.Update(gameTime);
                     break;

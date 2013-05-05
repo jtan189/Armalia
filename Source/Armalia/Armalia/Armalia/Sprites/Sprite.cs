@@ -12,13 +12,15 @@ namespace Armalia.Sprites
         protected Texture2D texture;
         protected Point frameSize;
 
+        public Texture2D Texture { get { return texture; } }
+
         public Sprite(Texture2D texture, Point frameSize)
         {
             this.texture = texture;
             this.frameSize = frameSize;
         }
 
-        public abstract void Draw(SpriteBatch spriteBatch, Vector2 spritePosition, float layerDepth);
+        public abstract void Draw(SpriteBatch spriteBatch, Vector2 spritePosition, float layerDepth, Color tint);
 
         public Point FrameSize
         {

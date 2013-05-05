@@ -18,7 +18,6 @@ namespace Armalia.Characters
         private Rectangle cameraView;
 
         public String Name { get; set; }
-        public SwordSprite Sword { get; set; }
 
         /// <summary>
         /// The view of the map the character has
@@ -47,14 +46,12 @@ namespace Armalia.Characters
         /// <param name="defense">The defense attribute</param>
         /// <param name="speed">The movement speed of the character</param>
         /// <param name="cameraView">The subsection of the map to the player can see.</param>
-        /// <param name="swordSprite">Sword sprite associated with the main character.</param>
         public MainCharacter(String name, AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
-            int expLevel, int strength, int defense, Vector2 speed, Rectangle cameraView, SwordSprite swordSprite)
+            int expLevel, int strength, int defense, Vector2 speed, Rectangle cameraView)
             : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
         {
             this.Name = name;
             this.cameraView = cameraView;
-            this.Sword = swordSprite;
         }
 
         /// <summary>
@@ -141,29 +138,20 @@ namespace Armalia.Characters
             return hasMoved;
         }
 
-        public void Update(GameTime gameTime, MoveDirection moveDirection, Map currentMap, bool playerPressedAttack)
+        public void Update(GameTime gameTime, MoveDirection moveDirection, GameLevel currentLevel, bool playerPressedAttack)
         {
-            if (!Sword.Animating)
-            {
-                // Attack Enemy
-            }
-
-            Sword.Update(gameTime, playerPressedAttack);
-            base.Update(gameTime, moveDirection, currentMap);
+            Sword.Update(gameTime, currentLevel, playerPressedAttack);
+            base.Update(gameTime, moveDirection, currentLevel.LevelMap);
         }
 
         /// <summary>
         /// This draws the character
         /// </summary>
         /// <param name="spriteBatch">The spritebatch to use to draw</param>
-        public override void Draw(SpriteBatch spriteBatch)
+        /// <param name="cameraView">Camera view for the game.</param>
+        public override void Draw(SpriteBatch spriteBatch, Rectangle cameraView)
         {
-            int xOffset = (int)Position.X - CameraView.X;
-            int yOffset = (int)Position.Y - CameraView.Y;
-            Vector2 drawPosition = new Vector2(xOffset, yOffset);
-
-            // normalize position relative to camera view
-            CharacterSprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
+            base.Draw(spriteBatch, cameraView);
 
             if (Sword.Animating)
             {

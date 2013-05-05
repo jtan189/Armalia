@@ -11,10 +11,10 @@ namespace Armalia.Sprites
     {
         public ObjectSprite(Texture2D texture, Point frameSize) : base(texture, frameSize) { }
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 spritePosition, float layerDepth)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 spritePosition, float layerDepth, Color tint)
         {
             spriteBatch.Draw(texture, spritePosition, null,
-                Color.White, 0, Vector2.Zero,
+                tint, 0, Vector2.Zero,
                 1f, SpriteEffects.None, layerDepth);
         }
     }

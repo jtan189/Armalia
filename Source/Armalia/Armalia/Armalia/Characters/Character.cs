@@ -139,13 +139,21 @@ namespace Armalia.Characters
             CharacterSprite.Update(gameTime, moveDirection, hasCollided);
         }
 
+        public Vector2 DrawPosition(Rectangle cameraView)
+        {
+            int xOffset = (int)Position.X - cameraView.X;
+            int yOffset = (int)Position.Y - cameraView.Y;
+            return new Vector2(xOffset, yOffset);
+        }
+
         /// <summary>
         /// This draws the character to the map
         /// </summary>
         /// <param name="spriteBatch">The spritebatch object used for drawing.</param>
-        public virtual void Draw(SpriteBatch spriteBatch)
+        /// <param name="cameraView">Camera view for the player.</param>
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle cameraView)
         {
-            CharacterSprite.Draw(spriteBatch, Position, DEFAULT_LAYER_DEPTH);
+            CharacterSprite.Draw(spriteBatch, DrawPosition(cameraView), DEFAULT_LAYER_DEPTH, Color.White);
         }
 
         /// <summary>

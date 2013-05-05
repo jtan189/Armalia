@@ -38,7 +38,6 @@ namespace Armalia
             PlayerCharacter = character;
         }
 
-
         public bool PressedAttack()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.K))
@@ -47,14 +46,14 @@ namespace Armalia
                 return false;
         }
 
-        public void Update(GameTime gameTime, Map currentMap)
+        public void Update(GameTime gameTime, GameLevel currentLevel)
         {
-            PlayerCharacter.Update(gameTime, KeyInputDirection, currentMap, PressedAttack());
+            PlayerCharacter.Update(gameTime, KeyInputDirection, currentLevel, PressedAttack());
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            PlayerCharacter.Draw(spriteBatch);
+            PlayerCharacter.Draw(spriteBatch, CameraView);
         }
 
     }

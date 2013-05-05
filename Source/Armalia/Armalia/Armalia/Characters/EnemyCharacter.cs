@@ -66,7 +66,6 @@ namespace Armalia.Characters
             return false;
         }
 
-        // TODO: make sure enemy and character are facing eachother at start of battle
         public bool PlayerInAttackRange()
         {
             int playerXCoord = mainCharacter.AsRectangle().X + mainCharacter.AsRectangle().Width / 2; // take midpoint
@@ -161,16 +160,6 @@ namespace Armalia.Characters
             base.Update(gameTime, moveDir, currentMap);
 
             return hasMoved;
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            int xOffset = (int)Position.X - gameplayScreen.CameraView.X;
-            int yOffset = (int)Position.Y - gameplayScreen.CameraView.Y;
-            Vector2 drawPosition = new Vector2(xOffset, yOffset);
-
-            // normalize position relative to camera view
-            CharacterSprite.Draw(spriteBatch, drawPosition, DEFAULT_LAYER_DEPTH);
         }
 
         enum EnemyState

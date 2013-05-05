@@ -137,20 +137,25 @@ namespace Armalia.Sprites
             }
         }
 
-        /// <summary>
-        /// This draws the animated sprite onto the map or whatever.
-        /// </summary>
-        /// <param name="spriteBatch">The SpriteBatch object of the game.</param>
-        /// <param name="spritePosition">The position of the sprite</param>
-        /// <param name="layerDepth">The z-index of the sprite</param>
-        public override void Draw(SpriteBatch spriteBatch, Vector2 spritePosition, float layerDepth)
+        ///// <summary>
+        ///// This draws the animated sprite onto the map or whatever.
+        ///// </summary>
+        ///// <param name="spriteBatch">The SpriteBatch object of the game.</param>
+        ///// <param name="spritePosition">The position of the sprite</param>
+        ///// <param name="layerDepth">The z-index of the sprite</param>
+        //public override void Draw(SpriteBatch spriteBatch, Vector2 spritePosition, float layerDepth)
+        //{
+        //    Draw(spriteBatch, spritePosition, layerDepth, Color.White);
+        //}
+
+        public override void Draw(SpriteBatch spriteBatch, Vector2 spritePosition, float layerDepth, Color tint)
         {
             // draw the sprite
             spriteBatch.Draw(texture, spritePosition,
                 new Rectangle(currentFrame.X * frameSize.X,
                     currentFrame.Y * frameSize.Y,
                     frameSize.X, frameSize.Y),
-                Color.White, 0, Vector2.Zero,
+                tint, 0, Vector2.Zero,
                 Scale, SpriteEffects.None, layerDepth);
         }
     }
