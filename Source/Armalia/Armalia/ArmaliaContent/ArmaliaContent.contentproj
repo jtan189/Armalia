@@ -170,7 +170,13 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Maps\Building2\building2.png">
+      <Name>building2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Maps\Building1\Building1.png">
       <Name>Building1</Name>
@@ -198,6 +204,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Maps\Building3\Building3.tmx">
+      <Name>Building3</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Maps\Forest1\Forest1.tmx">
       <Name>Forest1</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -232,6 +242,14 @@
       <Name>Village1</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Maps\Building3\Building3.png">
+      <Name>Building3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
