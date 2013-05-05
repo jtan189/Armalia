@@ -98,7 +98,7 @@ namespace Armalia.Levels
             return boundaries;
         }
 
-        public List<EnemyCharacter> GetEnemies(String mapFilename, MainCharacter pc, GameplayScreen gs)
+        public List<EnemyCharacter> GetEnemies(String mapFilename, MainCharacter mainCharacter, GameplayScreen gameplayScreen)
         {
             var mapXML = XElement.Load(game.Content.RootDirectory + "\\" + mapFilename + ".tmx");
             var objectElements = mapXML.Elements("objectgroup").Elements().ToList();
@@ -162,11 +162,21 @@ namespace Armalia.Levels
                             AnimatedSprite knightSprite = new AnimatedSprite(
                                 knightTexture, knightTextureFrameSize, knightCollisionOffset, knightInitialFrame, knightSheetSize);
 
-                            List<Point> knightTargets = new List<Point>() {
-                                new Point((int)(xcoord - 100), ycoord), new Point((int)(xcoord+100), ycoord) };
+                            List<Vector2> knightTargets = new List<Vector2>() {
+                                new Vector2(xcoord - 100, ycoord), new Vector2(xcoord + 100, ycoord) };
 
                             EnemyCharacter knightEnemy = new Knight(knightSprite, initialKnightPos, hp, mp, xp,
-                                strength, defense, knightSpeed, gs, knightTargets, pc);
+                                strength, defense, knightSpeed, knightTargets, mainCharacter, gameplayScreen);
+
+                            Texture2D knightSwordTexture = game.Content.Load<Texture2D>(@"Attacks\small_sword");
+                            int knightSwordMsPerFrame = 16;
+                            float knightSwordScale = 0.4f;
+                            Vector2 knightSwordRotationPoint = new Vector2(7, 150);
+
+                            SwordSprite knightSwordSprite = new SwordSprite(knightSwordTexture, knightSwordMsPerFrame, knightSwordScale,
+                                knightSwordRotationPoint, knightEnemy);
+                            knightEnemy.Sword = knightSwordSprite;
+
                             enemies.Add(knightEnemy);
 
                             break;

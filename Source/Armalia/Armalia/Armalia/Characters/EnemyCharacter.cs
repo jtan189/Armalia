@@ -13,68 +13,53 @@ namespace Armalia.Characters
     abstract class EnemyCharacter : CombatableCharacter
     {
         private static Random rand = new Random();
+        public const int VISION_RANGE = 100;
+        public const int ATTACK_RANGE = 40;
 
-        public static readonly int ATTACK_RANGE = 50;
-
-        private GameplayScreen gameplayScreen;
-        private MainCharacter mainCharacter;
-
-        private EnemyState currentState;
-        private List<Point> patrolTargets;
-        private Point currentTarget;
+        protected EnemyState currentState;
+        private List<Vector2> patrolTargets;
+        private Vector2 currentTarget;
+        public MainCharacter PlayerCharacter { get; set; }
 
         public EnemyCharacter(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
-            int expLevel, int strength, int defense, Vector2 speed, GameplayScreen gameplayScreen, List<Point> patrolTargets, MainCharacter mainCharacter)
-            : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
+            int expLevel, int strength, int defense, Vector2 speed,
+            List<Vector2> patrolTargets, MainCharacter mainCharacter, GameplayScreen gameplayScreen)
+            : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed, gameplayScreen)
         {
-            this.gameplayScreen = gameplayScreen;
             this.patrolTargets = patrolTargets;
-            this.mainCharacter = mainCharacter;
+            this.PlayerCharacter = mainCharacter;
 
             currentState = EnemyState.Patrol;
             currentTarget = patrolTargets[0];
         }
 
-        // TODO: incorporate path finding algorithm or something
-        // for now, just oscilate between two x coordinates
-        public bool IsNearPatrolTarget()
-        {
-            if (Math.Abs(Position.X - currentTarget.X) <= speed.X)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public void Update(GameTime gameTime, Map currentMap)
+        public virtual void Update(GameTime gameTime, GameLevel currentLevel)
         {
             // act based on state
             bool hasCollided;
-            if (currentState == EnemyState.Patrol)
+            if (PlayerInVisionRange())
             {
-                Move(gameTime, currentMap, out hasCollided);
+                if (PlayerInAttackRange())
+                {
+                    currentState = EnemyState.Battle;
+                }
+                else
+                {
+                    currentState = EnemyState.Detection;
+                }
             }
+            else
+            {
+                currentState = EnemyState.Patrol;
+            }
+
+            Move(gameTime, currentLevel.LevelMap, out hasCollided);
+
         }
 
-        public bool IsNearPlayer()
+        public bool PlayerInVisionRange()
         {
-            if (Vector2.Distance(this.Position, this.mainCharacter.Position) <= (32 * 3))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public bool PlayerInAttackRange()
-        {
-            int playerXCoord = mainCharacter.AsRectangle().X + mainCharacter.AsRectangle().Width / 2; // take midpoint
-            int playerYCoord = mainCharacter.AsRectangle().Y + mainCharacter.AsRectangle().Height / 2;
-            int enemyXCoord = AsRectangle().X + AsRectangle().Width / 2;
-            int enemyYCoord = AsRectangle().Y + AsRectangle().Height / 2;
-
-            if ((Math.Abs(enemyXCoord - playerXCoord) <= ATTACK_RANGE) && (enemyYCoord == playerYCoord) ||
-                (Math.Abs(enemyYCoord - playerYCoord) <= ATTACK_RANGE) && (enemyXCoord == playerXCoord))
+            if (Vector2.Distance(this.Position, this.PlayerCharacter.Position) <= VISION_RANGE)
             {
                 return true;
             }
@@ -84,85 +69,158 @@ namespace Armalia.Characters
             }
         }
 
+        public bool PlayerInAttackRange()
+        {
+            //int playerXCoord = PlayerCharacter.AsRectangle().X + PlayerCharacter.AsRectangle().Width / 2; // take midpoint
+            //int playerYCoord = PlayerCharacter.AsRectangle().Y + PlayerCharacter.AsRectangle().Height / 2;
+            //int enemyXCoord = AsRectangle().X + AsRectangle().Width / 2;
+            //int enemyYCoord = AsRectangle().Y + AsRectangle().Height / 2;
+
+            //if ((Math.Abs(enemyXCoord - playerXCoord) <= ATTACK_RANGE) && (enemyYCoord == playerYCoord) ||
+            //    (Math.Abs(enemyYCoord - playerYCoord) <= ATTACK_RANGE) && (enemyXCoord == playerXCoord))
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+
+            bool inRange = false;
+            if ((PlayerCharacter.Position.X <= Position.X) &&
+                PlayerCharacter.Position.X + PlayerCharacter.CharacterSprite.FrameSize.X >= Position.X)
+            {
+                inRange = true;
+            }
+            else if ((PlayerCharacter.Position.X >= Position.X) &&
+                PlayerCharacter.Position.X <= Position.X + CharacterSprite.FrameSize.X)
+            {
+                inRange = true;
+            }
+            else if ((PlayerCharacter.Position.Y <= Position.Y) &&
+                PlayerCharacter.Position.X + PlayerCharacter.CharacterSprite.FrameSize.Y >= Position.Y)
+            {
+                inRange = true;
+            }
+            else if ((PlayerCharacter.Position.Y >= Position.Y) &&
+                PlayerCharacter.Position.Y <= Position.Y + CharacterSprite.FrameSize.Y)
+            {
+                inRange = true;
+            }
+
+            return inRange;
+        }
+
+        // TODO: incorporate path finding algorithm or something
+        // for now, just oscilate between two x coordinates
+        public bool HasReachedTarget()
+        {
+            return AsRectangle().Contains(new Point((int)currentTarget.X, (int)currentTarget.Y));
+        }
+
+        public void MoveTowardPlayer(Map currentMap, GameTime gameTime, out bool hasMoved, out bool hasCollided)
+        {
+
+            MoveDirection direction = MoveDirection.None;
+            if ((PlayerCharacter.Position.X < Position.X) &&
+                PlayerCharacter.Position.X + ATTACK_RANGE < Position.X)
+            {
+                direction = MoveDirection.Left;
+            }
+            else if ((PlayerCharacter.Position.X > Position.X) &&
+              PlayerCharacter.Position.X - ATTACK_RANGE > Position.X)
+            {
+                direction = MoveDirection.Right;
+            }
+            else if ((PlayerCharacter.Position.Y < Position.Y) &&
+              PlayerCharacter.Position.Y + ATTACK_RANGE < Position.X)
+            {
+                direction = MoveDirection.Up;
+            }
+            else if ((PlayerCharacter.Position.Y > Position.Y) &&
+              PlayerCharacter.Position.Y - ATTACK_RANGE > Position.Y)
+            {
+                direction = MoveDirection.Down;
+            }
+
+            hasMoved = base.Move(direction, currentMap, out hasCollided);
+            base.Update(gameTime, direction, currentMap);
+        }
+
+        public void MoveTowardTarget(Vector2 destination, Map currentMap, GameTime gameTime, out bool hasMoved, out bool hasCollided)
+        {
+            MoveDirection direction = MoveDirection.None;
+            if ((destination.X < Position.X) &&
+                destination.X < Position.X)
+            {
+                direction = MoveDirection.Left;
+            }
+            else if ((destination.X > Position.X) &&
+              destination.X  > Position.X)
+            {
+                direction = MoveDirection.Right;
+            }
+            else if ((destination.Y < Position.Y) &&
+              destination.Y  < Position.X)
+            {
+                direction = MoveDirection.Up;
+            }
+            else if ((destination.Y > Position.Y) &&
+              destination.Y  > Position.Y)
+            {
+                direction = MoveDirection.Down;
+            }
+
+            hasMoved = base.Move(direction, currentMap, out hasCollided);
+            base.Update(gameTime, direction, currentMap);
+        }
+
         public bool Move(GameTime gameTime, Map currentMap, out bool hasCollided)
         {
             Rectangle cameraView = gameplayScreen.CameraView;
-            bool hasMoved = false;
-            MoveDirection moveDir = MoveDirection.Right;
-            hasCollided = false;
+            bool hasMoved;
 
-            if (IsNearPatrolTarget())
+            switch (currentState)
             {
-                // choose random new target
-                currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
-            }
-            else
-            {
-                if (IsNearPlayer() && !(this.mainCharacter.AsRectangle().Intersects(this.AsRectangle())))
-                {
-                    if (this.Position.X > this.mainCharacter.Position.X)
+                case EnemyState.Patrol:
+
+                    if (HasReachedTarget())
                     {
-                        moveDir = MoveDirection.Left;
-                    }
-                    else if (this.Position.X < this.mainCharacter.Position.X)
-                    {
-                        moveDir = MoveDirection.Right;
+                        // choose random new target
+                        currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
+                        hasMoved = false;
+                        hasCollided = false;
                     }
                     else
                     {
-                        if (this.Position.Y > this.mainCharacter.Position.Y)
-                        {
-                            moveDir = MoveDirection.Up;
-                        }
-                        else
-                        {
-                            moveDir = MoveDirection.Down;
-                        }
+                        MoveTowardTarget(currentTarget, currentMap, gameTime, out hasMoved, out hasCollided);
                     }
-                }
+                    break;
 
-                else
-                {
-                    if (Position.X < currentTarget.X)
+                case EnemyState.Detection:
+
+                    if (!PlayerInAttackRange())
                     {
-                        moveDir = MoveDirection.Right;
+                        // move towards player
+                        MoveTowardPlayer(currentMap, gameTime, out hasMoved, out hasCollided);
                     }
                     else
                     {
-                        moveDir = MoveDirection.Left;
-
+                        hasMoved = false;
+                        hasCollided = false;
                     }
-                }
-                hasMoved = base.Move(moveDir, currentMap, out hasCollided);
-                if (hasCollided)
-                {
-                    switch (moveDir)
-                    {
-                        case MoveDirection.Up:
-                            moveDir = MoveDirection.Down;
-                            break;
-                        case MoveDirection.Down:
-                            moveDir = MoveDirection.Up;
-                            break;
-                        case MoveDirection.Left:
-                            moveDir = MoveDirection.Right;
-                            break;
-                        case MoveDirection.Right:
-                            moveDir = MoveDirection.Left;
-                            break;
-                    }
-                    currentTarget = patrolTargets[rand.Next(patrolTargets.Count)];
-                    hasMoved = base.Move(moveDir, currentMap, out hasCollided);
+                    break;
 
-                }
+                default:
+                    hasMoved = false;
+                    hasCollided = false;
+                    break;
             }
-
-            base.Update(gameTime, moveDir, currentMap);
 
             return hasMoved;
         }
 
-        enum EnemyState
+        protected enum EnemyState
         {
             Patrol,
             Detection,

@@ -36,8 +36,16 @@ namespace Armalia.GameScreens
         private Rectangle mapWindow;
         private PlayerSidebar sidebar;
         private LevelManager levelManager;
+        private Rectangle cameraView;
 
-        public Rectangle CameraView { get { return player.CameraView; } }
+
+        /// <summary>
+        /// The view of the map the player has
+        /// </summary>
+        public Rectangle CameraView {
+            get { return cameraView; }
+            set { cameraView = value; }
+        }
 
         /// <summary>
         /// This creates an object for dealing with the gameplay screen (the left portion)
@@ -48,6 +56,7 @@ namespace Armalia.GameScreens
             : base(game, manager)
         {
             mapWindow = new Rectangle(0, 0, DEFAULT_MAP_WINDOW_SIZE.X, DEFAULT_MAP_WINDOW_SIZE.Y);
+            CameraView = new Rectangle(0, 0, DEFAULT_CAMERA_WINDOW_SIZE.X, DEFAULT_CAMERA_WINDOW_SIZE.Y);
         }
 
         public void Load()
@@ -70,31 +79,30 @@ namespace Armalia.GameScreens
             # region Player Initialization Region
 
             string playerName = "Justin";
-            int playerHP = 100;
+            int playerHP = 10000;
             int playerMP = 100;
             int playerXP = 0;
-            int playerStrength = 10;
-            int playerDefense = 10;
+            int playerStrength = 20;
+            int playerDefense = 15;
             Vector2 playerSpeed = new Vector2(2, 2);
             Vector2 initialPlayerPos = new Vector2(80, 50);
 
-            Rectangle cameraView = new Rectangle(0, 0, DEFAULT_CAMERA_WINDOW_SIZE.X, DEFAULT_CAMERA_WINDOW_SIZE.Y);
-
             MainCharacter playerCharacter = new MainCharacter(playerName, playerSprite, initialPlayerPos, playerHP, playerMP,
-                playerXP, playerStrength, playerDefense, playerSpeed, cameraView);
+                playerXP, playerStrength, playerDefense, playerSpeed, this);
 
-            player = new Player(playerCharacter);
+            player = new Player(playerCharacter, this);
 
             # endregion
 
             # region Player Weapon Initialization Region
 
-            Texture2D swordTexture = game.Content.Load<Texture2D>(@"Attacks\massive_sword");
-            int swordMsPerFrame = 16;
-            float swordScale = 0.5f;
-            Vector2 swordRotationPoint = new Vector2(12, 200);
+            Texture2D playerSwordTexture = game.Content.Load<Texture2D>(@"Attacks\massive_sword");
+            int playerSwordMsPerFrame = 16;
+            float playerSwordScale = 0.5f;
+            Vector2 playerSwordRotationPoint = new Vector2(12, 200);
 
-            SwordSprite playerSwordSprite = new SwordSprite(swordTexture, swordMsPerFrame, swordScale, swordRotationPoint, playerCharacter);
+            SwordSprite playerSwordSprite = new SwordSprite(playerSwordTexture, playerSwordMsPerFrame, playerSwordScale,
+                playerSwordRotationPoint, playerCharacter);
             playerCharacter.Sword = playerSwordSprite;
 
             # endregion
@@ -148,6 +156,8 @@ namespace Armalia.GameScreens
                                 level = teleportLevel;
 
                                 player.PlayerCharacter.SetPosition(portal.CharStartPosition, level.LevelMap);
+                                player.PlayerCharacter.IsInPain = false; // needed if hit right before entering new level
+                                
                             }
                         }
                     }
@@ -173,6 +183,11 @@ namespace Armalia.GameScreens
                     spriteBatch.End();
                     break;
             }
+        }
+
+        public Vector2 CameraRelativePosition(Vector2 position)
+        {
+            return new Vector2(position.X - CameraView.X, position.Y - CameraView.Y);
         }
 
     }

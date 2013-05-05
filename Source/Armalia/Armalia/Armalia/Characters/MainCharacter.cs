@@ -6,32 +6,14 @@ using Armalia.Sprites;
 using Microsoft.Xna.Framework;
 using Armalia.Levels;
 using Microsoft.Xna.Framework.Graphics;
+using Armalia.GameScreens;
 
 namespace Armalia.Characters
 {
     class MainCharacter : CombatableCharacter
     {
-        /// <summary>
-        /// This is a subjection of the map. This is what dictates what the player/character
-        /// can see.
-        /// </summary>
-        private Rectangle cameraView;
 
         public String Name { get; set; }
-
-        /// <summary>
-        /// The view of the map the character has
-        /// </summary>
-        public Rectangle CameraView
-        {
-            get { return cameraView; }
-            private set { cameraView = value; }
-        }
-
-        public Vector2 CameraRelativePosition
-        {
-            get { return new Vector2(Position.X - CameraView.X, Position.Y - CameraView.Y); }
-        }
 
         /// <summary>
         /// Default Constructor
@@ -45,13 +27,12 @@ namespace Armalia.Characters
         /// <param name="strength">The strength attribute</param>
         /// <param name="defense">The defense attribute</param>
         /// <param name="speed">The movement speed of the character</param>
-        /// <param name="cameraView">The subsection of the map to the player can see.</param>
+        /// <param name="gameplayScreen">The gameplay screen for the game.</param>
         public MainCharacter(String name, AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
-            int expLevel, int strength, int defense, Vector2 speed, Rectangle cameraView)
-            : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed)
+            int expLevel, int strength, int defense, Vector2 speed, GameplayScreen gameplayScreen)
+            : base(sprite, position, hitPoints, manaPoints, expLevel, strength, defense, speed, gameplayScreen)
         {
             this.Name = name;
-            this.cameraView = cameraView;
         }
 
         /// <summary>
@@ -62,30 +43,33 @@ namespace Armalia.Characters
         public void SetPosition(Vector2 newPosition, Map map)
         {
             Position = newPosition;
-            int cx = (int)Position.X - (cameraView.Width / 2) + (CharacterSprite.FrameSize.X / 2);
-            int cy = (int)Position.Y - (cameraView.Height / 2) + (CharacterSprite.FrameSize.Y / 2);
-            if ((Position.Y + (CharacterSprite.FrameSize.Y / 2) >= map.Size.Y - (cameraView.Height / 2)))
+            Rectangle newCameraView = CameraView;
+            int cx = (int)Position.X - (CameraView.Width / 2) + (CharacterSprite.FrameSize.X / 2);
+            int cy = (int)Position.Y - (CameraView.Height / 2) + (CharacterSprite.FrameSize.Y / 2);
+            if ((Position.Y + (CharacterSprite.FrameSize.Y / 2) >= map.Size.Y - (CameraView.Height / 2)))
             {
-                cameraView.Y = map.Size.Y - cameraView.Height;
+                newCameraView.Y = map.Size.Y - CameraView.Height;
             }
 
-            if ((Position.X + (CharacterSprite.FrameSize.X / 2) >= map.Size.X - (cameraView.Width / 2)))
+            if ((Position.X + (CharacterSprite.FrameSize.X / 2) >= map.Size.X - (CameraView.Width / 2)))
             {
-                cameraView.X = map.Size.X - cameraView.Width;
+                newCameraView.X = map.Size.X - CameraView.Width;
 
             }
 
             // center y cood of camera
-            if (Position.Y + (CharacterSprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
+            if (Position.Y + (CharacterSprite.FrameSize.Y / 2) <= (CameraView.Height / 2))
             {
                 // center camera to top edge
-                cameraView.Y = 0;
+                newCameraView.Y = 0;
             }
-            if (Position.X + (CharacterSprite.FrameSize.X / 2) <= (cameraView.Width / 2))
+            if (Position.X + (CharacterSprite.FrameSize.X / 2) <= (CameraView.Width / 2))
             {
                 // center camera to left edge
-                cameraView.X = 0;
+                newCameraView.X = 0;
             }
+
+            CameraView = newCameraView;
         }
 
         /// <summary>
@@ -98,49 +82,57 @@ namespace Armalia.Characters
         public override bool Move(MoveDirection direction, Map currentMap, out bool hasCollided)
         {
             bool hasMoved = base.Move(direction, currentMap, out hasCollided);
+            Rectangle newCameraView = CameraView;
             if (hasMoved)
             {
                 // center x coord of camera
-                if (Position.X + (CharacterSprite.FrameSize.X / 2) <= (cameraView.Width / 2))
+                if (Position.X + (CharacterSprite.FrameSize.X / 2) <= (CameraView.Width / 2))
                 {
                     // center camera to left edge
-                    cameraView.X = 0;
+                    newCameraView.X = 0;
                 }
-                else if (Position.X + (CharacterSprite.FrameSize.X / 2) >= currentMap.Size.X - (cameraView.Width / 2))
+                else if (Position.X + (CharacterSprite.FrameSize.X / 2) >= currentMap.Size.X - (CameraView.Width / 2))
                 {
                     // center camera to right edge
-                    cameraView.X = currentMap.Size.X - cameraView.Width;
+                    newCameraView.X = currentMap.Size.X - CameraView.Width;
 
                 }
                 else
                 {
                     // center camera x coord to player position
-                    cameraView.X = (int)Position.X - (cameraView.Width / 2) + (CharacterSprite.FrameSize.X / 2);
+                    newCameraView.X = (int)Position.X - (CameraView.Width / 2) + (CharacterSprite.FrameSize.X / 2);
                 }
 
                 // center y cood of camera
-                if (Position.Y + (CharacterSprite.FrameSize.Y / 2) <= (cameraView.Height / 2))
+                if (Position.Y + (CharacterSprite.FrameSize.Y / 2) <= (CameraView.Height / 2))
                 {
                     // center camera to top edge
-                    cameraView.Y = 0;
+                    newCameraView.Y = 0;
                 }
-                else if (Position.Y + (CharacterSprite.FrameSize.Y / 2) >= currentMap.Size.Y - (cameraView.Height / 2))
+                else if (Position.Y + (CharacterSprite.FrameSize.Y / 2) >= currentMap.Size.Y - (CameraView.Height / 2))
                 {
                     // center camera to bottom edge
-                    cameraView.Y = currentMap.Size.Y - cameraView.Height;
+                    newCameraView.Y = currentMap.Size.Y - CameraView.Height;
                 }
                 else
                 {
                     // center camera y coord to player position
-                    cameraView.Y = (int)Position.Y - (cameraView.Height / 2) + (CharacterSprite.FrameSize.Y / 2);
+                    newCameraView.Y = (int)Position.Y - (CameraView.Height / 2) + (CharacterSprite.FrameSize.Y / 2);
                 }
             }
+
+            CameraView = newCameraView;
             return hasMoved;
         }
 
         public void Update(GameTime gameTime, MoveDirection moveDirection, GameLevel currentLevel, bool playerPressedAttack)
         {
-            Sword.Update(gameTime, currentLevel, playerPressedAttack);
+            if (playerPressedAttack)
+            {
+                Sword.InitiateAttack();
+            }
+
+            Sword.Update(gameTime, currentLevel);
             base.Update(gameTime, moveDirection, currentLevel.LevelMap);
         }
 
@@ -155,8 +147,8 @@ namespace Armalia.Characters
 
             if (Sword.Animating)
             {
-                Vector2 rotationOrigin = new Vector2(CameraRelativePosition.X + CharacterSprite.FrameSize.X / 2.0f,
-                        CameraRelativePosition.Y + CharacterSprite.FrameSize.Y / 2.0f);
+                Vector2 rotationOrigin = new Vector2(gameplayScreen.CameraRelativePosition(Position).X + CharacterSprite.FrameSize.X / 2.0f,
+                        gameplayScreen.CameraRelativePosition(Position).Y + CharacterSprite.FrameSize.Y / 2.0f);
                 Sword.Draw(spriteBatch, rotationOrigin);
             }
         }

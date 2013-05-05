@@ -25,6 +25,7 @@ namespace Armalia.Levels
 
         public List<EnemyCharacter> Enemies { get; set; }
         public List<LevelObject> LevelObjects { get; set; }
+        public MainCharacter PlayerCharacter { get; set; }
 
         /// <summary>
         /// Default constructor
@@ -34,13 +35,15 @@ namespace Armalia.Levels
         /// <param name="bgMusic">Background music for the level.</param>
         /// <param name="enemies">Enemies located in the level.</param>
         /// <param name="levelObjects">Objects located in the level.</param>
-        public GameLevel(string name, Map levelMap, Song bgMusic, List<EnemyCharacter> enemies, List<LevelObject> levelObjects)
+        /// <param name="playerCharacter">Player's character in the level.</param>
+        public GameLevel(string name, Map levelMap, Song bgMusic, MainCharacter playerCharacter, List<EnemyCharacter> enemies, List<LevelObject> levelObjects)
         {
             this.LevelMap = levelMap;
             this.bgMusic = bgMusic;
             this.Enemies = enemies;
             this.name = name;
             this.LevelObjects = levelObjects;
+            this.PlayerCharacter = playerCharacter;
         }
 
         /// <summary>
@@ -64,7 +67,7 @@ namespace Armalia.Levels
                 }
                 else
                 {
-                    enemy.Update(gameTime, LevelMap);
+                    enemy.Update(gameTime, this);
                 }
             }
 

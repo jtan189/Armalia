@@ -100,14 +100,17 @@ namespace Armalia.Sprites
             return intersectionOccured;
         }
 
-        public void Update(GameTime gameTime, GameLevel currentLevel, bool playerPressedAttack)
+        public void InitiateAttack()
         {
-            bool shouldStopTorture = false;
-
-            if (!Animating && playerPressedAttack)
+            if (!Animating)
             {
                 Animating = true;
             }
+        }
+
+        public void Update(GameTime gameTime, GameLevel currentLevel)
+        {
+            bool shouldStopTorture = false;
 
             if (Animating)
             {
@@ -135,17 +138,30 @@ namespace Armalia.Sprites
                     }
                 }
 
-                // check if attack hits enemy
-                foreach (CombatableCharacter character in currentLevel.Enemies)
+                if (swordOwner is MainCharacter)
                 {
-                    if (Intersects(character, currentLevel))
+                    // check if attack hits enemy
+                    foreach (CombatableCharacter character in currentLevel.Enemies)
                     {
-                        if (!charactersHit.Contains(character))
+                        if (Intersects(character, currentLevel))
                         {
-                            swordOwner.Attack(character);
-                            charactersHit.Add(character);
-                            Console.WriteLine("Enemy hit! HP = {0}", character.HitPoints);
+                            if (!charactersHit.Contains(character))
+                            {
+                                swordOwner.Attack(character);
+                                charactersHit.Add(character);
+                                Console.WriteLine("Enemy hit! HP = {0}", character.HitPoints);
+                            }
                         }
+                    }
+                }
+                else
+                {
+                    EnemyCharacter enemy = swordOwner as EnemyCharacter;
+                    if (Intersects(enemy.PlayerCharacter, currentLevel))
+                    {
+                        enemy.Attack(enemy.PlayerCharacter);
+                        charactersHit.Add(enemy.PlayerCharacter);
+                        Console.WriteLine("Player hit! HP = {0}", enemy.PlayerCharacter.HitPoints);
                     }
                 }
             }
@@ -156,6 +172,7 @@ namespace Armalia.Sprites
                 {
                     character.IsInPain = false;
                 }
+                currentLevel.PlayerCharacter.IsInPain = false;
             }
 
         }

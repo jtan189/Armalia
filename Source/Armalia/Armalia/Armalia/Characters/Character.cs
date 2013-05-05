@@ -6,6 +6,7 @@ using Armalia.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Armalia.Levels;
+using Armalia.GameScreens;
 
 namespace Armalia.Characters
 {
@@ -17,7 +18,7 @@ namespace Armalia.Characters
         /// <summary>
         /// The default Layer that they're drawn at
         /// </summary>
-        public const float DEFAULT_LAYER_DEPTH = 0.1F;
+        public const float DEFAULT_LAYER_DEPTH = 0.5F;
 
         /// <summary>
         /// This is used for currency.
@@ -28,6 +29,13 @@ namespace Armalia.Characters
         /// The speed that the character moves
         /// </summary>
         protected Vector2 speed;
+
+        protected GameplayScreen gameplayScreen;
+
+        public Rectangle CameraView {
+            get { return gameplayScreen.CameraView; }
+            set { gameplayScreen.CameraView = value; }
+        }
 
         /// <summary>
         /// The animated sprite that defines their looks and animations
@@ -50,7 +58,9 @@ namespace Armalia.Characters
         /// <param name="sprite">The animation sprite of the character</param>
         /// <param name="position">The position to place the character</param>
         /// <param name="speed">The movement speed of the character</param>
-        public Character(AnimatedSprite sprite, Vector2 position, Vector2 speed) : this(sprite, position, 0, speed) { }
+        /// <param name="gameplayScreen">The gameplay screen for the game.</param>
+        public Character(AnimatedSprite sprite, Vector2 position, Vector2 speed, GameplayScreen gameplayScreen)
+            : this(sprite, position, 0, speed, gameplayScreen) { }
 
         /// <summary>
         /// Constructor 2
@@ -59,12 +69,14 @@ namespace Armalia.Characters
         /// <param name="position">The position of the character on the map</param>
         /// <param name="numCoins">The number of coins the character starts off </param>
         /// <param name="speed">The movement speed of the character.</param>
-        public Character(AnimatedSprite sprite, Vector2 position, int numCoins, Vector2 speed)
+        /// <param name="gameplayScreen">The gameplay screen for the game.</param>
+        public Character(AnimatedSprite sprite, Vector2 position, int numCoins, Vector2 speed, GameplayScreen gameplayScreen)
         {
             this.CharacterSprite = sprite;
             this.Position = position;
             this.numCoins = numCoins;
             this.speed = speed;
+            this.gameplayScreen = gameplayScreen;
         }
 
         /// <summary>

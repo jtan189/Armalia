@@ -8,14 +8,20 @@ using Armalia.Characters;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Armalia.Levels;
+using Armalia.GameScreens;
 
 namespace Armalia
 {
     class Player
     {
+        private GameplayScreen gameplayScreen;
         public MainCharacter PlayerCharacter { get; set; }
-        public Rectangle CameraView { get { return PlayerCharacter.CameraView; } }
 
+        public Rectangle CameraView {
+            get { return gameplayScreen.CameraView; }
+            
+        }
+        
         public Character.MoveDirection KeyInputDirection
         {
             get
@@ -33,9 +39,10 @@ namespace Armalia
             }
         }
 
-        public Player(MainCharacter character)
+        public Player(MainCharacter character, GameplayScreen gameplayScreen)
         {
             PlayerCharacter = character;
+            this.gameplayScreen = gameplayScreen;
         }
 
         public bool PressedAttack()

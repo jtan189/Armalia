@@ -65,13 +65,13 @@ namespace Armalia.Sidebar
         {
             # region Draw Minimap
 
-            spriteBatch.Draw(currentLevel.LevelMap.MapImage, minimapArea, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+            spriteBatch.Draw(currentLevel.LevelMap.MapImage, minimapArea, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.01f);
 
             # endregion
 
             # region Draw Main Character Stats
 
-            spriteBatch.Draw(sidebarBackground, sidebarWindow, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+            spriteBatch.Draw(sidebarBackground, sidebarWindow, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.1f);
             spriteBatch.DrawString(charStatsFont, mainCharacter.Name + ":", mainCharNameLocation, Color.Black);
             spriteBatch.DrawString(charStatsFont, "HP: " + mainCharacter.HitPoints.ToString(), mainCharHpLocation, Color.Black);
             spriteBatch.DrawString(charStatsFont, "MP: " + mainCharacter.ManaPoints.ToString(), mainCharMpLocation, Color.Black);

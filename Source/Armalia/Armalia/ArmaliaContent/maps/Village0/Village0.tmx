@@ -2874,7 +2874,7 @@
   </object>
   <object x="32" y="800" width="32" height="736"/>
   <object x="0" y="1536" width="1600" height="64"/>
-  <object name="Knight" type="Enemy" x="448" y="192" width="32" height="32">
+  <object name="Knight" type="Enemy" x="366" y="205" width="32" height="32">
    <properties>
     <property name="defense" value="30"/>
     <property name="hp" value="100"/>
@@ -2883,7 +2883,7 @@
     <property name="xp" value="0"/>
    </properties>
   </object>
-  <object name="Knight" type="Enemy" x="864" y="288" width="32" height="32">
+  <object name="Knight" type="Enemy" x="846" y="225" width="32" height="32">
    <properties>
     <property name="defense" value="30"/>
     <property name="hp" value="100"/>
@@ -2892,7 +2892,7 @@
     <property name="xp" value="0"/>
    </properties>
   </object>
-  <object name="Knight" type="Enemy" x="672" y="608" width="32" height="32">
+  <object name="Knight" type="Enemy" x="637" y="767" width="32" height="32">
    <properties>
     <property name="defense" value="30"/>
     <property name="hp" value="100"/>
@@ -2971,6 +2971,33 @@
     <property name="level" value="Building3"/>
     <property name="startPositionX" value="870"/>
     <property name="startPositionY" value="930"/>
+   </properties>
+  </object>
+  <object name="Knight" type="Enemy" x="321" y="971" width="32" height="32">
+   <properties>
+    <property name="defense" value="30"/>
+    <property name="hp" value="100"/>
+    <property name="speed" value="100"/>
+    <property name="strength" value="10"/>
+    <property name="xp" value="0"/>
+   </properties>
+  </object>
+  <object name="Knight" type="Enemy" x="864" y="1209" width="32" height="32">
+   <properties>
+    <property name="defense" value="30"/>
+    <property name="hp" value="100"/>
+    <property name="speed" value="100"/>
+    <property name="strength" value="10"/>
+    <property name="xp" value="0"/>
+   </properties>
+  </object>
+  <object name="Knight" type="Enemy" x="1119" y="834" width="32" height="32">
+   <properties>
+    <property name="defense" value="30"/>
+    <property name="hp" value="100"/>
+    <property name="speed" value="100"/>
+    <property name="strength" value="10"/>
+    <property name="xp" value="0"/>
    </properties>
   </object>
  </objectgroup>

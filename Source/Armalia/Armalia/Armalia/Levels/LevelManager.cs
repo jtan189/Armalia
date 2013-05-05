@@ -55,7 +55,7 @@ namespace Armalia.Levels
 
                 List<EnemyCharacter> enemies = this.mapMaker.GetEnemies(mapPair.Value, this.playerCharacter, this.gameplayScreen);
                 List<LevelObject> levelObjects = this.mapMaker.GetObjects(mapPair.Value);
-                GameLevel level = new GameLevel(mapPair.Key, this.mapMaker.BuildMap(mapPair.Value), song, enemies, levelObjects);
+                GameLevel level = new GameLevel(mapPair.Key, this.mapMaker.BuildMap(mapPair.Value), song, playerCharacter, enemies, levelObjects);
                 gameLevels.Add(mapPair.Key, level);
             }
         }

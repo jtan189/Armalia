@@ -5,6 +5,7 @@ using System.Text;
 using Armalia.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Armalia.GameScreens;
 
 namespace Armalia.Characters
 {
@@ -21,8 +22,8 @@ namespace Armalia.Characters
         public bool IsInPain { get; set; }
 
         public CombatableCharacter(AnimatedSprite sprite, Vector2 position, int hitPoints, int manaPoints,
-            int expLevel, int strength, int defense, Vector2 speed)
-            : base(sprite, position, speed)
+            int expLevel, int strength, int defense, Vector2 speed, GameplayScreen gameplayScreen)
+            : base(sprite, position, speed, gameplayScreen)
         {
             this.HitPoints = hitPoints;
             this.ManaPoints = manaPoints;
