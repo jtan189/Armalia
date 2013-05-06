@@ -2535,5 +2535,12 @@
     <property name="startPositionY" value="373"/>
    </properties>
   </object>
+  <object name="Door" type="Portal" x="0" y="576" width="32" height="224">
+   <properties>
+    <property name="level" value="Forest3"/>
+    <property name="startPositionX" value="1537"/>
+    <property name="startPositionY" value="782"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
