@@ -201,6 +201,10 @@
       <Name>Building3</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Maps\Cave0\Cave0.tmx">
+      <Name>Cave0</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Maps\Forest1\Forest1.tmx">
       <Name>Forest1</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -246,6 +250,16 @@
   <ItemGroup>
     <Compile Include="Maps\Building3\Building3.png">
       <Name>Building3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Maps\Forest2\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Maps\Cave0\Cave0.png">
+      <Name>Cave0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

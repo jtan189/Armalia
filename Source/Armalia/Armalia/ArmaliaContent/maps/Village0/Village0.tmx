@@ -2923,7 +2923,7 @@
    <properties>
     <property name="level" value="Forest1"/>
     <property name="startPositionX" value="145"/>
-    <property name="startPositionY" value="1548"/>
+    <property name="startPositionY" value="1500"/>
    </properties>
   </object>
   <object x="64" y="1184" width="64" height="128"/>
