@@ -2578,17 +2578,17 @@
   <object name="Door" type="Portal" x="928" y="640" width="64" height="32">
    <properties>
     <property name="level" value="Cave0"/>
-    <property name="startPositionX" value="530"/>
-    <property name="startPositionY" value="720"/>
+    <property name="startPositionX" value="708"/>
+    <property name="startPositionY" value="943"/>
    </properties>
   </object>
   <object x="1408" y="736" width="128" height="160"/>
   <object x="-384" y="1280"/>
   <object name="Door" type="Portal" x="-32" y="256" width="64" height="192">
    <properties>
-    <property name="level" value=""/>
-    <property name="startPositionX" value=""/>
-    <property name="startPositionY" value=""/>
+    <property name="level" value="Forest2"/>
+    <property name="startPositionX" value="1500"/>
+    <property name="startPositionY" value="695"/>
    </properties>
   </object>
  </objectgroup>

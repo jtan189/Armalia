@@ -218,6 +218,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Maps\Forest2\Forest2.tmx">
+      <Name>Forest2</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Maps\Village0\Village0.tmx">
       <Name>Village0</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -255,11 +259,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Maps\Forest2\" />
+    <Folder Include="Maps\Forest3\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Maps\Cave0\Cave0.png">
       <Name>Cave0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Maps\Forest2\Forest2.png">
+      <Name>Forest2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

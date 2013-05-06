@@ -36,6 +36,7 @@ namespace Armalia.Levels
             mapFiles.Add("Building1", @"Maps\Building1\Building1");
             mapFiles.Add("Village0", @"Maps\Village0\Village0");
             mapFiles.Add("Forest1", @"Maps\Forest1\Forest1");
+            mapFiles.Add("Forest2", @"Maps\Forest2\Forest2");
             mapFiles.Add("Cave0", @"Maps\Cave0\Cave0");
             mapFiles.Add("Building2", @"Maps\Building2\Building2");
             mapFiles.Add("Building3", @"Maps\Building3\Building3");
