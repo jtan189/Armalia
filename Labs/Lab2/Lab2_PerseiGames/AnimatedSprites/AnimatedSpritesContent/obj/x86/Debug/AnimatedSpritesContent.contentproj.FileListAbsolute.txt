@@ -1,3 +1,0 @@
-C:\Users\jtan189\Desktop\AnimatedSprites\AnimatedSprites\AnimatedSpritesContent\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Users\jtan189\Desktop\Tutorials\AnimatedSprites\AnimatedSprites\AnimatedSpritesContent\obj\x86\Debug\ResolveAssemblyReference.cache
-C:\Users\jtan189\Desktop\Lab2\Lab2_PerseiGames\AnimatedSprites\AnimatedSpritesContent\obj\x86\Debug\ResolveAssemblyReference.cache
